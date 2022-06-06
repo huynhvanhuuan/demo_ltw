@@ -1,0 +1,127 @@
+.footer {
+    width: 100%;
+    margin-top: 6rem;
+    padding: 4rem 0;
+    background-color: var(--grey-color);
+}
+
+.footer-title {
+    margin-top: 3rem;
+    font-size: 2rem;
+    color: var(--text-black);
+    text-transform: uppercase;
+}
+
+.footer .box {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.footer-signup {
+    position: relative;
+    height: 5rem;
+    margin-left: -5px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.info-item {
+    padding-right: 2rem;
+}
+
+.info-item:not(:last-child) {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.info-item .text-info {
+    font-size: 1.6rem;
+    color: var(--text-grey);
+    transition: color 0.3s ease;
+}
+
+.info-item i {
+    margin-right: 2rem;
+    font-size: 1.6rem;
+    color: var(--text-grey);
+}
+
+.service {
+    padding: 0 6rem;
+}
+
+.flex-col {
+    display: flex;
+}
+
+.col-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.col-item:first-child {
+    padding-right: 2rem;
+}
+
+.col-item .info-item {
+    display: inline-block;
+}
+
+.col-item .info-item .text-info {
+    font-weight: 700;
+}
+
+.col-item .info-item:hover .text-info {
+    color: var(--primary-color);
+}
+
+.input {
+    width: 100%;
+    height: 5rem;
+    padding: 0 6rem 0 2rem;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+}
+
+.input::placeholder {
+    color: var(--text-grey);
+}
+
+.btn-signup {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--primary-color);
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-signup:hover {
+    background-color: var(--fourth-color);
+}
+
+.btn-signup i {
+    color: var(--text-white);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.input:focus {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.pos-abs {
+    position: absolute;
+}

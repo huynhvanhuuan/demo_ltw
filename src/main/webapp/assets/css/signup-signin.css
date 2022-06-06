@@ -1,0 +1,406 @@
+.box-signup-signin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s;
+}
+
+.signup-signin {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90rem;
+    height: 70rem;
+    border-radius: 6px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transform: translate(-50%, -50%) scale(0);
+    transition: all 0.3s;
+}
+
+.signup-signin > [class^='sign'] {
+    flex-shrink: 0;
+}
+
+.signup-signin.show-popup {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 0.6;
+    padding: 0.5rem;
+    cursor: pointer;
+    transform: rotate(0);
+    transition: all 0.2s;
+}
+
+.popup-close:hover {
+    transform: rotate(90deg);
+    color: var(--text-grey);
+}
+
+/* css for sign in box */
+.signin {
+    width: 90rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    margin-left: 0rem;
+    transition: all 0.3s;
+}
+
+.signin .left {
+    width: 45%;
+    background-image: url(../images/login.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.signin .right {
+    flex: 1;
+    height: 100%;
+    padding: 3rem;
+    background-color: #fff;
+    margin-left: -1px;
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-header .popup-header__img {
+    width: 10rem;
+}
+
+.popup-header .popup-header__title {
+    color: rgb(112, 112, 112);
+    font-size: 2.6rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-left: 2rem;
+}
+
+/* css for sign up box */
+.signup {
+    width: 90rem;
+    height: 100%;
+    display: flex;
+    margin-right: 0rem;
+}
+
+.signup .left {
+    flex: 0 0 60%;
+    height: 100%;
+    padding: 3rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+.signup .right {
+    flex: 1;
+    background-image: url(../images/login.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* css for form */
+.popup-form {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0 0;
+}
+
+.form-group {
+    margin-bottom: 1.6rem;
+    position: relative;
+}
+
+.form-group:last-of-type {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    font-size: 1.5rem;
+    color: var(--text-grey);
+    position: absolute;
+    top: 50%;
+    left: 1.5rem;
+    transform: translateY(-45%);
+    background-color: #fff;
+    padding: 0 0.5rem;
+    transition: all 0.1s;
+    pointer-events: none;
+}
+
+.form-input {
+    color: rgb(136, 136, 136);
+    font-size: 1.5rem;
+    width: 100%;
+    height: 4.5rem;
+    padding: 1.3rem 2rem;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.05s;
+}
+
+.form-input:not(:placeholder-shown) + .form-label {
+    top: 0;
+    left: 1rem;
+    font-size: 1.2rem;
+}
+
+.form-input[name='password'] {
+    padding-right: 4.2rem;
+}
+
+.form-input.focus {
+    border: 2px solid var(--fourth-color);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05);
+}
+
+.form-input:focus {
+    border: 2px solid var(--fourth-color);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05);
+}
+
+.form-input:focus + .form-label {
+    top: 0;
+    left: 1rem;
+    font-size: 1.2rem;
+    color: var(--fourth-color);
+}
+
+.form-input.focus + .form-label {
+    top: 0;
+    left: 1rem;
+    font-size: 1.2rem;
+    color: var(--fourth-color);
+}
+
+.form-input:focus ~ .hide-password {
+    color: var(--fourth-color);
+}
+
+.form-input.focus ~ .hide-password {
+    color: var(--fourth-color);
+}
+
+.form-group .hide-password {
+    color: #bebebe;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.form-btn {
+    width: 100%;
+    height: 4.5rem;
+    padding: 1.2rem;
+    color: #fff;
+    font-size: 1.7rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--primary-color);
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    transition: all 0.2s;
+}
+
+.form-btn:hover {
+    background-color: var(--fourth-color);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.16);
+}
+
+.forgot-password {
+    margin-top: 1rem;
+}
+
+.text-link {
+    font-size: 1.4rem;
+    color: var(--secondary-color);
+}
+
+/* other way signin */
+.text-way {
+    margin: 5rem 0 0;
+    text-align: center;
+    color: var(--text-grey);
+    font-size: 1.4rem;
+    position: relative;
+}
+
+.signup .text-way {
+    margin-top: 1rem;
+}
+
+.text-way::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 44%;
+    height: 1px;
+    background-color: var(--text-grey);
+}
+
+.text-way::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 44%;
+    height: 1px;
+    background-color: var(--text-grey);
+}
+.other-way-signin {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-signin {
+    width: 49%;
+    height: 4rem;
+    border: none;
+    transition: all 0.2s;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-signin:hover {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.signin-img {
+    width: 3rem;
+    margin-top: -5px;
+}
+
+.img-gg {
+    padding: 0.5rem;
+    background-color: #fff;
+    margin-top: -2px;
+}
+
+.signin-fb {
+    background-color: #1278f2;
+}
+
+.signin-gg {
+    background-color: #4285f4;
+}
+
+.signin-title {
+    font-size: 1.6rem;
+    color: var(--text-white);
+    margin-left: 2rem;
+}
+
+.show-signup,
+.show-signin {
+    margin-top: auto;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.swipe-to-signup,
+.swipe-to-signin {
+    margin-left: 0.5rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* css policy */
+.policy {
+    width: 34rem;
+    margin: 2rem auto 0;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.policy-link {
+    color: var(--primary-color);
+}
+
+.form-group.box-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group .box-left,
+.form-group .box-right {
+    width: 49%;
+    display: flex;
+    align-items: center;
+}
+
+.form-group .box-right label {
+    left: calc(50% + 2rem);
+}
+
+.form-group .box-right .form-input:focus + label {
+    left: calc(50% + 1.5rem) !important;
+}
+
+.box-right span {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--text-grey);
+}
+
+input[name='gender'] {
+    display: none;
+}
+
+input[name='gender']:checked + label {
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: var(--text-white);
+}
+
+input[name='gender'] + label {
+    font-size: 1.4rem;
+    color: #6b6b6b;
+    width: 30%;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--text-grey);
+    border-radius: 6px;
+    margin-left: 2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s;
+}

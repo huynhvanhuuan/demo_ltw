@@ -1,0 +1,383 @@
+.page{
+    width: 100%;  
+}
+/* Hình nền */
+.landing{
+    width: 100%;
+    height:90vh;
+    background: #f2f2f4;
+    position: relative;
+}
+.landing .img{
+    margin: 0 auto;
+    width: 1200px;
+    height: 90vh;
+    text-align: center;
+}
+.landing .img img{
+    height: 90vh; 
+}
+.landing .img p{
+    width: 1200px;  
+    top: 30%;
+    font-size: 80px;
+    position: absolute;
+    text-align: center;
+    color: var(--primary-color);
+}
+/* Kết thúc phần hình nền */
+.containerOfHome{
+    width: 1200px;
+    margin: 0 auto;
+}
+/* Phần Introduce */
+.containerOfHome .introduce{
+    margin-bottom: 30px;
+}
+.containerOfHome .introduce .title{
+    margin-top: 30px;
+    height: 240px;
+}
+.containerOfHome .introduce .title .p1{
+    text-align: center;
+    font-size: 20px;
+    padding-top:20px ;
+    padding-left: 20px;
+}
+.containerOfHome .introduce .title .p2{
+font-size: 16px;
+padding-top: 10px;
+padding-left: 10px;
+}
+.containerOfHome .introduce .title .p3{
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.containerOfHome .introduce .title .title-left{
+float: left;
+width: 50%;
+}
+.containerOfHome .introduce .title .title-right{
+float: right;
+width: 50%;
+}
+.containerOfHome .introduce .grid-list{
+    display: grid;
+    grid-template-areas: 
+    "h1 h1 h4"
+    "h2 h3 h4";
+    grid-template-columns: 300px 300px 600px;
+    grid-template-rows: 300px 300px;
+}
+.containerOfHome .introduce .grid-list .grid-item:first-child{
+    grid-area: h1;
+}
+.containerOfHome .introduce .grid-list .grid-item:nth-child(2){
+    grid-area: h2;
+}
+.containerOfHome .introduce .grid-list .grid-item:nth-child(3){
+    grid-area: h3;
+}
+.containerOfHome .introduce .grid-list .grid-item:nth-child(4){
+    grid-area: h4;
+}
+.containerOfHome .introduce .grid-list .grid-item img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.containerOfHome .introduce .grid-list .grid-item:hover {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transform: scale(1.01);
+    opacity: 0.9;
+}
+/* Kết thúc phần Introduce */
+
+/* Danh mục */
+.containerOfHome .accessories{
+    height: 260px;
+    display: flex;
+    justify-content: space-evenly;   
+}
+.containerOfHome .accessories p{
+    text-align: center;
+    font-size: 20px;
+    font-weight: bolder;
+    color: #E9672B;
+    cursor: pointer;
+    margin-bottom: 40px;
+}
+.containerOfHome .accessories .ac{
+    margin-top: 50px ;
+    margin-bottom: 30px ;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #fbf8f5;
+    text-align: center;   
+    cursor: pointer;
+}
+.containerOfHome .accessories .ac img{
+    width: 60px;
+    height: 60px;
+    padding-top: 30px;
+}
+/* Kết thúc phần Danh mục */
+
+/* Sản phẩm mới, Sản phẩm đang giảm giá, Những sản phẩm bán chạy nhất  */
+.containerOfHome .special{
+    height: 540px;  
+}
+.containerOfHome .special .detail{
+    height: 100px;
+    display: flex;
+    background-color: var(--primary-color);
+}
+.containerOfHome .special .detail .title{
+width: 85%;
+padding-top: 30px;
+font-size: 30px;
+font-weight: bolder;
+padding-left:70px ;
+}
+.containerOfHome .special .detail .view{
+    width: 7%;
+    font-size: 14px;
+    margin-top: 40px;
+    cursor: pointer;
+    height: 30px;
+    text-align: center;
+    text-decoration: underline;
+}
+.containerOfHome .special .detail .arrow-right{
+    width: 8%;
+    font-size: 25px;
+    padding-top: 30px;
+}
+.containerOfHome .special .slide{
+height: 400px;
+margin: 0 auto;
+display: flex;
+justify-content: space-evenly;
+margin-bottom: 40px;
+}
+.containerOfHome .special .slide .cards {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -3rem;
+    padding-top: 3rem;
+}
+/* Kết thúc phần Sản phẩm mới, Sản phẩm đang giảm giá, Những sản phẩm bán chạy nhất */
+
+/* Phần mũi tên để lướt sản phẩm sau mỗi phần Sản phẩm mới, Sản phẩm đang giảm giá, Những sản phẩm bán chạy nhất */
+.containerOfHome .arrow-btn{
+    height:50px;
+}
+.containerOfHome .arrow-btn .btn_arrow_left{
+float: left;
+width: 50%;
+text-align: left;
+margin-left: -60px;
+}
+.containerOfHome .arrow-btn .btn_arrow_right{
+float: right;
+width: 50%;
+text-align: right;
+margin-right: -60px;
+}
+.containerOfHome .arrow-btn .arrow{
+    width: 50px;
+    height: 50px;
+    margin-top: -250px;
+    text-align: center;
+    cursor: pointer;
+}
+.containerOfHome .arrow-btn .arrow .fa{
+    font-size: 50px;
+    color: var(--primary-color);
+}
+/* .containerOfHome .special .slide .card{
+width: 200px;
+background: white;
+cursor: pointer;
+}
+.containerOfHome .special .slide .card img{
+padding-top: 40px;
+width: 180px;
+height: 180px;
+padding-left: 10px;
+}
+.containerOfHome .special .slide .card .name{
+    width: 180px;
+    margin: 0 auto;
+    font-size: 18px;
+    padding-top: 20px;
+    text-align: center;
+    padding-bottom:20px ;
+    overflow: hidden;
+}
+.containerOfHome .special .slide .card .price{
+    width: 180px;
+    margin:  0 auto;
+    text-align: center;
+    padding-bottom: 40px;
+}
+.containerOfHome .special .slide .card .price .p1{
+    float: left;
+    font-size: 16px;
+    width: 50%;
+    color: #E9672B;
+    font-weight: bolder;   
+}
+.containerOfHome .special .slide .card .price .p2{
+    float: right;
+    width: 50%;
+    font-size: 14px;
+    text-decoration: line-through;   
+}
+.containerOfHome .special .slide .card .buy{
+    width: 130px;
+    height: 50px;
+    margin: 0 auto;
+}
+.containerOfHome .special .slide .card .buy p{
+text-align: center;
+padding-left: 12px;
+padding-right: 12px;
+padding-top: 10px;
+padding-bottom: 10px;
+background: #DA3E31;
+border-radius: 25px;
+color: white;
+font-weight: bolder;
+} */
+/* Kết thúc phần mũi tên để lướt sản phẩm sau mỗi phần Sản phẩm mới, Sản phẩm đang giảm giá, Những sản phẩm bán chạy nhất */
+
+/* Phần flash-sale */
+.containerOfHome .flash-sale{
+    width: 800px;
+    height: 100px;
+    margin: 0 auto;
+    margin-bottom: 35px;
+}
+.containerOfHome .flash-sale .flash-sale-left{
+width: 350px;
+float: left;
+}
+.containerOfHome .flash-sale .flash-sale-left p{
+font-size: 55px;
+text-align: center;
+font-weight: bolder;
+margin-top: 5px;
+color: var(--primary-color);
+}
+.containerOfHome .flash-sale .flash-sale-right{
+    float: right;
+    width: 450px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.containerOfHome .flash-sale .flash-sale-right .time{
+    margin-top: 5px;
+width: 90px;
+height: 90px;
+border-radius: 50%;
+background: #DA3E31;
+color: white;
+}
+.containerOfHome .flash-sale .flash-sale-right .time p{
+text-align: center;
+font-size: 15px;
+}
+.containerOfHome .flash-sale .flash-sale-right .time .p1{
+    padding-top: 18px;
+    font-weight: bolder;
+}
+/* Kết thúc phần flash-sale */
+
+/* Phần bộ sưu tập */
+.containerOfHome .collections{
+    width: 1200px;
+    margin: 0 auto;
+}
+.containerOfHome .collections .title{
+    margin-top: 20px;
+    margin-bottom: 15px;
+    height: 100px;
+    font-size: 30px;
+    font-weight: bolder;
+    padding-left:70px ;
+    background-color: var(--primary-color);
+    padding-top: 30px;
+}
+.containerOfHome .collections .col-list{ 
+    width: 1140px;
+    margin: 0 auto;
+    display: grid;
+
+    /* grid-template-areas: 
+    "h1 h2 h2"
+    "h3 h2 h2"
+    "h3 h4 h5"; */
+    /* grid-template-columns: 1fr 1fr 1fr; */
+    /* grid-template-rows: 1fr 0.2fr 1fr; */
+    /* grid-column-gap:5px ; */
+    /* grid-row-gap:10px ; */
+    /* grid-template-columns: 360px 360px 360px; */
+    /* grid-template-rows: 355px 70px 280px; */
+    /* grid-column-gap:20px ;
+    grid-row-gap: 20px;
+overflow: hidden;*/
+/* overflow-y: hidden;  */
+/* overflow: hidden; */
+
+grid-template-columns:360px 360px 360px ;
+grid-template-rows: 355px 65px 280px;
+grid-column-gap:30px ;
+grid-row-gap:15px ;
+}
+.containerOfHome .collections .col-list .col-item{
+    cursor: pointer;
+    /* overflow: hidden; */
+}
+.containerOfHome .collections .col-list .col-item:first-child {
+    /* grid-area: h1; */
+   grid-column: 1/2;
+   grid-row: 1/2;
+}
+.containerOfHome .collections .col-list .col-item:nth-child(2) {
+    /* grid-area: h2; */
+    grid-column: 2/4;
+   grid-row: 1/3;
+}
+.containerOfHome .collections .col-list .col-item:nth-child(3) {
+    /* grid-area: h3; */
+    grid-column: 1/2;
+    grid-row: 2/4;
+
+}
+.containerOfHome .collections .col-list .col-item:nth-child(4) {
+    /* grid-area: h4; */
+    grid-column: 2/3;
+    grid-row: 3/4;
+}
+.containerOfHome .collections .col-list .col-item:last-child {
+    /* grid-area: h5; */
+    grid-column: 3/4;
+    grid-row: 3/4;
+}
+.containerOfHome .collections .col-list .col-item .item .image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.containerOfHome .collections .col-list .col-item:hover {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transform: translateY(-3px);
+    opacity: 0.7;
+}
+/* Kết thúc phần bộ sưu tập */
+
+
+
+

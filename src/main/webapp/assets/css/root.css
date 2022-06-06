@@ -1,0 +1,143 @@
+:root {
+    --blue: #007bff;
+    --indigo: #6610f2;
+    --purple: #6f42c1;
+    --pink: #e83e8c;
+    --red: #dc3545;
+    --orange: #fd7e14;
+    --yellow: #ffc107;
+    --green: #28a745;
+    --teal: #20c997;
+    --cyan: #17a2b8;
+    --white: #fff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+    --primary: #007bff;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: Sofia Pro, sans-serif;
+    --font-family-monospace: Sofia Pro, monospace;
+}
+
+body {
+    font-family: 'Lato', Helvetica, Sofia Pro, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    color: #5d5f5f;
+}
+
+.w-25 {
+    width: 25%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-75 {
+    width: 75%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-25 {
+    height: 25%;
+}
+
+.h-50 {
+    height: 50%;
+}
+
+.h-75 {
+    height: 75%;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.m-0 {
+    margin: 0 !important;
+}
+
+.m-auto {
+    margin: auto !important;
+}
+
+.pt-12 {
+    padding-top: 12px !important;
+}
+
+.pb-16 {
+    padding-bottom: 16px !important;
+}
+
+.form-label {
+    margin-bottom: 12px !important;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.justify-content-center {
+    justify-content: center !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.justify-content-start {
+    justify-content: flex-start !important;
+}
+
+.justify-content-end {
+    justify-content: flex-end !important;
+}
+
+.fw-normal {
+    font-weight: normal !important;
+}
+
+.fw-bold {
+    font-weight: bold !important;
+}
+
+.fw-bolder {
+    font-weight: bolder !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-light {
+    color: #ffffff !important;
+}
+
+.text-dark {
+    color: #000000 !important;
+}

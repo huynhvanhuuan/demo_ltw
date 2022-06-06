@@ -1,0 +1,75 @@
+p {
+    font-size: 20px;
+}
+.page {
+    margin-top: 6.4rem;
+    background: white;
+}
+.container {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.container .start h2 {
+    padding-top: 20px;
+    font-size: 35px;
+    margin: 0;
+}
+.container .faqs .item {
+    margin-top: 25px;
+}
+
+.container .faqs .item:last-child {
+    margin-bottom: 25px;
+}
+.container .faqs .item .ques {
+    border-radius: 6px;
+    height: 50px;
+    background: #f4f4f5;
+    display: flex;
+    align-items: center;
+    font-weight: bolder;
+}
+.container .faqs .item .ques .title {
+    width: 10%;
+    text-align: center;
+}
+.container .faqs .item .ques .nameOfQues {
+    width: 85%;
+    padding-left: 15px;
+}
+.container .faqs .item .ques .but {
+    width: 5%;
+    display: flex;
+    align-items: center;
+}
+.container .faqs .item .ans {
+}
+.container .faqs .item .ans .first {
+    padding-top: 20px;
+}
+.container .faqs .item .ans p {
+    padding-top: 5px;
+    padding-left: 20px;
+    font-size: 18px;
+}
+.container .faqs .item .hidden {
+    opacity: 0;
+    visibility: hidden;
+    height: 0px;
+}
+.container .contact {
+    height: 55px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.container .contact .text {
+    font-size: 18px;
+    color: black;
+    margin-right: 2rem;
+}
+.container .contact .btn {
+    padding: 2rem 3rem;
+}

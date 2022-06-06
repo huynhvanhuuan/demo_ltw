@@ -1,0 +1,1064 @@
+.container-body {
+    width: 100%;
+    background: #f5f5f5;
+    margin-top: 6.4rem;
+    height: 800px;
+}
+/* phần hiện tên khách hàng và ảnh */
+.container-body .box-userr {
+    height: 100px;
+    background: var(--primary-color);
+}
+.container-body .box-userr .circle-img-user {
+    width: 17%;
+    float: left;
+    text-align: right;
+}
+.container-body .box-userr .circle-img-user img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-top: 25px;
+}
+.container-body .box-userr .big-name-user {
+    width: 83%;
+    float: right;
+}
+.container-body .box-userr .big-name-user p {
+    font-size: 25px;
+    margin-top: 27px;
+    margin-left: 10px;
+    color: black;
+}
+.container-body .box-noidung {
+    width: 100%;
+}
+/* phần hiện 2 button drop-down về thông tin khách hàng và thông tin đơn hàng */
+.container-body .box-noidung .sidebar {
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.container-body .box-noidung .sidebar .side-con {
+    width: 30%;
+    height: 50px;
+    font-size: 15px;
+    display: inline-block;
+    font-size: 18px;
+    cursor: pointer;
+}
+.container-body .box-noidung .sidebar .info,
+.container-body .box-noidung .sidebar .order {
+    background: white;
+}
+.container-body .box-noidung .sidebar .side-con .icon {
+    width: 30%;
+    float: left;
+    text-align: right;
+    padding-right: 10px;
+    font-size: 25px;
+    padding-top: 10px;
+}
+.container-body .box-noidung .sidebar .side-con p {
+    width: 70%;
+    float: right;
+    padding-top: 10px;
+}
+
+/* PHẦN THÔNG TIN KHÁCH HÀNG */
+.container-body .box-noidung .drop-down-info {
+    width: 1200px;
+    margin: 0 auto;
+    background: #f5f5f5;
+    height: 50px;
+    display: none;
+}
+/* 3 button của drop-down */
+.container-body .box-noidung .drop-down-info .drop-down-info-sidebar {
+    height: 50px;
+    display: flex;
+    text-align: center;
+    font-size: 18px;
+    color: black;
+}
+.container-body .box-noidung .drop-down-info .drop-down-info-sidebar .side-item {
+    width: 15%;
+    padding-top: 8px;
+    cursor: pointer;
+}
+.container-body .box-noidung .drop-down-info .drop-down-info-sidebar .personal,
+.container-body .box-noidung .drop-down-info .drop-down-info-sidebar .address,
+.container-body .box-noidung .drop-down-info .drop-down-info-sidebar .psw {
+    background: teal;
+}
+/* tổng phần drop-down của user-info */
+.container-body .box-noidung .drop-down-info .drop-down-personal {
+    height: 580px;
+    /* display: none; */
+}
+.container-body .box-noidung .drop-down-info .drop-down-personal .left-info {
+    width: 70%;
+    float: left;
+    background: white;
+}
+/* phần info user hiện ra bên trái */
+.container-body .box-noidung .drop-down-info .drop-down-personal .left-info .seen-part {
+    height: 580px;
+    /* display: none; */
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .seen-part
+    .seen-text,
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .seen-part
+    .seen-text
+    ul {
+    height: 480px;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .seen-part
+    .seen-text
+    .text {
+    font-size: 17px;
+    color: black;
+    height: 60px;
+    padding-top: 30px;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .seen-part
+    .seen-text
+    .text
+    .p_left {
+    text-align: right;
+    width: 40%;
+    float: left;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .seen-part
+    .seen-text
+    .text
+    .p_right {
+    width: 55%;
+    float: right;
+    padding-left: 5%;
+}
+/* phần đổi anh bên phải */
+.container-body .box-noidung .drop-down-info .drop-down-personal .right-img {
+    width: 30%;
+    float: right;
+    background: white;
+    height: 580px;
+    text-align: center;
+    font-size: 15px;
+    color: black;
+    display: block;
+}
+.container-body .box-noidung .drop-down-info .drop-down-personal .right-img .img-box {
+    height: 150px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+.container-body .box-noidung .drop-down-info .drop-down-personal .right-img .img-box img {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+}
+.container-body .box-noidung .drop-down-info .drop-down-personal .right-img .pick-image {
+    margin-top: 25px;
+    height: 50px;
+    width: 100%;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .right-img
+    .pick-image
+    .btn-img {
+    width: 100px;
+    height: 40px;
+    color: black;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    background: #45d58f;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.container-body .box-noidung .drop-down-info .drop-down-personal .right-img .note {
+    height: 50px;
+    font-size: 14px;
+}
+/* phần form thông tin dùng để điền chỉ hiện ra khi cập nhật thông tin người dùng */
+.container-body .box-noidung .drop-down-info .drop-down-personal .left-info .btn-hide-part {
+    height: 580px;
+    background: white;
+    display: none;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text,
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    ul {
+    height: 480px;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    ul
+    .text {
+    font-size: 17px;
+    color: black;
+    height: 70px;
+    padding-top: 30px;
+    overflow-y: hidden;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_left {
+    text-align: right;
+    width: 30%;
+    float: left;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_right {
+    width: 68%;
+    float: right;
+    padding-left: 2%;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    .text
+    .list-sex {
+    display: flex;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_right
+    .sex-item {
+    width: 15%;
+    justify-content: stretch;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_right
+    .sex-item
+    .check-sex {
+    width: 15%;
+    float: left;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_right
+    .sex-item
+    .sex-user-info {
+    width: 85%;
+    float: right;
+    padding-left: 5px;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    .text
+    .list-birth {
+    display: flex;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_right
+    .form-control {
+    width: 20%;
+    justify-content: stretch;
+    display: block;
+}
+/* phần hiện ra thông tin của address */
+.container-body .box-noidung .drop-down-info .drop-down-address {
+    height: 580px;
+    display: none;
+}
+.container-body .box-noidung .drop-down-info .drop-down-address .seen-part {
+    height: 580px;
+    width: 100%;
+    display: none;
+    background: white;
+}
+.container-body .box-noidung .drop-down-info .drop-down-address .seen-part .seen-text,
+.container-body .box-noidung .drop-down-info .drop-down-address .seen-part .seen-text ul {
+    height: 480px;
+}
+.container-body .box-noidung .drop-down-info .drop-down-address .seen-part .seen-text .text {
+    font-size: 17px;
+    color: black;
+    height: 60px;
+    padding-top: 30px;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-address
+    .seen-part
+    .seen-text
+    .text_first {
+    height: 150px;
+    padding-top: 110px;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-address
+    .seen-part
+    .seen-text
+    .text
+    .p_left {
+    text-align: right;
+    width: 43%;
+    float: left;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-address
+    .seen-part
+    .seen-text
+    .text
+    .p_right {
+    width: 55%;
+    float: right;
+    padding-left: 2%;
+}
+/* phần thay đổi khi nhấn vào button */
+.container-body .box-noidung .drop-down-info .drop-down-address .btn-hide-part {
+    height: 580px;
+    background: white;
+    display: none;
+}
+.container-body .box-noidung .drop-down-info .drop-down-address .btn-hide-part .hide-text {
+    height: 480px;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-address
+    .btn-hide-part
+    .hide-text
+    .text {
+    font-size: 17px;
+    color: black;
+    height: 270px;
+    overflow-y: hidden;
+    padding-top: 230px;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-address
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_left {
+    text-align: right;
+    width: 35%;
+    float: left;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-address
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_right {
+    width: 63%;
+    float: right;
+    padding-left: 2%;
+}
+.container-body .box-noidung .drop-down-info .drop-down-psw {
+    height: 580px;
+    background: white;
+    display: none;
+}
+.container-body .box-noidung .drop-down-info .drop-down-psw .seen-text {
+    height: 480px;
+}
+.container-body .box-noidung .drop-down-info .drop-down-psw .seen-text .text {
+    font-size: 17px;
+    color: black;
+    height: 70px;
+    overflow-y: hidden;
+    padding-top: 30px;
+}
+.container-body .box-noidung .drop-down-info .drop-down-psw .seen-text .text_first {
+    height: 150px;
+    padding-top: 110px;
+}
+.container-body .box-noidung .drop-down-info .drop-down-psw .seen-text .text .p_left {
+    text-align: right;
+    width: 38%;
+    float: left;
+}
+.container-body .box-noidung .drop-down-info .drop-down-psw .seen-text .text .p_right {
+    width: 60%;
+    float: right;
+    padding-left: 2%;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_right
+    .write,
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-address
+    .btn-hide-part
+    .hide-text
+    .text
+    .p_right
+    .write,
+.container-body .box-noidung .drop-down-info .drop-down-psw .seen-text .text .p_right .write {
+    padding-left: 5px;
+    height: 30px;
+    width: 300px;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .seen-part
+    .seen-btn,
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-btn,
+.container-body .box-noidung .drop-down-info .drop-down-address .seen-part .seen-btn,
+.container-body .box-noidung .drop-down-info .drop-down-address .btn-hide-part .hide-btn,
+.container-body .box-noidung .drop-down-info .drop-down-psw .seen-btn {
+    height: 100px;
+    text-align: center;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .seen-part
+    .seen-btn
+    .btn,
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-btn
+    .btn,
+.container-body .box-noidung .drop-down-info .drop-down-address .seen-part .seen-btn .btn,
+.container-body .box-noidung .drop-down-info .drop-down-address .btn-hide-part .hide-btn .btn,
+.container-body .box-noidung .drop-down-info .drop-down-psw .seen-btn .btn {
+    padding-top: 35px;
+    width: 200px;
+    height: 50px;
+    margin: 0 auto;
+}
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .seen-part
+    .seen-btn
+    .btn
+    a,
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .left-info
+    .btn-hide-part
+    .hide-btn
+    .btn
+    a,
+.container-body .box-noidung .drop-down-info .drop-down-address .seen-part .seen-btn .btn a,
+.container-body .box-noidung .drop-down-info .drop-down-address .btn-hide-part .hide-btn .btn a,
+.container-body .box-noidung .drop-down-info .drop-down-psw .seen-btn .btn a {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    background: #45d58f;
+    cursor: pointer;
+    font-size: 15px;
+    color: white;
+}
+/* PHẦN THÔNG TIN ĐƠN HÀNG */
+.container-body .box-noidung .drop-down-order {
+    width: 1100px;
+    margin: 0 auto;
+    /* display: none; */
+}
+/* 6 button cảu đơn hàng */
+.container-body .box-noidung .drop-down-order {
+    height: 30px;
+    /* display: none; */
+}
+.container-body .box-noidung .drop-down-order .drop-down-order-sidebar {
+    height: 50px;
+    display: flex;
+    text-align: center;
+    color: black;
+}
+.container-body .box-noidung .drop-down-order .drop-down-order-sidebar p {
+    padding-top: 15px;
+}
+.container-body .box-noidung .drop-down-order .drop-down-order-sidebar .side-item {
+    width: calc(1100px / 6);
+}
+.container-body .box-noidung .drop-down-order .drop-down-order-sidebar .item-glow {
+    background: teal;
+    cursor: pointer;
+}
+.container-body .box-noidung .drop-down-order .drop-down-info-order {
+    height: 600px;
+}
+.container-body .box-noidung .drop-down-order .drop-down-info-order .drop-down-tat-ca {
+    /* display: none; */
+    width: 1100px;
+    margin: 0 auto;
+    height: 580px;
+    overflow-y: scroll;
+    background: white;
+}
+.container-body .box-noidung .drop-down-order .drop-down-info-order .drop-down-tat-ca .item {
+    width: 1000px;
+    background: white;
+    margin: 0 auto;
+    margin-top: 10px;
+    border: 1px solid black;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .top {
+    height: 50px;
+    width: 100%;
+    background: #45d58f;
+    border-bottom: 1px solid black;
+    margin-bottom: 20px;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .top
+    .left {
+    height: 50px;
+    width: 80%;
+    float: left;
+    text-align: right;
+    font-size: 15px;
+    padding-top: 10px;
+    color: black;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .top
+    .right {
+    height: 50px;
+    width: 20%;
+    float: right;
+    font-size: 15px;
+    padding-top: 10px;
+    padding-left: 10px;
+    color: white;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid {
+    width: 100%;
+    background: white;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order {
+    height: 125px;
+    width: 100%;
+    background: white;
+    display: flex;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .img {
+    height: 100%;
+    width: 20%;
+    background: white;
+    margin-left: 5%;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .img
+    img {
+    height: 124px;
+    width: 180px;
+    border: 1px solid black;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .name-sp {
+    height: 100%;
+    width: 30%;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .name-sp
+    .name {
+    width: 100%;
+    height: 65px;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .name-sp
+    .name
+    p {
+    padding-left: 10px;
+    font-size: 18px;
+    padding-top: 35px;
+    color: black;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .name-sp
+    .sl {
+    width: 100%;
+    height: 25px;
+    padding-left: 10px;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .price {
+    height: 100%;
+    width: 45%;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .price
+    .first-price {
+    width: 70%;
+    float: left;
+    text-decoration: line-through;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .price
+    .last-price {
+    width: 30%;
+    float: right;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .price
+    p {
+    font-size: 15px;
+    text-align: right;
+    padding-right: 10px;
+    padding-top: 50px;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .mid
+    .item-order
+    .price
+    .last-price
+    p {
+    color: #ee4d2d;
+    text-align: left;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot {
+    height: 125px;
+    width: 100%;
+    background: white;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .total-price {
+    width: 100%;
+    height: 50%;
+    font-size: 20px;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .total-price
+    p {
+    padding-top: 18px;
+    color: black;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .total-price
+    .total-price-left {
+    width: 85%;
+    float: left;
+    text-align: right;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .total-price
+    .total-price-right {
+    width: 15%;
+    float: right;
+    text-align: center;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .total-price
+    .total-price-right
+    p {
+    color: #ee4d2d;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .btn-ship {
+    width: 100%;
+    height: 50%;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .btn-ship
+    .ship {
+    width: 60%;
+    float: left;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .btn-ship
+    .ship
+    .ship-text {
+    width: 65%;
+    float: left;
+    text-align: right;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .btn-ship
+    .ship
+    .ship-date {
+    width: 35%;
+    float: right;
+    padding-left: 5px;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .btn-ship
+    .button {
+    width: 40%;
+    float: right;
+    text-align: center;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .btn-ship
+    .button
+    .btn {
+    width: 150px;
+    height: 50px;
+    background: #45d58f;
+    border-radius: 5px;
+    border: 1px solid black;
+    margin-left: 55%;
+}
+.container-body
+    .box-noidung
+    .drop-down-order
+    .drop-down-info-order
+    .drop-down-tat-ca
+    .item
+    .bot
+    .btn-ship
+    .button
+    .btn
+    .button-again
+    p {
+    padding-top: 12px;
+    font-size: 15px;
+    color: black;
+}
+.button:hover,
+.btn:hover {
+    opacity: 0.9;
+}
+.container-body .box-noidung .drop-down-order .drop-down-order-sidebar .item-glow,
+.container-body
+    .box-noidung
+    .drop-down-info
+    .drop-down-personal
+    .right-img
+    .pick-image
+    .btn-img,
+.container-body .box-noidung .drop-down-info .drop-down-info-sidebar .side-item,
+.container-body .box-noidung .sidebar .side-con {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: box-shadow, transform;
+    transition-property: box-shadow, transform;
+}
+.item-glow:hover,
+.item-glow:focus,
+.item-glow:active,
+.btn-img:hover,
+.btn-img:focus,
+.btn-img:active,
+.side-item:hover,
+.side-item:focus,
+.side-item:active,
+.side-con:hover,
+.side-con:focus,
+.side-con:active {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+.side-con:hover,
+.side-con:focus,
+.side-con:active {
+    color: teal;
+}

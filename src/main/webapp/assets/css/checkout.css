@@ -1,0 +1,481 @@
+.content {
+    margin-top: 6.4rem;
+    padding-top: 4rem;
+}
+
+.content-title {
+    margin-bottom: 3rem;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-grey);
+}
+
+.content-checkout {
+    padding: 3rem 0 9rem;
+    background-color: rgb(245, 245, 245);
+}
+
+.section-control {
+    font-size: 1.6rem;
+    padding: 2rem 3rem;
+    margin-bottom: 2rem;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 1rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.comfirm-address {
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s;
+}
+
+.comfirm-address::before {
+    content: '';
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 3px;
+    background-position-x: -30px;
+    background-size: 116px 3px;
+    background-image: repeating-linear-gradient(
+        45deg,
+        #6fa6d6,
+        #6fa6d6 33px,
+        transparent 0,
+        transparent 41px,
+        #f18d9b 0,
+        #f18d9b 74px,
+        transparent 0,
+        transparent 82px
+    );
+}
+
+.address-title {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.address-user {
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transform: translateY(0) rotateX(0);
+    transition: all 0.2s;
+}
+
+.address-user-content {
+    color: var(--text-black-2);
+    flex: 0 0 70%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.address-user .user-name,
+.address-user .user-phone {
+    margin-right: 1.5rem;
+}
+
+.address-user .user-address {
+    color: var(--text-black-2);
+}
+
+.change-address {
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.list-product-title {
+    color: var(--text-grey);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.list-product-title .box-name {
+    width: 55%;
+}
+
+.list-product-title .box-price {
+    width: 15%;
+    text-align: center;
+}
+
+.list-product-title .box-quantity {
+    width: 10%;
+    text-align: center;
+}
+
+.list-product-title .box-final-price {
+    width: 20%;
+    text-align: right;
+}
+
+/* css for product checkout */
+.list-product-checkout {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-checkout {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.product-checkout > :not(.product-checkout-name) {
+    align-self: center;
+}
+
+.product-checkout > * {
+    color: var(--text-black-2);
+    font-size: 1.5rem;
+}
+
+.product-checkout-img {
+    width: 4.5rem;
+}
+
+.product-checkout-name {
+    flex: 1;
+    padding: 0 1.5rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+}
+
+.product-checkout-name > p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-checkout-type {
+    width: 15%;
+    padding: 0 1.5rem;
+    color: var(--text-grey);
+}
+
+.product-checkout-price {
+    width: 15%;
+    text-align: center;
+}
+
+.product-checkout-quantity {
+    width: 10%;
+    text-align: center;
+}
+
+.product-checkout-final-price {
+    width: 20%;
+    text-align: right;
+}
+
+/* css for total checkout */
+.section-control.total-checkout {
+    border-radius: 4px 4px 0 0;
+    border-bottom: 2px dashed #ebebeb;
+    box-shadow: none;
+    margin-bottom: 0;
+    color: var(--text-black-2);
+    display: flex;
+    flex-direction: column;
+}
+
+.total-checkout > * {
+    margin-left: 65%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-checkout > *:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+/* css for final checkout */
+.section-control.checkout {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accept-policy {
+    font-size: 1.4rem;
+    color: var(--text-grey);
+}
+
+.accept-policy .policy {
+    color: var(--primary-color);
+}
+
+.checkout > form {
+    width: 40%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.checkout > form > button[type='submit'] {
+    width: 50%;
+    height: 5rem;
+    font-size: 1.6rem;
+}
+
+.box-change-address {
+    display: flex;
+    flex-direction: column;
+    height: 0;
+    opacity: 0;
+    visibility: hidden;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    transform-origin: bottom;
+    transform: translateY(30%) rotateX(-90deg);
+    transition: all 0.1s;
+    background-color: #fff;
+}
+
+.address-action {
+    margin: -4rem 0 0 auto;
+    width: 32%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.address-action > * {
+    padding: 0.5rem 2rem;
+    color: var(--text-black);
+    background-color: #fff;
+    border: 1px solid var(--grey-color);
+}
+
+.address-action > *:hover {
+    background-color: #fff;
+}
+
+.list-address {
+    display: flex;
+    flex-direction: column;
+}
+
+.address-item {
+    margin: 1.5rem 0 0 6rem;
+    position: relative;
+}
+
+.user__check-address {
+    display: none;
+}
+
+.user__check-address + label,
+.user__check-address + label::before,
+.user__check-address + label::after {
+    transition: all 0.1s;
+}
+
+.user__check-address:checked + label {
+    background-color: var(--primary-color-rgba);
+    border: 2px solid var(--primary-color);
+}
+
+.user__check-address:checked + label::before {
+    background-color: #daf7e9;
+    border: 2px solid var(--primary-color);
+}
+.user__check-address:checked + label::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+.user__check-address + label {
+    color: var(--text-black);
+    display: block;
+    padding: 1rem 5rem;
+    border: 2px solid var(--grey-color);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+}
+
+.user__check-address + label::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+    width: 4rem;
+    height: 4rem;
+    background-color: #fff;
+    border: 2px solid var(--grey-color);
+    border-radius: 50%;
+}
+
+.user__check-address + label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.action__check-address {
+    margin: 2rem 0 0 10rem;
+}
+
+.back-to-previous-address {
+    margin-left: 2rem;
+    color: var(--text-black);
+    background-color: #fff;
+    border: 1px solid var(--grey-color);
+}
+
+.back-to-previous-address:hover {
+    background-color: #fff;
+}
+
+/* css class for hide address choosing */
+.comfirm-address.show-choosing-address > .address-user {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%) rotateX(-90deg);
+}
+
+.comfirm-address.show-choosing-address > .box-change-address {
+    height: auto;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+}
+
+/* css for popup add new address */
+.popup-add-address {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+    z-index: 990;
+    transition: all 0.2s;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.popup-add-address.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-title {
+    font-size: 1.8rem;
+}
+
+.box-add-address {
+    padding: 3rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateX(90deg);
+    width: 50rem;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: rgba(255, 255, 255, 0.3) 0px 7px 29px 0px;
+    transition: all 0.2s;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.box-add-address.open {
+    transform: translate(-50%, -50%) rotateX(0);
+}
+
+.box-add-address form {
+    display: flex;
+    flex-direction: column;
+}
+
+.box-add-address .form-control {
+    margin-top: 1.8rem;
+    position: relative;
+}
+
+.form-control select.form-user-input {
+    appearance: none;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.form-control .form-user-input + label {
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    transform: translateY(-50%);
+    color: var(--text-grey);
+    background-color: #fff;
+    padding: 0 0.5rem;
+}
+
+.form-control .form-user-input {
+    width: 100%;
+    height: 4rem;
+    padding: 1rem 2rem;
+    border: 1px solid rgb(212, 212, 212);
+    border-radius: 4px;
+    outline: none;
+}
+
+.form-control > i {
+    position: absolute;
+    top: 50%;
+    right: 1.5rem;
+    transform: translateY(-50%);
+    color: var(--text-grey);
+}
+
+.form-control .form-user-input:focus {
+    box-shadow: 0 1px 1rem rgba(0, 0, 0, 0.1);
+}
+
+.form-action-btn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-action-btn > * {
+    width: 25%;
+    padding: 0.5rem 2rem;
+}
+
+.form-action-btn > span {
+    cursor: pointer;
+    margin-right: 1.5rem;
+    text-align: center;
+    border: 1px solid var(--grey-color);
+    background-color: #fff;
+    color: var(--text-black);
+}
+.form-action-btn > span:hover {
+    background-color: #fff;
+}
+
+.form .footer {
+    margin-top: 0;
+}
+
+.footer {
+    margin-top: 0;
+}
