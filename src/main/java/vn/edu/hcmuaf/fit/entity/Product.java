@@ -19,7 +19,7 @@ public class Product implements Serializable {
 
     public Product() {
     }
-    
+
     public Product(Long id, String name, String size, String description, Trademark trademark, Category category,
                    Date dateCreated, Date lastUpdated, boolean active, Set<ProductDetail> products) {
         this.id = id;
@@ -49,15 +49,15 @@ public class Product implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getSize() {
         return size;
     }
-    
+
     public void setSize(String size) {
         this.size = size;
     }
-    
+
     public String getDescription() {
         return description;
     }
@@ -105,16 +105,16 @@ public class Product implements Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
+
     public Set<ProductDetail> getProducts() {
         return products;
     }
-    
+
     public void setProducts(Set<ProductDetail> products) {
         this.products = products;
     }
 
-    public void addProduct(ProductDetail productDetail) {
+    public void addProductDetail(ProductDetail productDetail) {
         if (products == null) products = new HashSet<>();
         products.add(productDetail);
         productDetail.setProduct(this);
