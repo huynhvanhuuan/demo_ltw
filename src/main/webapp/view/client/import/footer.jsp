@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<% String path = request.getContextPath(); %>
 <footer class="footer">
     <div class="container">
         <div class="box">
@@ -7,7 +6,8 @@
                 <div class="info">
                     <div class="info-item">
                         <div class="logo">
-                            <img class="logo-img" src="../../../assets/images/logo.jpg" alt="footer-logo"/>
+                            <img class="logo-img" src="${pageContext.request.contextPath}/assets/images/logo.jpg"
+                                 alt="footer-logo"/>
                         </div>
                     </div>
                     <div class="info-item">
@@ -84,7 +84,8 @@
                     </div>
                     <div class="info-item footer-signup">
                         <form action="#" method="post">
-                            <input class="input pos-abs" type="email" name="email" id="email" placeholder="Hãy nhập vào email"/>
+                            <input class="input pos-abs" type="email" name="email" id="email"
+                                   placeholder="Hãy nhập vào email"/>
                             <a href="#" class="btn-signup pos-abs">
                                 <i class="fas fa-location-arrow"></i>
                             </a>

@@ -1,6 +1,4 @@
-package vn.edu.hcmuaf.fit.controller.client;
-
-import com.google.gson.Gson;
+package vn.edu.hcmuaf.fit.controller.admin;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,13 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.StringTokenizer;
 
-@WebServlet(name = "CategoryController", value = "/category")
+@WebServlet(name = "admin-category", value = "/admin/category")
 public class CategoryController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
@@ -65,7 +62,7 @@ public class CategoryController extends HttpServlet {
         request.setAttribute("title", "QUẢN LÝ THỂ LOẠI");
         request.getRequestDispatcher("/view/admin/category.jsp").forward(request, response);
     }
-    
+
     private void get(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         response.setContentType("application/json");
         String sku = request.getParameter("sku");
@@ -97,12 +94,12 @@ public class CategoryController extends HttpServlet {
         PrintWriter pw = response.getWriter();
         pw.close();
     }
-    
+
     private void changeActive(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException, ServletException {
         String sku = request.getParameter("sku");
         response.sendRedirect(request.getContextPath() + "/admin/category");
     }
-    
+
     private void checkExist(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         response.setContentType("application/json");
         String sku = request.getParameter("sku");
@@ -110,7 +107,7 @@ public class CategoryController extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.close();
     }
-    
+
     private void getListSkuHasProduct(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();

@@ -1,4 +1,4 @@
-package vn.edu.hcmuaf.fit.controller.client;
+package vn.edu.hcmuaf.fit.controller.admin;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "client-user", value = "/user/dashboard")
-public class UserController extends HttpServlet {
+@WebServlet(name = "admin-warehouse", value = "/admin/warehouse")
+public class WarehouseController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/views/client/user/dashboard.jsp").forward(request, response);
+
     }
 
     @Override

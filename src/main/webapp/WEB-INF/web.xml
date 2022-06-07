@@ -3,6 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <welcome-file-list>
+        <welcome-file>view/index.jsp</welcome-file>
+    </welcome-file-list>
 
     <error-page>
         <error-code>404</error-code>
@@ -18,7 +21,7 @@
     </listener>
 
     <!-- Filter -->
-    <filter>
+    <!--<filter>
         <filter-name>CORSFilter</filter-name>
         <filter-class>vn.edu.hcmuaf.fit.filter.CORSFilter</filter-class>
     </filter>
@@ -26,7 +29,7 @@
     <filter-mapping>
         <filter-name>CORSFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
 
     <!-- Database configuration -->
     <context-param>

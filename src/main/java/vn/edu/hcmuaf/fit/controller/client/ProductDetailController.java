@@ -7,12 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "TrademarkController", value = "/admin/trademark")
-public class TrademarkController extends HttpServlet {
-
+@WebServlet(name = "client-product-detail", value = "/product-detail")
+public class ProductDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("title", "QUẢN LÝ THƯƠNG HIỆU");
-        request.getRequestDispatcher("/view/admin/trademark.jsp").forward(request, response);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 }

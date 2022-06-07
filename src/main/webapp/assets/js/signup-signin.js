@@ -1,14 +1,14 @@
-const btnSignin = document.querySelector('.sign-in')
-const btnSignup = document.querySelector('.sign-up')
-const boxPopup = document.querySelector('.box-signup-signin')
-const formPopup = document.querySelector('.signup-signin')
-const btnClose = document.querySelector('.popup-close')
-const boxSignIn = document.querySelector('.signin')
-const boxSignUp = document.querySelector('.signup')
-const swipeSignIn = document.querySelector('.swipe-to-signin')
-const swipeSignUp = document.querySelector('.swipe-to-signup')
+let btnSignin = document.querySelector('#btnSignin')
+let btnSignup = document.querySelector('#btnSignup')
+let boxPopup = document.querySelector('.box-signup-signin')
+let formPopup = document.querySelector('.signup-signin')
+let btnClose = document.querySelector('.popup-close')
+let boxSignIn = document.querySelector('.signin')
+let boxSignUp = document.querySelector('.signup')
+let swipeSignIn = document.querySelector('.swipe-to-signin')
+let swipeSignUp = document.querySelector('.swipe-to-signup')
 
-btnSignin.onclick = () => {
+btnSignin.onclick = function () {
     boxSignUp.style.marginRight = '90rem'
     boxSignIn.style.marginLeft = '0rem'
     boxPopup.style.opacity = 1
@@ -16,22 +16,22 @@ btnSignin.onclick = () => {
     formPopup.classList.toggle('show-popup')
 }
 
-btnSignup.onclick = () => {
+btnSignup.onclick = function () {
     btnSignin.click()
     boxSignIn.style.marginLeft = '-90rem'
 }
 
-btnClose.onclick = () => {
+btnClose.onclick = function () {
     boxPopup.style.opacity = 0
     boxPopup.style.visibility = 'hidden'
     formPopup.classList.toggle('show-popup')
 }
 
-swipeSignUp.onclick = () => {
+swipeSignUp.onclick = function () {
     boxSignIn.style.marginLeft = '-90rem'
 }
 
-swipeSignIn.onclick = () => {
+swipeSignIn.onclick = function () {
     boxSignUp.style.marginRight = '90rem'
     boxSignIn.style.marginLeft = '0rem'
 }

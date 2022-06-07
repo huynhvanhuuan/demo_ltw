@@ -1,8 +1,5 @@
 package vn.edu.hcmuaf.fit.controller.client;
 
-import com.google.gson.Gson;
-import vn.edu.hcmuaf.fit.constant.PATH;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,17 +11,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.List;
 
-@WebServlet(name = "home", value = "/")
+@WebServlet(name = "client-home", value = "/home")
 public class HomeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
+        response.setContentType("text/html");
+        response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
         request.getRequestDispatcher("/view/client/home.jsp").forward(request, response);
     }
 
@@ -87,7 +88,7 @@ public class HomeController extends HttpServlet {
     }
 
     private void getFAQPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/view/faqs.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/faq.jsp").forward(request, response);
     }
 
     private void getListProductData(HttpServletRequest request, HttpServletResponse response, int countProduct) throws SQLException, ParseException {

@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "client-user", value = "/user/dashboard")
-public class UserController extends HttpServlet {
+@WebServlet(name = "client-cart", value = "/cart")
+public class CartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/views/client/user/dashboard.jsp").forward(request, response);
+
     }
 
     @Override

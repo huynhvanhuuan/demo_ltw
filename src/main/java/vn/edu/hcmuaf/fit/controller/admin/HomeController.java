@@ -13,47 +13,25 @@ import java.util.Map;
 
 @WebServlet(name = "admin-home", value = "/admin/dashboard")
 public class HomeController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    
-    @Override
-    public void init() throws ServletException {
-    }
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        request.getRequestDispatcher("/view/admin/dashboard.jsp").forward(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        try {
-            if (action == null) {
-                getDashboard(request, response);
-            } else switch (action) {
-                case "signin":
-                    signin(request, response);
-                    break;
-                case "signout":
-                    signout(request, response);
-                    break;
-                default:
-                    getDashboard(request, response);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        request.getRequestDispatcher("/view/admin/dashboard.jsp").forward(request, response);
     }
-    
+
     private void getDashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 //        request.setAttribute("register", userService.getList().size());
 //        HttpSession session = request.getSession();
 //        if (session.isNew() || session.getAttribute("user") == null) {
 //            getSigninPage(request, response);
 //        } else {
-            //User user = (User) request.getSession().getAttribute("user");
-            request.setAttribute("title", "Chào mừng trở lại, " + "Huỳnh Văn Hữu Ân");
-            request.getRequestDispatcher("/view/admin/home.jsp").forward(request, response);
+        //User user = (User) request.getSession().getAttribute("user");
+        request.setAttribute("title", "Chào mừng trở lại, " + "Huỳnh Văn Hữu Ân");
+        request.getRequestDispatcher("/view/admin/home.jsp").forward(request, response);
 //        }
     }
 

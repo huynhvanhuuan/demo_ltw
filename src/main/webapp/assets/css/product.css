@@ -169,7 +169,6 @@
 }
 
 .filter-text-size {
-    display: inline-block;
     cursor: pointer;
     padding: 0.5rem 1rem;
     border: 1px solid var(--text-grey);
@@ -189,7 +188,6 @@
 }
 
 .filter-group.order-price {
-    border: none;
     padding: 0;
     height: 100%;
     border: 1px solid var(--grey-color);
@@ -229,7 +227,7 @@
     z-index: 4;
 }
 
-.filter-select-tilte {
+.filter-select-title {
     font-size: 1.4rem;
     font-weight: 500;
     text-transform: uppercase;

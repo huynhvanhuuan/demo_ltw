@@ -1,7 +1,5 @@
 package vn.edu.hcmuaf.fit.controller.client;
 
-import vn.edu.hcmuaf.fit.constant.PATH;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +21,7 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher(PATH.CLIENT_PRODUCT).forward(request, response);
+        request.getRequestDispatcher("/view/client/product.jsp").forward(request, response);
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) {
@@ -36,7 +34,7 @@ public class ProductController extends HttpServlet {
         // Write file
         //part.write(path);
     }
-    
+
     public File getFolderUpload() {
         File folderUpload = new File(System.getProperty("user.home") + "/Furniture Selling/images/product");
         if (!folderUpload.exists()) {

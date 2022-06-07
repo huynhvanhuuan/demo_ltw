@@ -120,6 +120,7 @@
     display: flex;
     flex-direction: column;
 }
+
 .signup .right {
     flex: 1;
     background-image: url(../images/login.png);
@@ -143,7 +144,7 @@
     margin-bottom: 1rem;
 }
 
-.form-label {
+.form-label-fluid {
     font-size: 1.5rem;
     color: var(--text-grey);
     position: absolute;
@@ -168,7 +169,7 @@
     transition: all 0.05s;
 }
 
-.form-input:not(:placeholder-shown) + .form-label {
+.form-input:not(:placeholder-shown) + .form-label-fluid {
     top: 0;
     left: 1rem;
     font-size: 1.2rem;
@@ -188,14 +189,14 @@
     box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05);
 }
 
-.form-input:focus + .form-label {
+.form-input:focus + .form-label-fluid {
     top: 0;
     left: 1rem;
     font-size: 1.2rem;
     color: var(--fourth-color);
 }
 
-.form-input.focus + .form-label {
+.form-input.focus + .form-label-fluid {
     top: 0;
     left: 1rem;
     font-size: 1.2rem;
@@ -280,6 +281,7 @@
     height: 1px;
     background-color: var(--text-grey);
 }
+
 .other-way-signin {
     margin-top: 0.5rem;
     display: flex;

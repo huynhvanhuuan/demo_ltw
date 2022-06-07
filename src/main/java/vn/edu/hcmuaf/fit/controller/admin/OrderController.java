@@ -1,4 +1,4 @@
-package vn.edu.hcmuaf.fit.controller.client;
+package vn.edu.hcmuaf.fit.controller.admin;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "client-order", value = "/user/order")
+@WebServlet(name = "admin-order", value = "/admin/order")
 public class OrderController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 

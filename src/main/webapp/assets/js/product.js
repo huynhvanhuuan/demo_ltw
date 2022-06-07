@@ -1,6 +1,6 @@
 const filterSelectTitle = document.querySelector('.filter-select-tilte')
 const selectSort = document.querySelector('.filter-select')
-const optionsFilter = document.querySelectorAll('.filter-select > option')
+/*const optionsFilter = document.querySelectorAll('.filter-select > option')*/
 
 // optionsFilter.forEach(option => {
 //     option.onclick = () => {
