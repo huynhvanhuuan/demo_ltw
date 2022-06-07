@@ -1,6 +1,8 @@
 package vn.edu.hcmuaf.fit.controller.admin;
 
+import vn.edu.hcmuaf.fit.dto.category.CategoryDto;
 import vn.edu.hcmuaf.fit.service.CategoryService;
+import vn.edu.hcmuaf.fit.service.impl.CategoryServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +18,7 @@ public class CategoryController extends HttpServlet {
 	
 	@Override
 	public void init() throws ServletException {
-		categoryService = new CategoryService();
+		categoryService = new CategoryServiceImpl();
 	}
 	
 	@Override
@@ -25,8 +27,15 @@ public class CategoryController extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("title", "CATEGORY MANAGEMENT");
-		request.getRequestDispatcher("/view/admin/category.jsp").forward(request, response);
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		for (CategoryDto categoryDto : categoryService.getCategories().getData()) {
+			PrintWriter out = response.getWriter();
+			out.println(categoryDto.getName());
+		}
+		response.getWriter().close();
+		/*request.setAttribute("title", "CATEGORY MANAGEMENT");
+		request.getRequestDispatcher("/view/admin/category.jsp").forward(request, response);*/
 	}
 	
 	private void getMainPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {

@@ -1,13 +1,15 @@
 package vn.edu.hcmuaf.fit.infrastructure;
 
 import vn.edu.hcmuaf.fit.database.DbConnection;
-import vn.edu.hcmuaf.fit.service.BaseService;
+import vn.edu.hcmuaf.fit.database.IConnectionPool;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.*;
 
 public class DbManager implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener {
+	public static IConnectionPool connectionPool = null;
+	
 	public DbManager() {
 	}
 	
@@ -17,13 +19,13 @@ public class DbManager implements ServletContextListener, HttpSessionListener, H
 		String uid = sce.getServletContext().getInitParameter("uid");
 		String pwd = sce.getServletContext().getInitParameter("pwd");
 		String database = sce.getServletContext().getInitParameter("database");
-		BaseService.connectionPool = DbConnection.init(uid, pwd, database);
+		connectionPool = DbConnection.init(uid, pwd, database);
 	}
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		/* This method is called when the servlet Context is undeployed or Application Server shuts down. */
-		if (BaseService.connectionPool != null) BaseService.connectionPool = null;
+		if (connectionPool != null) connectionPool = null;
 	}
 	
 	@Override
