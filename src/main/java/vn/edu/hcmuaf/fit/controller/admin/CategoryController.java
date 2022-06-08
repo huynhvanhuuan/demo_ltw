@@ -1,5 +1,8 @@
 package vn.edu.hcmuaf.fit.controller.admin;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.category.CategoryDto;
 import vn.edu.hcmuaf.fit.service.CategoryService;
 import vn.edu.hcmuaf.fit.service.impl.CategoryServiceImpl;
@@ -10,10 +13,12 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.StringTokenizer;
 
 @WebServlet(name = "admin-category", value = "/admin/category")
 public class CategoryController extends HttpServlet {
+	private static final Gson GSON = new GsonBuilder().create();
 	private CategoryService categoryService;
 	
 	@Override
@@ -27,6 +32,28 @@ public class CategoryController extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		String action = request.getPathInfo();
+		if ("/list".equals(action)) {
+			AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
+			if (result.isSuccess()) {
+				response.setStatus(200);
+				response.getWriter().println(GSON.toJson(result.getData()));
+			} else {
+				response.sendError(result.getErrorCode(), result.getMessage());
+			}
+		} else {
+			long id = Long.parseLong(action.substring(1));
+			
+			AppServiceResult<CategoryDto> result = categoryService.getCategory(id);
+			if (result.isSuccess()) {
+				response.setStatus(200);
+				response.getWriter().write(GSON.toJson(result.getData()));
+			} else {
+				response.sendError(result.getErrorCode(), result.getMessage());
+			}
+		}
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		for (CategoryDto categoryDto : categoryService.getCategories().getData()) {
@@ -34,8 +61,8 @@ public class CategoryController extends HttpServlet {
 			out.println(categoryDto.getName());
 		}
 		response.getWriter().close();
-		/*request.setAttribute("title", "CATEGORY MANAGEMENT");
-		request.getRequestDispatcher("/view/admin/category.jsp").forward(request, response);*/
+		request.setAttribute("title", "CATEGORY MANAGEMENT");
+		request.getRequestDispatcher("/view/admin/category.jsp").forward(request, response);
 	}
 	
 	private void getMainPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
