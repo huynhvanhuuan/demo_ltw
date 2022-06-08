@@ -11,13 +11,13 @@ import vn.edu.hcmuaf.fit.service.CategoryService;
 import vn.edu.hcmuaf.fit.service.impl.CategoryServiceImpl;
 import vn.edu.hcmuaf.fit.util.StringUtil;
 
-import javax.servlet.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Locale;
 
 @WebServlet(name = "api-category", urlPatterns = "/api/category/*")
 public class CategoryAPI extends HttpServlet {
@@ -44,7 +44,7 @@ public class CategoryAPI extends HttpServlet {
 			}
 		} else {
 			try {
-				Long id = Long.valueOf(pathInfo);
+				Long id = Long.valueOf(pathInfo.substring(1));
 				AppServiceResult<CategoryDto> result = categoryService.getCategory(id);
 				if (result.isSuccess()) {
 					response.setStatus(200);
@@ -76,19 +76,16 @@ public class CategoryAPI extends HttpServlet {
 			response.sendError(result.getErrorCode(), result.getMessage());
 		}
 	}
-	
+
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Content-Type", "application/json");
+		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		try {
-			long id = Long.parseLong(request.getParameter("id"));
-			String name = request.getParameter("name");
-			System.out.println(name);
-			String sku = StringUtil.toStringWithoutSpaces(name).toUpperCase(Locale.ROOT);
-			System.out.println(sku);
-			boolean active = request.getParameter("active").equals("1");
-
-			CategoryUpdate updateCategory = new CategoryUpdate(id, sku, name, active);
+			String json = StringUtil.getStringFromInputStream(request.getInputStream());
+			Type type = new TypeToken<CategoryUpdate>() {}.getType();
+			CategoryUpdate updateCategory = GSON.fromJson(json, type);
 
 			AppBaseResult result = categoryService.updateCategory(updateCategory);
 			if (result.isSuccess()) {

@@ -1,12 +1,12 @@
 package vn.edu.hcmuaf.fit.util;
 
-import java.io.UnsupportedEncodingException;
+import javax.servlet.ServletInputStream;
+import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -198,5 +198,20 @@ public final class StringUtil {
 
     public static String toStringWithoutSpaces(String s) {
         return s.replaceAll("\\s+", "");
+    }
+
+    // get string with utf-8 encoding
+    public static String getStringFromInputStream(ServletInputStream inputStream) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

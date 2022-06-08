@@ -88,7 +88,7 @@
 									</button>
 								</div>
 								<form action="${pageContext.request.contextPath}/api/category"
-								       id="update" novalidate="novalidate">
+								      id="update" novalidate="novalidate">
 									<input type="hidden" name="id">
 									<input type="hidden" name="old_sku"/>
 									<input type="hidden" name="old_name"/>
@@ -177,56 +177,56 @@
                 e.preventDefault();
                 if ($(this).valid()) {
                     $.ajax({
-	                    type: "POST",
-						url: '${pageContext.request.contextPath}/api/category',
-	                    data: $("#create").serialize(),
-						success: function (result) {
-                            console.log(result)
-                            // let response = JSON.parse(result);
-							// if (response.success) {
-							// 	Toast.fire({
-							// 		icon: 'success',
-							// 		title: response.message
-							// 	});
-                            //     // redraw table
-							// 	$('#category').DataTable().ajax.reload();
-							// } else {
-							// 	Toast.fire({
-							// 		icon: 'error',
-							// 		title: response.message
-							// 	})
-							// }
-							$('#create-modal').modal('hide');
-                            $('#category').DataTable().ajax.reload();
-						},
-	                    error: function (result) {
-		                    Toast.fire({
+                        type: "POST",
+                        url: '${pageContext.request.contextPath}/api/category',
+                        data: $("#create").serialize(),
+                        success: function (result) {
+                            let response = JSON.parse(result);
+                            if (response.success) {
+                            	Toast.fire({
+                            		icon: 'success',
+                            		title: response.message
+                            	});
+                                $("#create").trigger("reset");
+                            	$('#category').DataTable().ajax.reload();
+                                $('#create-modal').modal('hide');
+                            } else {
+                            	Toast.fire({
+                            		icon: 'error',
+                            		title: response.message
+                            	})
+                            }
+                        },
+                        error: function (result) {
+                            Toast.fire({
                                 icon: 'error',
                                 title: 'Có lỗi xảy ra'
                             });
                             $('#create-modal').modal('hide');
                         }
-					})
+                    })
                 }
             });
-            
+
             $("#update").submit(function (e) {
                 e.preventDefault();
                 if ($(this).valid()) {
-                    let formData = new FormData();
-                    formData.append('id', $("#update input[name='id']").val());
-                    formData.append('name', $("#update input[name='name']").val());
-                    formData.append('sku', $("#update input[name='sku']").val());
+                    let id = $('#update input[name=id]').val();
+                    let name = $('#update input[name=name]').val();
+                    let sku = $('#update input[name=sku]').val();
+                    let active = $('#update select[name=active]').val();
                     
-                    console.log($("#update input[name='id']").val())
-                    console.log($("#update input[name='name']").val())
-                    console.log($("#update input[name='sku']").val())
+                    
                     $.ajax({
-                        type: "PUT",
                         url: '${pageContext.request.contextPath}/api/category',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
+	                    type: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+							id: id,
+							name: name,
+							sku: sku,
+							active: active
+						}),
                         success: function (result) {
                             console.log(result)
                             // let response = JSON.parse(result);
@@ -256,20 +256,20 @@
                     })
                 }
             });
-            
+
             function getCategory(id) {
                 $.ajax({
-	                type: "GET",
-					url: '${pageContext.request.contextPath}/api/category?id=' + id,
-					success: function (data) {
-						$('#update-modal input[name="id"]').val(data[0].id);
-						$('#update-modal input[name="old_sku"]').val(data[0].sku);
-						$('#update-modal input[name="old_name"]').val(data[0].name);
-						$('#update-modal input[name="sku"]').val(data[0].sku);
-						$('#update-modal input[name="name"]').val(data[0].name);
-						$('#update-modal select[name="active"]').val(data[0].active ? 1 : 0);
-					}
-				})
+                    type: "GET",
+                    url: '${pageContext.request.contextPath}/api/category/' + id,
+                    success: function (data) {
+                        $('#update-modal input[name="id"]').val(data.id);
+                        $('#update-modal input[name="old_sku"]').val(data.sku);
+                        $('#update-modal input[name="old_name"]').val(data.name);
+                        $('#update-modal input[name="sku"]').val(data.sku);
+                        $('#update-modal input[name="name"]').val(data.name);
+                        $('#update-modal select[name="active"]').val(data.active ? 1 : 0);
+                    }
+                })
             }
 
             function deleteCategory() {
@@ -289,7 +289,7 @@
                                 icon: 'success',
                                 title: result.message,
                             })
-	                        $('#category').DataTable().ajax.reload();
+                            $('#category').DataTable().ajax.reload();
                         } else {
                             Toast.fire({
                                 icon: 'error',
@@ -325,21 +325,21 @@
                             "width": "10%",
                             "render": function (data, type, row) {
                                 return '<button onclick="getCategory(' + data + ')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#update-modal">' +
-	                                '<i class="fas fa-pencil-alt"></i>' +
-	                                '</button>';
+                                    '<i class="fas fa-pencil-alt"></i>' +
+                                    '</button>';
                             }
                         }
                     ],
-	                "ajax": {
-		                "url": "${pageContext.request.contextPath}/api/category",
-		                "dataSrc": ""
+                    "ajax": {
+                        "url": "${pageContext.request.contextPath}/api/category",
+                        "dataSrc": ""
                     },
-	                "columns": [
-                        { "data": "id" },
-						{ "data": "sku" },
-						{ "data": "name" },
-                        { "data": "active"},
-						{ "data": "id" }
+                    "columns": [
+                        {"data": "id"},
+                        {"data": "sku"},
+                        {"data": "name"},
+                        {"data": "active"},
+                        {"data": "id"}
                     ],
                     /*"drawCallback": function () {
                         $('.update').on('click', function () {
