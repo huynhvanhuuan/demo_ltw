@@ -44,7 +44,7 @@ public class QUERY {
         public static final String FIND_BY_SKU = "select * from category where sku like ?";
         public static final String FIND_BY_NAME = "select * from category where name like ?";
         public static final String CREATE = "insert into category(sku, name) values(?,?)";
-        public static final String UPDATE = "update category set sku = ?, name = ? where id = ?";
+        public static final String UPDATE = "update category set sku = ?, name = ?, active = ? where id = ?";
         public static final String DELETE = "delete from category where id = ?";
     }
 

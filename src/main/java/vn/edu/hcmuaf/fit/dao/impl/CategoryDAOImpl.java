@@ -69,7 +69,10 @@ public class CategoryDAOImpl implements CategoryDAO {
 			PreparedStatement statement = connection.prepareStatement(category.getId() == 0 ? QUERY.CATEGORY.CREATE : QUERY.CATEGORY.UPDATE);
 			statement.setString(1, category.getSku());
 			statement.setString(2, category.getName());
-			if (category.getId() != 0) statement.setLong(3, category.getId());
+			if (category.getId() != 0) {
+				statement.setBoolean(3, category.isActive());
+				statement.setLong(4, category.getId());
+			}
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

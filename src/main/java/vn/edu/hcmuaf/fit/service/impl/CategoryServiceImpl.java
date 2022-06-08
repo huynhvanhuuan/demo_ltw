@@ -139,6 +139,7 @@ public class CategoryServiceImpl implements CategoryService {
 			
 			updatedCategory.setSku(category.getSku());
 			updatedCategory.setName(category.getName());
+			updatedCategory.setActive(category.isActive());
 			
 			categoryDAO.save(updatedCategory);
 			

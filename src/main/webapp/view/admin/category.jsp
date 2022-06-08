@@ -28,45 +28,16 @@
 										<table id="category" class="table table-bordered table-striped">
 											<thead>
 												<tr class="text-center">
-													<th class="align-middle"><input type="checkbox" name="checkBoxAll"
-													                                id="checkBoxAll"></th>
+													<th class="align-middle">
+														<input type="checkbox" name="checkBoxAll" id="checkBoxAll">
+													</th>
 													<th class="align-middle">Mã thể loại</th>
 													<th class="align-middle">Tên thể loại</th>
 													<th class="align-middle">Trạng thái</th>
 													<th class="align-middle">Tác vụ</th>
 												</tr>
 											</thead>
-											<tbody>
-												<%--<jsp:useBean id="categories" scope="request" type="java.util.List"/>
-												<c:forEach items="${categories}" var="category">
-													<tr>
-														<td class="text-center align-middle"><input type="checkbox"
-														                                            class="checkBoxSku"
-														                                            name="sku"
-														                                            value="${category.sku}">
-														</td>
-														<td class="text-center align-middle">${category.sku}</td>
-														<td class="align-middle">${category.name}</td>
-														<td class="text-center align-middle text-success">
-															Mở
-															<form action="${pageContext.request.contextPath}/admin/category?action=changeActive"
-															      method="POST" class="d-inline-block">
-																<input type="hidden" name="sku" value="${category.sku}">
-																<button type="submit"
-																        class="btn p-1 bg-transparent text-danger"><i
-																		class="fas fa-sync-alt"></i></button>
-															</form>
-														</td>
-														<td class="d-flex justify-content-center">
-															<input type="hidden" name="sku" value="${category.sku}"/>
-															<button class="btn btn-warning d-block w-100 update"
-															        data-toggle="modal"
-															        data-target="#update-modal" title="Cập nhật"><i
-																	class="fas fa-edit"></i></button>
-														</td>
-													</tr>
-												</c:forEach>--%>
-											</tbody>
+											<tbody></tbody>
 										</table>
 									</div>
 								</div>
@@ -83,7 +54,7 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/admin/category?action=create"
+								<form action="${pageContext.request.contextPath}/api/category"
 								      method="POST" id="create" novalidate="novalidate">
 									<div class="modal-body card-body">
 										<div class="form-group">
@@ -100,9 +71,7 @@
 										<button type="button" class="btn btn-danger font-weight-bolder"
 										        data-dismiss="modal">Đóng
 										</button>
-										<button type="button" class="btn btn-primary font-weight-bolder"
-										        onclick="checkValid('create');">Lưu
-										</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
 							</div>
@@ -118,9 +87,9 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/admin/category?action=update"
-								      method="POST" id="update" novalidate="novalidate">
-									<input type="hidden" name="active"/>
+								<form action="${pageContext.request.contextPath}/api/category"
+								       id="update" novalidate="novalidate">
+									<input type="hidden" name="id">
 									<input type="hidden" name="old_sku"/>
 									<input type="hidden" name="old_name"/>
 									<div class="modal-body card-body">
@@ -133,14 +102,20 @@
 											<label>Tên thể loại</label>
 											<input type="text" name="name" class="form-control" placeholder="VD: Ghế"/>
 										</div>
+										<%-- active --%>
+										<div class="form-group">
+											<label>Trạng thái</label>
+											<select name="active" class="form-control">
+												<option value="0">Không hoạt động</option>
+												<option value="1">Đang hoạt động</option>
+											</select>
+										</div>
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
 										        data-dismiss="modal">Đóng
 										</button>
-										<button type="button" class="btn btn-primary font-weight-bolder"
-										        onclick="checkValid('update');">Lưu
-										</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
 							</div>
@@ -198,140 +173,194 @@
                 })
             }
 
-            function checkValid(type) {
-                let valid, sku, oldSku, name, oldName;
-                if (type === 'create') {
-                    valid = jQuery('#create').valid();
-                    sku = jQuery('#create-modal input[name="sku"]').val();
-                    name = jQuery('#create-modal input[name="name"]').val();
-                } else {
-                    valid = jQuery('#update').valid();
-                    oldSku = jQuery('#update-modal input[name="old_sku"]').val();
-                    oldName = jQuery('#update-modal input[name="old_name"]').val();
-                    sku = jQuery('#update-modal input[name="sku"]').val();
-                    name = jQuery('#update-modal input[name="name"]').val();
-                }
-                if (valid) {
+            $("#create").submit(function (e) {
+                e.preventDefault();
+                if ($(this).valid()) {
                     $.ajax({
-                        type: "GET",
-                        url: '${pageContext.request.contextPath}/admin/category?action=checkExist',
-                        data: {sku: sku, name: name},
-                        success: function (data) {
-                            if (type === 'update' && oldSku === sku && oldName === name) {
-                                jQuery("#update").submit();
-                            } else if (data.statusCode === 1) {
-                                if (oldSku === sku) {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: '${pageContext.request.contextPath}/admin/category?action=checkExist',
-                                        data: {sku: "", name: name},
-                                        success: function (data) {
-                                            if (data.statusCode === 2) {
-                                                Toast.fire({
-                                                    icon: 'error',
-                                                    title: data.message,
-                                                })
-                                            } else jQuery("#update").submit();
-                                        }
-                                    })
-                                } else
-                                    Toast.fire({
-                                        icon: 'error',
-                                        title: data.message,
-                                    })
-                            } else {
-                                if (type === 'create') {
-                                    jQuery("#create").submit();
-                                } else {
-                                    getListSkuHasProduct().done(function (data) {
-                                        if (data.includes(oldSku) && confirm('Tồn tại sản phẩm chứa thể loại này.\nCập nhật sẽ làm thay đổi tất cả sản phẩm liên quan. Xác nhận tiếp tục?')) {
-                                            Toast.fire({
-                                                icon: 'success',
-                                                title: "Đã cập nhật thể loại các sản phẩm liên quan",
-                                            })
-                                            setTimeout(function () {
-                                                jQuery("#update").submit();
-                                            }, 1000);
-                                        } else {
-                                            jQuery("#update").submit();
-                                        }
-                                    })
-                                }
-                            }
+	                    type: "POST",
+						url: '${pageContext.request.contextPath}/api/category',
+	                    data: $("#create").serialize(),
+						success: function (result) {
+                            console.log(result)
+                            // let response = JSON.parse(result);
+							// if (response.success) {
+							// 	Toast.fire({
+							// 		icon: 'success',
+							// 		title: response.message
+							// 	});
+                            //     // redraw table
+							// 	$('#category').DataTable().ajax.reload();
+							// } else {
+							// 	Toast.fire({
+							// 		icon: 'error',
+							// 		title: response.message
+							// 	})
+							// }
+							$('#create-modal').modal('hide');
+                            $('#category').DataTable().ajax.reload();
+						},
+	                    error: function (result) {
+		                    Toast.fire({
+                                icon: 'error',
+                                title: 'Có lỗi xảy ra'
+                            });
+                            $('#create-modal').modal('hide');
+                        }
+					})
+                }
+            });
+            
+            $("#update").submit(function (e) {
+                e.preventDefault();
+                if ($(this).valid()) {
+                    let formData = new FormData();
+                    formData.append('id', $("#update input[name='id']").val());
+                    formData.append('name', $("#update input[name='name']").val());
+                    formData.append('sku', $("#update input[name='sku']").val());
+                    
+                    console.log($("#update input[name='id']").val())
+                    console.log($("#update input[name='name']").val())
+                    console.log($("#update input[name='sku']").val())
+                    $.ajax({
+                        type: "PUT",
+                        url: '${pageContext.request.contextPath}/api/category',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            console.log(result)
+                            // let response = JSON.parse(result);
+                            // if (response.success) {
+                            // 	Toast.fire({
+                            // 		icon: 'success',
+                            // 		title: response.message
+                            // 	});
+                            //     // redraw table
+                            // 	$('#category').DataTable().ajax.reload();
+                            // } else {
+                            // 	Toast.fire({
+                            // 		icon: 'error',
+                            // 		title: response.message
+                            // 	})
+                            // }
+                            $('#update-modal').modal('hide');
+                            $('#category').DataTable().ajax.reload();
+                        },
+                        error: function (result) {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Có lỗi xảy ra'
+                            });
+                            $('#update-modal').modal('hide');
                         }
                     })
                 }
+            });
+            
+            function getCategory(id) {
+                $.ajax({
+	                type: "GET",
+					url: '${pageContext.request.contextPath}/api/category?id=' + id,
+					success: function (data) {
+						$('#update-modal input[name="id"]').val(data[0].id);
+						$('#update-modal input[name="old_sku"]').val(data[0].sku);
+						$('#update-modal input[name="old_name"]').val(data[0].name);
+						$('#update-modal input[name="sku"]').val(data[0].sku);
+						$('#update-modal input[name="name"]').val(data[0].name);
+						$('#update-modal select[name="active"]').val(data[0].active ? 1 : 0);
+					}
+				})
             }
 
             function deleteCategory() {
-                let skus = []
-                jQuery('.checkBoxSku').each(function () {
-                    if (jQuery(this).is(":checked")) {
-                        skus.push(jQuery(this).val());
+                let ids = []
+                $('.checkBoxId').each(function () {
+                    if ($(this).is(":checked")) {
+                        ids.push($(this).val());
                     }
                 })
-
                 $.ajax({
-                    type: "POST",
-                    url: '${pageContext.request.contextPath}/admin/category?action=delete',
-                    data: {skus: JSON.stringify(skus)},
+                    type: "DELETE",
+                    url: '${pageContext.request.contextPath}/api/category?ids=' + encodeURIComponent(JSON.stringify(ids)),
                     success: function (response) {
-                        if (response.statusCode === 200) {
+                        let result = JSON.parse(response);
+                        if (result.success) {
                             Toast.fire({
                                 icon: 'success',
-                                title: response.message,
+                                title: result.message,
                             })
-                            setTimeout(function () {
-                                document.location.href = "${pageContext.request.contextPath}/admin/category";
-                            }, 1000);
+	                        $('#category').DataTable().ajax.reload();
                         } else {
                             Toast.fire({
                                 icon: 'error',
-                                title: response.message,
+                                title: result.message,
                             })
                         }
+                        $('#delete-modal').modal('hide');
                     }
                 })
             }
 
-            jQuery(function () {
-                jQuery("#category").DataTable({
+            $(function () {
+                $("#category").DataTable({
                     "responsive": true, "lengthChange": false, "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
                     "order": [[1, "asc"]],
                     "columnDefs": [
                         {
+                            "targets": [0, 3, 4],
+                            "className": "text-center",
+                        },
+                        {
                             "targets": 0,
                             "orderable": false,
-                            "width": "5%"
+                            "width": "5%",
+                            "render": function (data, type, row) {
+                                return '<input type="checkbox" class="checkBoxId" value="' + data + '">';
+                            }
                         },
                         {
                             "targets": 4,
                             "orderable": false,
-                            "width": "10%"
+                            "width": "10%",
+                            "render": function (data, type, row) {
+                                return '<button onclick="getCategory(' + data + ')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#update-modal">' +
+	                                '<i class="fas fa-pencil-alt"></i>' +
+	                                '</button>';
+                            }
                         }
                     ],
-                    "drawCallback": function () {
-                        jQuery('.update').on('click', function () {
-                            let sku = jQuery(this).parent().find('input[name = "sku"]').val();
+	                "ajax": {
+		                "url": "${pageContext.request.contextPath}/api/category",
+		                "dataSrc": ""
+                    },
+	                "columns": [
+                        { "data": "id" },
+						{ "data": "sku" },
+						{ "data": "name" },
+                        { "data": "active"},
+						{ "data": "id" }
+                    ],
+                    /*"drawCallback": function () {
+                        $('.update').on('click', function () {
+                            let sku = $(this).parent().find('input[name = "sku"]').val();
                             $.ajax({
                                 type: "GET",
-                                url: '${pageContext.request.contextPath}/admin/category?action=get',
-                                data: {sku: sku},
+                                url: '${pageContext.request.contextPath}/api/category?id=' + id,
                                 dataType: "json",
                                 contentType: "application/json",
                                 success: function (data) {
-                                    jQuery('#update-modal input[name = "old_sku"]').val(data.sku);
-                                    jQuery('#update-modal input[name = "sku"]').val(data.sku);
-                                    jQuery('#update-modal input[name = "old_name"]').val(data.name);
-                                    jQuery('#update-modal input[name = "name"]').val(data.name);
-                                    jQuery('#update-modal input[name = "active"]').val(data.active);
+                                    $('#update-modal input[name = "old_sku"]').val(data.sku);
+                                    $('#update-modal input[name = "sku"]').val(data.sku);
+                                    $('#update-modal input[name = "old_name"]').val(data.name);
+                                    $('#update-modal input[name = "name"]').val(data.name);
+                                    $('#update-modal input[name = "active"]').val(data.active);
                                 }
                             })
                         });
-                    }
+                    }*/
                 }).buttons().container().appendTo('#category_wrapper .col-md-6:eq(0)');
-                jQuery('#create').validate({
+                $('#create').validate({
                     rules: {
                         sku: {
                             required: true
@@ -350,13 +379,13 @@
                         element.closest('.form-group').append(error);
                     },
                     highlight: function (element, errorClass, validClass) {
-                        jQuery(element).addClass('is-invalid');
+                        $(element).addClass('is-invalid');
                     },
                     unhighlight: function (element, errorClass, validClass) {
-                        jQuery(element).removeClass('is-invalid');
+                        $(element).removeClass('is-invalid');
                     }
                 });
-                jQuery('#update').validate({
+                $('#update').validate({
                     rules: {
                         sku: {
                             required: true
@@ -375,18 +404,18 @@
                         element.closest('.form-group').append(error);
                     },
                     highlight: function (element, errorClass, validClass) {
-                        jQuery(element).addClass('is-invalid');
+                        $(element).addClass('is-invalid');
                     },
                     unhighlight: function (element, errorClass, validClass) {
-                        jQuery(element).removeClass('is-invalid');
+                        $(element).removeClass('is-invalid');
                     }
                 });
 
-                jQuery('#checkBoxAll').click(function () {
-                    if (jQuery(this).is(':checked')) {
-                        jQuery('.checkBoxSku').prop('checked', true);
+                $('#checkBoxAll').click(function () {
+                    if ($(this).is(':checked')) {
+                        $('.checkBoxId').prop('checked', true);
                     } else {
-                        jQuery('.checkBoxSku').prop('checked', false);
+                        $('.checkBoxId').prop('checked', false);
                     }
                 })
             });
