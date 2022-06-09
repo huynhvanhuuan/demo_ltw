@@ -149,7 +149,7 @@ public final class StringUtil {
 
     public static String stripAccents(String s) {
         s = Normalizer.normalize(s, Normalizer.Form.NFD);
-        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        s = s.replaceAll("\\p{InCombiningDiacriticalMarks}", "");
         return s;
     }
 
@@ -158,7 +158,7 @@ public final class StringUtil {
 
         input = stripAccents(input);
 
-        return input.trim().replaceAll("[^a-zA-Z0-9]+", "-").toLowerCase();
+        return input.trim().replaceAll("[^a-zA-Z\\d]+", "-").toLowerCase();
     }
 
     public static String trimOrNull(String value) {

@@ -172,6 +172,10 @@
                     }
                 })
             }
+            
+            function reloadData() {
+				$('#category').DataTable().ajax.reload();
+			}
 
             $("#create").submit(function (e) {
                 e.preventDefault();
@@ -187,8 +191,8 @@
                             		icon: 'success',
                             		title: response.message
                             	});
+                                reloadData();
                                 $("#create").trigger("reset");
-                            	$('#category').DataTable().ajax.reload();
                                 $('#create-modal').modal('hide');
                             } else {
                             	Toast.fire({
@@ -198,9 +202,10 @@
                             }
                         },
                         error: function (result) {
+                            console.log(result);
                             Toast.fire({
                                 icon: 'error',
-                                title: 'Có lỗi xảy ra'
+                                title: result.message
                             });
                             $('#create-modal').modal('hide');
                         }
@@ -215,8 +220,7 @@
                     let name = $('#update input[name=name]').val();
                     let sku = $('#update input[name=sku]').val();
                     let active = $('#update select[name=active]').val();
-                    
-                    
+	                
                     $.ajax({
                         url: '${pageContext.request.contextPath}/api/category',
 	                    type: 'PUT',
@@ -228,23 +232,21 @@
 							active: active
 						}),
                         success: function (result) {
-                            console.log(result)
-                            // let response = JSON.parse(result);
-                            // if (response.success) {
-                            // 	Toast.fire({
-                            // 		icon: 'success',
-                            // 		title: response.message
-                            // 	});
-                            //     // redraw table
-                            // 	$('#category').DataTable().ajax.reload();
-                            // } else {
-                            // 	Toast.fire({
-                            // 		icon: 'error',
-                            // 		title: response.message
-                            // 	})
-                            // }
-                            $('#update-modal').modal('hide');
-                            $('#category').DataTable().ajax.reload();
+                            let response = JSON.parse(result);
+                            if (response.success) {
+                            	Toast.fire({
+                            		icon: 'success',
+                            		title: response.message
+                            	});
+                                reloadData();
+                                $("#update").trigger("reset");
+                                $('#update-modal').modal('hide');
+                            } else {
+                            	Toast.fire({
+                            		icon: 'error',
+                            		title: response.message
+                            	})
+                            }
                         },
                         error: function (result) {
                             Toast.fire({
