@@ -88,7 +88,7 @@ public class TrademarkDAOImpl implements TrademarkDAO {
     }
 
     @Override
-    public void removeById(Long id) {
+    public void remove(Long id) {
         connection = connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.TRADEMARK.DELETE);

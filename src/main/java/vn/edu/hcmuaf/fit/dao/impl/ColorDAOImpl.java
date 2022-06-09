@@ -67,7 +67,7 @@ public class ColorDAOImpl implements ColorDAO {
     }
 
     @Override
-    public void removeById(Long id) {
+    public void remove(Long id) {
 
     }
 }

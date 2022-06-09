@@ -91,7 +91,7 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 	}
 
 	@Override
-	public void removeById(Long id) {
+	public void remove(Long id) {
 		connection = connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT_DETAIL.DELETE);

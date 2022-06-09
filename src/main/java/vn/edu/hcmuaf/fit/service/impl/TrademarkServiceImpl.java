@@ -3,7 +3,6 @@ package vn.edu.hcmuaf.fit.service.impl;
 import vn.edu.hcmuaf.fit.constant.AppError;
 import vn.edu.hcmuaf.fit.dao.TrademarkDAO;
 import vn.edu.hcmuaf.fit.dao.impl.TrademarkDAOImpl;
-import vn.edu.hcmuaf.fit.database.IConnectionPool;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.trademark.*;
@@ -123,7 +122,7 @@ public class TrademarkServiceImpl implements TrademarkService {
 			Trademark trademark = trademarkDAO.findById(id);
 
 			if (trademark != null) {
-				trademarkDAO.removeById(id);
+				trademarkDAO.remove(id);
 				return AppBaseResult.GenarateIsSucceed();
 			} else {
 				return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(), "Tradmark id is not exist: " + id);

@@ -120,9 +120,9 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public AppBaseResult updateCategory(CategoryUpdate category) {
 		try {
-			Category updatedCategory = categoryDAO.findById(category.getId());
+			Category updateCategory = categoryDAO.findById(category.getId());
 			
-			if (updatedCategory == null)
+			if (updateCategory == null)
 				return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(), "Category id is not exist: " + category.getId());
 			
 			if (category.getName() == null && category.getName().equals("")) {
@@ -136,12 +136,12 @@ public class CategoryServiceImpl implements CategoryService {
 					return new AppServiceResult<CategoryDto>(false, AppError.Validation.errorCode(), "Name is exist!", null);
 				}
 			}
+
+			updateCategory.setSku(category.getSku());
+			updateCategory.setName(category.getName());
+			updateCategory.setActive(category.isActive());
 			
-			updatedCategory.setSku(category.getSku());
-			updatedCategory.setName(category.getName());
-			updatedCategory.setActive(category.isActive());
-			
-			categoryDAO.save(updatedCategory);
+			categoryDAO.save(updateCategory);
 			
 			return AppBaseResult.GenarateIsSucceed();
 		} catch (Exception e) {
@@ -156,7 +156,7 @@ public class CategoryServiceImpl implements CategoryService {
 			Category category = categoryDAO.findById(id);
 			
 			if (category != null) {
-				categoryDAO.removeById(id);
+				categoryDAO.remove(id);
 				return AppBaseResult.GenarateIsSucceed();
 			} else {
 				return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(), "Category id is not exist: " + id);
@@ -168,17 +168,17 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 	
 	@Override
-	public AppServiceResult<CategoryDto> updateStatus(Long id) {
+	public AppBaseResult updateStatus(CategoryUpdate category) {
 		try {
-			Category category = categoryDAO.findById(id);
-			
-			if (category != null) {
-				category.setActive(!category.isActive());
-				categoryDAO.save(category);
-				return new AppServiceResult<>(true, 0, "Succeed!", CategoryDto.createFromEntity(category));
-			} else
-				return new AppServiceResult<>(false, AppError.Validation.errorCode(), "Category id is not exist: " + id, null);
-			
+			Category updatedCategory = categoryDAO.findById(category.getId());
+
+			if (updatedCategory == null) return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(), "Category id is not exist: " + category.getId());
+
+			updatedCategory.setActive(category.isActive());
+
+			categoryDAO.save(updatedCategory);
+
+			return AppBaseResult.GenarateIsSucceed();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),

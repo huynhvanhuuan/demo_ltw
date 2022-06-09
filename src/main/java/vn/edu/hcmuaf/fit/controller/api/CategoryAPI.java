@@ -78,8 +78,7 @@ public class CategoryAPI extends HttpServlet {
 	}
 
 	@Override
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setHeader("Content-Type", "application/json");
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		try {
@@ -87,21 +86,30 @@ public class CategoryAPI extends HttpServlet {
 			Type type = new TypeToken<CategoryUpdate>() {}.getType();
 			CategoryUpdate updateCategory = GSON.fromJson(json, type);
 
-			AppBaseResult result = categoryService.updateCategory(updateCategory);
+			AppBaseResult result = new AppBaseResult(false, AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
+			switch (request.getPathInfo()) {
+				case "/update-category":
+					result = categoryService.updateCategory(updateCategory);
+					break;
+				case "/update-status":
+					result = categoryService.updateStatus(updateCategory);
+					break;
+			}
+
 			if (result.isSuccess()) {
 				response.setStatus(200);
 				response.getWriter().println(GSON.toJson(result));
 			} else {
 				response.sendError(result.getErrorCode(), result.getMessage());
 			}
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
 			System.out.println(e.getMessage());
 		}
 	}
 	
 	@Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			String string = request.getParameter("ids");
 			Type type = new TypeToken<List<Long>>(){}.getType();

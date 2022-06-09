@@ -2,7 +2,6 @@ package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.constant.QUERY;
 import vn.edu.hcmuaf.fit.dao.*;
-import vn.edu.hcmuaf.fit.dao.impl.*;
 import vn.edu.hcmuaf.fit.database.IConnectionPool;
 import vn.edu.hcmuaf.fit.entity.*;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
@@ -106,7 +105,7 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public void removeById(Long id) {
+    public void remove(Long id) {
         connection = connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT.DELETE);

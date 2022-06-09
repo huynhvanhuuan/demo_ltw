@@ -19,17 +19,17 @@
 									<div class="card-body">
 										<div class="btn-group float-left">
 											<button type="button" class="btn btn-success mr-2 float-left"
-											        data-toggle="modal" data-target="#create-modal" title="Thêm"><i
+											        data-toggle="modal" data-target="#create-modal" title="Nhấn để thêm mới"><i
 													class="fas fa-plus"></i></button>
 											<button type="button" class="btn btn-danger float-left"
-											        data-toggle="modal" data-target="#delete-modal"><i
+											        data-toggle="modal" data-target="#delete-modal" title="Nhấn để xoá"><i
 													class="fas fa-trash-alt"></i></button>
 										</div>
 										<table id="category" class="table table-bordered table-striped">
 											<thead>
 												<tr class="text-center">
 													<th class="align-middle">
-														<input type="checkbox" name="checkBoxAll" id="checkBoxAll">
+														<input type="checkbox" name="checkBoxAll" id="checkBoxAll" title="Nhấn để chọn tất cả">
 													</th>
 													<th class="align-middle">Mã thể loại</th>
 													<th class="align-middle">Tên thể loại</th>
@@ -102,12 +102,36 @@
 											<label>Tên thể loại</label>
 											<input type="text" name="name" class="form-control" placeholder="VD: Ghế"/>
 										</div>
-										<%-- active --%>
+									</div>
+									<div class="modal-footer justify-content-between">
+										<button type="button" class="btn btn-danger font-weight-bolder"
+										        data-dismiss="modal">Đóng
+										</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<!-- Update status modal -->
+					<div class="modal fade" id="update-status-modal" style="display: none;" aria-hidden="true">
+						<div class="modal-dialog modal-sm">
+							<div class="modal-content card card-warning">
+								<div class="modal-header card-header">
+									<h5 class="modal-title font-weight-bolder">Cập nhật trạng thái</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								<form action="${pageContext.request.contextPath}/api/category"
+								      id="update-status" novalidate="novalidate">
+									<input type="hidden" name="id">
+									<div class="modal-body card-body">
 										<div class="form-group">
 											<label>Trạng thái</label>
 											<select name="active" class="form-control">
-												<option value="0">Không hoạt động</option>
-												<option value="1">Đang hoạt động</option>
+												<option value="1">Kích hoạt</option>
+												<option value="0">Khóa</option>
 											</select>
 										</div>
 									</div>
@@ -202,10 +226,10 @@
                             }
                         },
                         error: function (result) {
-                            console.log(result);
+                            let response = JSON.parse(result);
                             Toast.fire({
                                 icon: 'error',
-                                title: result.message
+                                title: response.message
                             });
                             $('#create-modal').modal('hide');
                         }
@@ -220,11 +244,9 @@
                     let name = $('#update input[name=name]').val();
                     let sku = $('#update input[name=sku]').val();
                     let active = $('#update select[name=active]').val();
-	                
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/api/category',
+                        url: '${pageContext.request.contextPath}/api/category/update-category',
 	                    type: 'PUT',
-                        contentType: 'application/json',
                         data: JSON.stringify({
 							id: id,
 							name: name,
@@ -249,17 +271,59 @@
                             }
                         },
                         error: function (result) {
+                            let response = JSON.parse(result);
                             Toast.fire({
                                 icon: 'error',
-                                title: 'Có lỗi xảy ra'
+                                title: response.message
                             });
                             $('#update-modal').modal('hide');
                         }
                     })
                 }
             });
+            
+            $("#update-status").submit(function (e) {
+				e.preventDefault();
+				if ($(this).valid()) {
+					let id = $('#update-status input[name=id]').val();
+					let active = $('#update-status select[name=active]').val() === '1';
+					$.ajax({
+						url: '${pageContext.request.contextPath}/api/category/update-status',
+	                    type: 'PUT',
+						data: JSON.stringify({
+							id: id,
+							active: active
+                        }),
+						success: function (result) {
+							let response = JSON.parse(result);
+							if (response.success) {
+								Toast.fire({
+									icon: 'success',
+									title: response.message
+								});
+								reloadData();
+								$("#update-status").trigger("reset");
+								$('#update-status-modal').modal('hide');
+							} else {
+								Toast.fire({
+									icon: 'error',
+									title: response.message
+								})
+							}
+						},
+						error: function (result) {
+							let response = JSON.parse(result);
+							Toast.fire({
+								icon: 'error',
+								title: response.message
+							});
+							$('#update-status-modal').modal('hide');
+                        }
+					})
+				}
+            });
 
-            function getCategory(id) {
+            function getCategoryForUpdate(id) {
                 $.ajax({
                     type: "GET",
                     url: '${pageContext.request.contextPath}/api/category/' + id,
@@ -269,7 +333,17 @@
                         $('#update-modal input[name="old_name"]').val(data.name);
                         $('#update-modal input[name="sku"]').val(data.sku);
                         $('#update-modal input[name="name"]').val(data.name);
-                        $('#update-modal select[name="active"]').val(data.active ? 1 : 0);
+                    }
+                })
+            }
+
+            function getCategoryForUpdateStatus(id) {
+                $.ajax({
+                    type: "GET",
+                    url: '${pageContext.request.contextPath}/api/category/' + id,
+                    success: function (data) {
+                        $('#update-status-modal input[name="id"]').val(data.id);
+                        $('#update-status-modal select[name="active"]').val(data.active ? 1 : 0).trigger('change');
                     }
                 })
             }
@@ -304,10 +378,19 @@
             }
 
             $(function () {
-                $("#category").DataTable({
-                    "responsive": true, "lengthChange": false, "autoWidth": false,
+                let table = $("#category").DataTable({
+                    "responsive": true,
+	                "lengthChange": false,
+	                "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-                    "order": [[1, "asc"]],
+	                "order": [[1, 'asc']],
+	                "initComplete": function () {
+		                table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
+	                },
+	                "ajax": {
+		                "url": "${pageContext.request.contextPath}/api/category",
+		                "dataSrc": ""
+	                },
                     "columnDefs": [
                         {
                             "targets": [0, 3, 4],
@@ -315,53 +398,50 @@
                         },
                         {
                             "targets": 0,
-                            "orderable": false,
+	                        "orderable": false,
+	                        "sortable": false,
                             "width": "5%",
                             "render": function (data, type, row) {
                                 return '<input type="checkbox" class="checkBoxId" value="' + data + '">';
                             }
                         },
                         {
+                            "targets": 3,
+	                        "width": "20%",
+							"render": function (data, type, row) {
+								return '<button onclick="getCategoryForUpdateStatus(' + data.id + ')" class="btn ' +
+									(data.active ? 'btn-success' : 'btn-danger') +
+									' btn-sm" title="Nhấn để đổi trạng thái" data-toggle="modal" data-target="#update-status-modal">' +
+                                    (data.active ? 'Đã kích hoạt' : 'Đã khoá') + '</button>';
+							}
+                        },
+                        {
                             "targets": 4,
                             "orderable": false,
                             "width": "10%",
                             "render": function (data, type, row) {
-                                return '<button onclick="getCategory(' + data + ')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#update-modal">' +
+                                return '<button onclick="getCategoryForUpdate(' + data + ')" class="btn btn-primary btn-sm" title="Nhấn để chỉnh sửa" data-toggle="modal" data-target="#update-modal">' +
                                     '<i class="fas fa-pencil-alt"></i>' +
                                     '</button>';
                             }
                         }
                     ],
-                    "ajax": {
-                        "url": "${pageContext.request.contextPath}/api/category",
-                        "dataSrc": ""
-                    },
                     "columns": [
-                        {"data": "id"},
+                        {
+	                        "name": "ID",
+							"data": "id"
+                        },
                         {"data": "sku"},
                         {"data": "name"},
-                        {"data": "active"},
+                        {"data": {
+		                        id: "id",
+                                active: "active"
+                            }
+                        },
                         {"data": "id"}
                     ],
-                    /*"drawCallback": function () {
-                        $('.update').on('click', function () {
-                            let sku = $(this).parent().find('input[name = "sku"]').val();
-                            $.ajax({
-                                type: "GET",
-                                url: '${pageContext.request.contextPath}/api/category?id=' + id,
-                                dataType: "json",
-                                contentType: "application/json",
-                                success: function (data) {
-                                    $('#update-modal input[name = "old_sku"]').val(data.sku);
-                                    $('#update-modal input[name = "sku"]').val(data.sku);
-                                    $('#update-modal input[name = "old_name"]').val(data.name);
-                                    $('#update-modal input[name = "name"]').val(data.name);
-                                    $('#update-modal input[name = "active"]').val(data.active);
-                                }
-                            })
-                        });
-                    }*/
-                }).buttons().container().appendTo('#category_wrapper .col-md-6:eq(0)');
+                });
+				
                 $('#create').validate({
                     rules: {
                         sku: {

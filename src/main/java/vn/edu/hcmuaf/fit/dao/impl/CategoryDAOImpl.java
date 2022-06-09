@@ -82,7 +82,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 	}
 	
 	@Override
-	public void removeById(Long id) {
+	public void remove(Long id) {
 		connection = connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.CATEGORY.DELETE);

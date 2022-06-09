@@ -74,6 +74,6 @@ public class ProvinceDAOImpl implements ProvinceDAO {
     }
 
     @Override
-    public void removeById(Long id) {
+    public void remove(Long id) {
     }
 }

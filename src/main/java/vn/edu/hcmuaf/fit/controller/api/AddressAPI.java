@@ -19,7 +19,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Locale;
 
-@WebServlet(name = "api-category", urlPatterns = "/api/address/*")
+@WebServlet(name = "api-address", urlPatterns = "/api/address/*")
 public class AddressAPI extends HttpServlet {
 	private final Gson GSON = new GsonBuilder().create();
 	private CategoryService categoryService;
@@ -35,12 +35,10 @@ public class AddressAPI extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		String pathInfo = request.getPathInfo();
 		switch (pathInfo) {
-			case
 		}
 	}
 
 	private void doGetProvince(HttpServletRequest request, HttpServletResponse response, String pathInfo) throws IOException {
-		String pathInfo = request.getPathInfo();
 		if (pathInfo == null) {
 			AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
 			if (result.isSuccess()) {
@@ -66,7 +64,6 @@ public class AddressAPI extends HttpServlet {
 	}
 
 	private void doGetDistrict(HttpServletRequest request, HttpServletResponse response, String pathInfo) throws IOException {
-		String pathInfo = request.getPathInfo();
 		if (pathInfo == null) {
 			AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
 			if (result.isSuccess()) {
@@ -92,7 +89,6 @@ public class AddressAPI extends HttpServlet {
 	}
 
 	private void doGetWard(HttpServletRequest request, HttpServletResponse response, String pathInfo) throws IOException {
-		String pathInfo = request.getPathInfo();
 		if (pathInfo == null) {
 			AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
 			if (result.isSuccess()) {

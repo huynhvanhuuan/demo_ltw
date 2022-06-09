@@ -66,7 +66,7 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     @Override
-    public void removeById(Long id) {
+    public void remove(Long id) {
 
     }
 }

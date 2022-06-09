@@ -2,9 +2,7 @@ package vn.edu.hcmuaf.fit.service;
 
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
-import vn.edu.hcmuaf.fit.dto.category.CategoryCreate;
-import vn.edu.hcmuaf.fit.dto.category.CategoryDto;
-import vn.edu.hcmuaf.fit.dto.category.CategoryUpdate;
+import vn.edu.hcmuaf.fit.dto.category.*;
 
 import java.util.List;
 
@@ -23,5 +21,5 @@ public interface CategoryService {
 
     AppBaseResult deleteCategory(Long id);
 
-    AppServiceResult<CategoryDto> updateStatus(Long id);
+    AppBaseResult updateStatus(CategoryUpdate category);
 }

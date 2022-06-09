@@ -78,7 +78,7 @@ public class WardDAOImpl implements WardDAO {
     }
 
     @Override
-    public void removeById(Long id) {
+    public void remove(Long id) {
 
     }
 

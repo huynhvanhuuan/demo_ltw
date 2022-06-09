@@ -9,5 +9,5 @@ public interface BaseDAO<T> {
 
     void save(T object);
 
-    void removeById(Long id);
+    void remove(Long id);
 }

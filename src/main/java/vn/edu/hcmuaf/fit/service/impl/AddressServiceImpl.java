@@ -221,7 +221,7 @@ public class AddressServiceImpl implements AddressService {
 			Address address = addressDAO.findById(id);
 
 			if (address != null) {
-				addressDAO.removeById(id);
+				addressDAO.remove(id);
 				return AppBaseResult.GenarateIsSucceed();
 			} else {
 				return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(), "Address id is not exist: " + id);

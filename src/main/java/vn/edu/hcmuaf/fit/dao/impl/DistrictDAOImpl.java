@@ -77,7 +77,7 @@ public class DistrictDAOImpl implements DistrictDAO {
     }
 
     @Override
-    public void removeById(Long id) {
+    public void remove(Long id) {
 
     }
 
