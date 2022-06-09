@@ -1,5 +1,6 @@
-package vn.edu.hcmuaf.fit.dto.product;
+package vn.edu.hcmuaf.fit.dto.productDetail;
 
+import vn.edu.hcmuaf.fit.dto.product.*;
 import vn.edu.hcmuaf.fit.entity.ProductDetail;
 
 import java.util.Date;

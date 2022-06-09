@@ -1,6 +1,7 @@
 package vn.edu.hcmuaf.fit.dto.product;
 
 import vn.edu.hcmuaf.fit.dto.category.CategoryDto;
+import vn.edu.hcmuaf.fit.dto.productDetail.ProductDetailDto;
 import vn.edu.hcmuaf.fit.dto.trademark.TrademarkDto;
 import vn.edu.hcmuaf.fit.entity.Product;
 

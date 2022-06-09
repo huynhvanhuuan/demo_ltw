@@ -7,7 +7,6 @@ import vn.edu.hcmuaf.fit.entity.*;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
 import java.sql.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.*;
@@ -47,8 +46,8 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				Date dateCreated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("date_created"));
 				Date lastUpdated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("last_updated"));
 				boolean active = rs.getBoolean("active");
-				ProductDetail Warehouse = new ProductDetail(id, sku, product, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
-				productDetailList.add(Warehouse);
+				ProductDetail productDetail = new ProductDetail(id, sku, product, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
+				productDetailList.add(productDetail);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
