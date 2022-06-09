@@ -17,11 +17,10 @@ public class Product implements Serializable {
     private boolean active;
     private Set<ProductDetail> products = new HashSet<>();
 
-    public Product() {
-    }
+    public Product() {}
 
     public Product(Long id, String name, String size, String description, Trademark trademark, Category category,
-                   Date dateCreated, Date lastUpdated, boolean active, Set<ProductDetail> products) {
+                   Date dateCreated, Date lastUpdated, boolean active) {
         this.id = id;
         this.name = name;
         this.size = size;
@@ -31,7 +30,6 @@ public class Product implements Serializable {
         this.dateCreated = dateCreated;
         this.lastUpdated = lastUpdated;
         this.active = active;
-        this.products = products;
     }
 
     public Long getId() {

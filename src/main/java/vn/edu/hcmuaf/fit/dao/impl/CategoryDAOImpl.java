@@ -21,8 +21,8 @@ public class CategoryDAOImpl implements CategoryDAO {
 	@Override
 	public List<Category> findAll() {
 		List<Category> categories = new ArrayList<>();
+		connection = connectionPool.getConnection();
 		try {
-			connection = connectionPool.getConnection();
 			PreparedStatement statement = connection.prepareStatement(QUERY.CATEGORY.FIND_ALL);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
@@ -34,7 +34,8 @@ public class CategoryDAOImpl implements CategoryDAO {
 				categories.add(category);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			connectionPool.releaseConnection(connection);
+			return categories;
 		}
 		connectionPool.releaseConnection(connection);
 		return categories;
