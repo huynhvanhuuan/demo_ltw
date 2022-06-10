@@ -1,21 +1,28 @@
 package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.constant.QUERY;
+import vn.edu.hcmuaf.fit.dao.DistrictDAO;
 import vn.edu.hcmuaf.fit.dao.ProvinceDAO;
 import vn.edu.hcmuaf.fit.database.IConnectionPool;
+import vn.edu.hcmuaf.fit.entity.District;
 import vn.edu.hcmuaf.fit.entity.Province;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ProvinceDAOImpl implements ProvinceDAO {
     private final IConnectionPool connectionPool;
     private Connection connection;
 
+    private DistrictDAO districtDAO;
+
     public ProvinceDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+    }
+
+    public void setDistrictDAO(DistrictDAO districtDAO) {
+        this.districtDAO = districtDAO;
     }
 
     @Override
@@ -27,10 +34,11 @@ public class ProvinceDAOImpl implements ProvinceDAO {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 long id = rs.getLong("id");
-                String prefix = rs.getString("prefix");
                 String name = rs.getString("name");
+                String prefix = rs.getString("prefix");
+                Set<District> districts = new HashSet<>(districtDAO.findByProvinceId(id));
 
-                Province province = new Province(id, prefix, name, null);
+                Province province = new Province(id, name, prefix, districts);
                 provinces.add(province);
             }
         } catch (SQLException e) {
@@ -47,13 +55,14 @@ public class ProvinceDAOImpl implements ProvinceDAO {
         connection = connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.PROVINCE.FIND_BY_ID);
+            statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
             if (!rs.isBeforeFirst() && rs.getRow() == 0) return null;
             if (rs.next()) {
-                String prefix = rs.getString("prefix");
                 String name = rs.getString("name");
+                String prefix = rs.getString("prefix");
 
-                province = new Province(id, prefix, name, null);
+                province = new Province(id, name, prefix, null);
             }
         } catch (SQLException e) {
             connectionPool.releaseConnection(connection);

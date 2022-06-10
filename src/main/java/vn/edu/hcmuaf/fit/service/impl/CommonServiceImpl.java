@@ -26,6 +26,11 @@ public class CommonServiceImpl implements CommonService {
         this.provinceDAO = new ProvinceDAOImpl();
         this.districtDAO = new DistrictDAOImpl();
         this.wardDAO = new WardDAOImpl();
+
+        ((ProvinceDAOImpl) this.provinceDAO).setDistrictDAO(this.districtDAO);
+        ((DistrictDAOImpl) this.districtDAO).setProvinceDAO(this.provinceDAO);
+        ((DistrictDAOImpl) this.districtDAO).setWardDAO(this.wardDAO);
+        ((WardDAOImpl) this.wardDAO).setDistrictDAO(this.districtDAO);
     }
 
     @Override
@@ -163,10 +168,15 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public AppServiceResult<List<WardDto>> getWards(Long districtId) {
         try {
+            District district = districtDAO.findById(districtId);
+
             List<Ward> wards = districtId == 0 ? wardDAO.findAll() : wardDAO.findByDistrictId(districtId);
             List<WardDto> result = new ArrayList<>();
 
-            wards.forEach(ward -> result.add(WardDto.createFromEntity(ward)));
+            wards.forEach(ward -> {
+                ward.setDistrict(district);
+                result.add(WardDto.createFromEntity(ward));
+            });
 
             return new AppServiceResult<>(true, 0, "Succeed!", result);
         } catch (Exception e) {
