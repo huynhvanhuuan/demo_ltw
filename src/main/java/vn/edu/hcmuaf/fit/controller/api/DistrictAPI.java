@@ -31,7 +31,7 @@ public class DistrictAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         String pathInfo = request.getPathInfo();
         try {
-            if (pathInfo == null) {
+            if (pathInfo == null || pathInfo.equals("/")) {
                 String provinceId = request.getParameter("provinceId");
                 AppServiceResult<List<DistrictDto>> result = districtService.getDistricts(provinceId == null ? 0 : Long.parseLong(provinceId));
                 if (result.isSuccess()) {

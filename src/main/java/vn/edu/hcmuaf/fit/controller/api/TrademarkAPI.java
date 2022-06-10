@@ -34,11 +34,11 @@ public class TrademarkAPI extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		String pathInfo = request.getPathInfo();
-		if (pathInfo == null) {
+		if (pathInfo == null || pathInfo.equals("/")) {
 			AppServiceResult<List<TrademarkDto>> result = trademarkService.getTrademarks();
 			if (result.isSuccess()) {
 				response.setStatus(200);
-				response.getWriter().println(GSON.toJson(result.getData()));
+				response.getWriter().println(GSON.toJson(result));
 			} else {
 				response.sendError(result.getErrorCode(), result.getMessage());
 			}
@@ -48,7 +48,7 @@ public class TrademarkAPI extends HttpServlet {
 				AppServiceResult<TrademarkDto> result = trademarkService.getTrademark(id);
 				if (result.isSuccess()) {
 					response.setStatus(200);
-					response.getWriter().println(GSON.toJson(result.getData()));
+					response.getWriter().println(GSON.toJson(result));
 				} else {
 					response.sendError(result.getErrorCode(), result.getMessage());
 				}

@@ -39,6 +39,14 @@ public class ProvinceDto {
         this.prefix = prefix;
     }
 
+    public List<DistrictDto> getDistricts() {
+        return districts;
+    }
+
+    public void setDistricts(List<DistrictDto> districts) {
+        this.districts = districts;
+    }
+
     public static ProvinceDto createFromEntity(Province src) {
         ProvinceDto dest = new ProvinceDto();
 
@@ -47,9 +55,7 @@ public class ProvinceDto {
         dest.prefix = src.getPrefix();
 
         if (src.getDistricts() != null) {
-            for (District district : src.getDistricts()) {
-                dest.districts.add(DistrictDto.createFromEntity(district));
-            }
+            for (District district : src.getDistricts()) dest.districts.add(DistrictDto.createFromEntity(district));
         }
 
         return dest;

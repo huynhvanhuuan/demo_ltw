@@ -15,15 +15,38 @@ import java.util.List;
 
 public class AddressServiceImpl implements AddressService {
 	private final AddressDAO addressDAO;
-	private final ProvinceDAO provinceDAO;
 	private final DistrictDAO districtDAO;
 	private final WardDAO wardDAO;
 	
 	public AddressServiceImpl() {
+
 		this.addressDAO = new AddressDAOImpl();
-		this.provinceDAO = new ProvinceDAOImpl();
 		this.districtDAO = new DistrictDAOImpl();
 		this.wardDAO = new WardDAOImpl();
+
+		((AddressDAOImpl) addressDAO).setDistrictDAO(districtDAO);
+		((AddressDAOImpl) addressDAO).setWardDAO(wardDAO);
+
+		((DistrictDAOImpl) districtDAO).setProvinceDAO(new ProvinceDAOImpl());
+		((DistrictDAOImpl) districtDAO).setWardDAO(wardDAO);
+		((WardDAOImpl) wardDAO).setDistrictDAO(districtDAO);
+	}
+
+	@Override
+	public AppServiceResult<List<AddressDto>> getAddresses() {
+		try {
+			List<Address> entities = addressDAO.findAll();
+
+			List<AddressDto> result = new ArrayList<>();
+
+			entities.forEach(entity -> result.add(AddressDto.createFromEntity(entity)));
+
+			return new AppServiceResult<>(true, 0, "Succeed!", result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
+					AppError.Unknown.errorMessage(), null);
+		}
 	}
 
 	@Override
@@ -229,108 +252,6 @@ public class AddressServiceImpl implements AddressService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
-		}
-	}
-
-	@Override
-	public AppServiceResult<List<ProvinceDto>> getProvinces() {
-		try {
-			List<Province> entities = provinceDAO.findAll();
-
-			List<ProvinceDto> result = new ArrayList<>();
-
-			entities.forEach(entity -> result.add(ProvinceDto.createFromEntity(entity)));
-
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-					AppError.Unknown.errorMessage(), null);
-		}
-	}
-
-	@Override
-	public AppServiceResult<ProvinceDto> getProvinceById(Long provinceId) {
-		try {
-			Province province = provinceDAO.findById(provinceId);
-
-			if (province == null)
-				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
-						"Province id is not exist: " + provinceId, null);
-
-			return new AppServiceResult<>(true, 0, "Succeed!", ProvinceDto.createFromEntity(province));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-					AppError.Unknown.errorMessage(), null);
-		}
-	}
-
-	@Override
-	public AppServiceResult<List<DistrictDto>> getDistricts() {
-		try {
-			List<District> entities = districtDAO.findAll();
-
-			List<DistrictDto> result = new ArrayList<>();
-
-			entities.forEach(entity -> result.add(DistrictDto.createFromEntity(entity)));
-
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-					AppError.Unknown.errorMessage(), null);
-		}
-	}
-
-	@Override
-	public AppServiceResult<DistrictDto> getDistrictById(Long districtId) {
-		try {
-			District district = districtDAO.findById(districtId);
-
-			if (district == null)
-				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
-						"District id is not exist: " + districtId, null);
-
-			return new AppServiceResult<>(true, 0, "Succeed!", DistrictDto.createFromEntity(district));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-					AppError.Unknown.errorMessage(), null);
-		}
-	}
-
-	@Override
-	public AppServiceResult<List<WardDto>> getWards() {
-		try {
-			List<Ward> entities = wardDAO.findAll();
-
-			List<WardDto> result = new ArrayList<>();
-
-			entities.forEach(entity -> result.add(WardDto.createFromEntity(entity)));
-
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-					AppError.Unknown.errorMessage(), null);
-		}
-	}
-
-	@Override
-	public AppServiceResult<WardDto> getWardById(Long wardId) {
-		try {
-			Ward ward = wardDAO.findById(wardId);
-
-			if (ward == null)
-				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
-						"Ward id is not exist: " + wardId, null);
-
-			return new AppServiceResult<>(true, 0, "Succeed!", WardDto.createFromEntity(ward));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-					AppError.Unknown.errorMessage(), null);
 		}
 	}
 }

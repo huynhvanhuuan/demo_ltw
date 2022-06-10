@@ -35,7 +35,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 			}
 		} catch (SQLException e) {
 			connectionPool.releaseConnection(connection);
-			return categories;
+			return null;
 		}
 		connectionPool.releaseConnection(connection);
 		return categories;
@@ -57,7 +57,8 @@ public class CategoryDAOImpl implements CategoryDAO {
 				category = new Category(id, sku, name, active);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			connectionPool.releaseConnection(connection);
+			return null;
 		}
 		connectionPool.releaseConnection(connection);
 		return category;
@@ -124,7 +125,8 @@ public class CategoryDAOImpl implements CategoryDAO {
 				category = new Category(id, sku, name, active);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			connectionPool.releaseConnection(connection);
+			return null;
 		}
 		connectionPool.releaseConnection(connection);
 		return category;
@@ -146,7 +148,8 @@ public class CategoryDAOImpl implements CategoryDAO {
 				category = new Category(id, sku, name, active);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			connectionPool.releaseConnection(connection);
+			return null;
 		}
 		connectionPool.releaseConnection(connection);
 		return category;

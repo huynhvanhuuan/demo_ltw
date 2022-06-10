@@ -15,11 +15,14 @@ public class TrademarkDAOImpl implements TrademarkDAO {
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private final AddressDAO addressDAO;
+    private AddressDAO addressDAO;
 
     public TrademarkDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
-        addressDAO = new AddressDAOImpl();
+    }
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class TrademarkDAOImpl implements TrademarkDAO {
                 trademarks.add(trademark);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return trademarks;
         }
         connectionPool.releaseConnection(connection);
@@ -63,7 +66,7 @@ public class TrademarkDAOImpl implements TrademarkDAO {
                 trademark = new Trademark(id, name, website, addresses);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return null;
         }
         connectionPool.releaseConnection(connection);
@@ -130,7 +133,7 @@ public class TrademarkDAOImpl implements TrademarkDAO {
                 trademark = new Trademark(id, name, website, addresses);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return null;
         }
         connectionPool.releaseConnection(connection);
@@ -154,7 +157,7 @@ public class TrademarkDAOImpl implements TrademarkDAO {
                 trademark = new Trademark(id, name, website, addresses);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return null;
         }
         connectionPool.releaseConnection(connection);

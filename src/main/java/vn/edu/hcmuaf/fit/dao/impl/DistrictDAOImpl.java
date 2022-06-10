@@ -41,8 +41,8 @@ public class DistrictDAOImpl implements DistrictDAO {
                 String prefix = rs.getString("prefix");
                 Province province = provinceDAO.findById(rs.getLong("province_id"));
                 Set<Ward> wards = new HashSet<>(wardDAO.findByDistrictId(id));
-
                 District district = new District(id, name, prefix, province, wards);
+
                 districts.add(district);
             }
         } catch (SQLException e) {
@@ -61,9 +61,7 @@ public class DistrictDAOImpl implements DistrictDAO {
             PreparedStatement statement = connection.prepareStatement(QUERY.DISTRICT.FIND_BY_ID);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
-
             if (!rs.isBeforeFirst() && rs.getRow() == 0) return null;
-
             if (rs.next()) {
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
@@ -102,8 +100,9 @@ public class DistrictDAOImpl implements DistrictDAO {
                 long id = rs.getLong("id");
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
+                Set<Ward> wards = new HashSet<>(wardDAO.findByDistrictId(id));
 
-                District district = new District(id, name, prefix, province, new HashSet<>(wardDAO.findByDistrictId(id)));
+                District district = new District(id, name, prefix, province, wards);
                 districts.add(district);
             }
         } catch (SQLException e) {

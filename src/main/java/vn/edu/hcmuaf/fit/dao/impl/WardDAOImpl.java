@@ -58,14 +58,13 @@ public class WardDAOImpl implements WardDAO {
             PreparedStatement statement = connection.prepareStatement(QUERY.WARD.FIND_BY_ID);
             statement.setLong(1, id);
             ResultSet rs = statement.executeQuery();
-
             if (!rs.isBeforeFirst() && rs.getRow() == 0) return null;
-
             if (rs.next()) {
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
+                District district = districtDAO.findById(rs.getLong("district_id"));
 
-                ward = new Ward(id, name, prefix, null);
+                ward = new Ward(id, name, prefix, district);
             }
         } catch (SQLException e) {
             connectionPool.releaseConnection(connection);
@@ -100,7 +99,7 @@ public class WardDAOImpl implements WardDAO {
             }
         } catch (SQLException e) {
             connectionPool.releaseConnection(connection);
-            return wards;
+            return null;
         }
         connectionPool.releaseConnection(connection);
         return wards;

@@ -47,8 +47,8 @@ public class ProductDAOImpl implements ProductDAO {
                 products.add(product);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return products;
+            connectionPool.releaseConnection(connection);
+            return null;
         }
         connectionPool.releaseConnection(connection);
         return products;

@@ -50,7 +50,8 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				productDetailList.add(productDetail);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			connectionPool.releaseConnection(connection);
+			return null;
 		}
 		connectionPool.releaseConnection(connection);
 		return productDetailList;
@@ -79,7 +80,8 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				productDetail = new ProductDetail(id, sku, product, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			connectionPool.releaseConnection(connection);
+			return null;
 		}
 		connectionPool.releaseConnection(connection);
 		return productDetail;
@@ -128,7 +130,8 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				productDetailList.add(productDetail);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			connectionPool.releaseConnection(connection);
+			return null;
 		}
 		connectionPool.releaseConnection(connection);
 		return productDetailList;
@@ -157,7 +160,8 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				productDetail = new ProductDetail(id, sku, product, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			connectionPool.releaseConnection(connection);
+			return null;
 		}
 		connectionPool.releaseConnection(connection);
 		return productDetail;

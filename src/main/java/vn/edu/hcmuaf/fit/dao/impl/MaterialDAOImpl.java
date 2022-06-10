@@ -33,7 +33,7 @@ public class MaterialDAOImpl implements MaterialDAO {
             }
         } catch (SQLException e) {
             connectionPool.releaseConnection(connection);
-            return materials;
+            return null;
         }
         connectionPool.releaseConnection(connection);
         return materials;

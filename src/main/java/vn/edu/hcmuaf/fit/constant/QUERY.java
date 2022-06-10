@@ -34,7 +34,7 @@ public class QUERY {
     /* MATERIAL */
     public static class MATERIAL {
         public static final String FIND_ALL = "select * from material";
-        public static final String FIND_BY_ID = "select * from material where sku = ?";
+        public static final String FIND_BY_ID = "select * from material where id = ?";
     }
 
     /* CATEGORY */

@@ -31,7 +31,7 @@ public class WardAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         String pathInfo = request.getPathInfo();
         try {
-            if (pathInfo == null) {
+            if (pathInfo == null || pathInfo.equals("/")) {
                 String districtId = request.getParameter("districtId");
                 AppServiceResult<List<WardDto>> result = wardService.getWards(districtId == null ? 0 : Long.parseLong(districtId));
                 if (result.isSuccess()) {

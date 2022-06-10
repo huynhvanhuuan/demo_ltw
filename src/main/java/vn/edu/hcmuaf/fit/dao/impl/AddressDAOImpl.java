@@ -14,13 +14,25 @@ public class AddressDAOImpl implements AddressDAO {
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private final DistrictDAO districtDAO;
-    private final WardDAO wardDAO;
+    private DistrictDAO districtDAO;
+    private WardDAO wardDAO;
 
     public AddressDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
         this.districtDAO = new DistrictDAOImpl();
         this.wardDAO = new WardDAOImpl();
+
+        ((DistrictDAOImpl) districtDAO).setProvinceDAO(new ProvinceDAOImpl());
+        ((DistrictDAOImpl) districtDAO).setWardDAO(wardDAO);
+        ((WardDAOImpl) wardDAO).setDistrictDAO(districtDAO);
+    }
+
+    public void setDistrictDAO(DistrictDAO districtDAO) {
+        this.districtDAO = districtDAO;
+    }
+
+    public void setWardDAO(WardDAO wardDAO) {
+        this.wardDAO = wardDAO;
     }
 
     @Override
@@ -87,9 +99,8 @@ public class AddressDAOImpl implements AddressDAO {
     @Override
     public List<Address> findByTrademarkId(Long trademarkId) {
         List<Address> addresses = new ArrayList<>();
+        connection = connectionPool.getConnection();
         try {
-            connection = connectionPool.getConnection();
-            connectionPool.releaseConnection(connection);
             PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.FIND_BY_TRADEMARK_ID);
             statement.setLong(1, trademarkId);
             ResultSet rs = statement.executeQuery();
@@ -105,9 +116,10 @@ public class AddressDAOImpl implements AddressDAO {
                 addresses.add(address);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return addresses;
+            connectionPool.releaseConnection(connection);
+            return null;
         }
+        connectionPool.releaseConnection(connection);
         return addresses;
     }
     
@@ -131,8 +143,8 @@ public class AddressDAOImpl implements AddressDAO {
                 addresses.add(address);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return addresses;
+            connectionPool.releaseConnection(connection);
+            return null;
         }
         connectionPool.releaseConnection(connection);
         return addresses;
@@ -157,7 +169,7 @@ public class AddressDAOImpl implements AddressDAO {
                 address = new Address(id, number, street, ward, district, path);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return null;
         }
         connectionPool.releaseConnection(connection);

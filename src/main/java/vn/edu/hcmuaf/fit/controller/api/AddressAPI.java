@@ -35,6 +35,56 @@ public class AddressAPI extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		String pathInfo = request.getPathInfo();
+		long id;
+		try {
+			if (pathInfo == null || pathInfo.equals("/")) {
+				AppServiceResult<List<AddressDto>> result = addressService.getAddresses();
+				if (result.isSuccess()) {
+					response.setStatus(200);
+					response.getWriter().write(GSON.toJson(result));
+				} else {
+					response.sendError(result.getErrorCode(), result.getMessage());
+				}
+			} else if (pathInfo.contains("/t")) {
+				id = Long.parseLong(pathInfo.substring(3));
+				doGetTrademarkAddress(response, id);
+			} else if (pathInfo.contains("/u")) {
+				id = Long.parseLong(pathInfo.substring(3));
+				doGetUserAddress(response, id);
+			} else {
+				id = Long.parseLong(pathInfo.substring(1));
+				AppServiceResult<AddressDto> result = addressService.getAddress(id);
+				if (result.isSuccess()) {
+					response.setStatus(200);
+					response.getWriter().write(GSON.toJson(result));
+				} else {
+					response.sendError(result.getErrorCode(), result.getMessage());
+				}
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
+		}
+	}
+
+	public void doGetTrademarkAddress(HttpServletResponse response, Long trademarkId) throws IOException {
+		AppServiceResult<List<AddressDto>> result = addressService.getAddressByTrademarkId(trademarkId);
+		if (result.isSuccess()) {
+			response.setStatus(200);
+			response.getWriter().println(GSON.toJson(result.getData()));
+		} else {
+			response.sendError(result.getErrorCode(), result.getMessage());
+		}
+	}
+
+	private void doGetUserAddress(HttpServletResponse response, Long userId) throws IOException {
+		AppServiceResult<List<AddressDto>> result = addressService.getAddressByUserId(userId);
+		if (result.isSuccess()) {
+			response.setStatus(200);
+			response.getWriter().println(GSON.toJson(result.getData()));
+		} else {
+			response.sendError(result.getErrorCode(), result.getMessage());
+		}
 	}
 
 	@Override

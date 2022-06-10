@@ -168,15 +168,10 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public AppServiceResult<List<WardDto>> getWards(Long districtId) {
         try {
-            District district = districtDAO.findById(districtId);
-
             List<Ward> wards = districtId == 0 ? wardDAO.findAll() : wardDAO.findByDistrictId(districtId);
             List<WardDto> result = new ArrayList<>();
 
-            wards.forEach(ward -> {
-                ward.setDistrict(district);
-                result.add(WardDto.createFromEntity(ward));
-            });
+            wards.forEach(ward -> result.add(WardDto.createFromEntity(ward)));
 
             return new AppServiceResult<>(true, 0, "Succeed!", result);
         } catch (Exception e) {
