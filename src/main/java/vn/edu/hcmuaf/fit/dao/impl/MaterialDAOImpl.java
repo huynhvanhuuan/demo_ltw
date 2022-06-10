@@ -32,7 +32,7 @@ public class MaterialDAOImpl implements MaterialDAO {
                 materials.add(material);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return materials;
         }
         connectionPool.releaseConnection(connection);
@@ -53,7 +53,7 @@ public class MaterialDAOImpl implements MaterialDAO {
                 material = new Material(id, name);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return null;
         }
         connectionPool.releaseConnection(connection);

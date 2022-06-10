@@ -1,25 +1,21 @@
 package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.constant.QUERY;
-import vn.edu.hcmuaf.fit.dao.*;
+import vn.edu.hcmuaf.fit.dao.DistrictDAO;
 import vn.edu.hcmuaf.fit.database.IConnectionPool;
-import vn.edu.hcmuaf.fit.entity.*;
+import vn.edu.hcmuaf.fit.entity.District;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DistrictDAOImpl implements DistrictDAO {
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private final ProvinceDAO provinceDAO;
-    private final WardDAO wardDAO;
-
     public DistrictDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
-        this.provinceDAO = new ProvinceDAOImpl();
-        this.wardDAO = new WardDAOImpl();
     }
 
     @Override
@@ -33,16 +29,15 @@ public class DistrictDAOImpl implements DistrictDAO {
                 long id = rs.getLong("id");
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
-                Province province = provinceDAO.findById(rs.getLong("province_id"));
-                Set<Ward> wards = new HashSet<>(wardDAO.findByDistrictId(id));
 
-                District district = new District(id, name, prefix, province, wards);
+                District district = new District(id, name, prefix, null, null);
                 districts.add(district);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return districts;
         }
+        connectionPool.releaseConnection(connection);
         return districts;
     }
 
@@ -59,10 +54,8 @@ public class DistrictDAOImpl implements DistrictDAO {
             if (rs.next()) {
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
-                Province province = provinceDAO.findById(rs.getLong("province_id"));
-                Set<Ward> wards = new HashSet<>(wardDAO.findByDistrictId(id));
 
-                district = new District(id, name, prefix, province, wards);
+                district = new District(id, name, prefix, null, null);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,7 +75,7 @@ public class DistrictDAOImpl implements DistrictDAO {
     }
 
     @Override
-    public List<District> findByProvinceId(long provinceId) {
+    public List<District> findByProvinceId(Long provinceId) {
         List<District> districts = new ArrayList<>();
         connection = connectionPool.getConnection();
         try {
@@ -93,16 +86,15 @@ public class DistrictDAOImpl implements DistrictDAO {
                 long id = rs.getLong("id");
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
-                Province province = provinceDAO.findById(provinceId);
-                Set<Ward> wards = new HashSet<>(wardDAO.findByDistrictId(id));
 
-                District district = new District(id, name, prefix, province, wards);
+                District district = new District(id, name, prefix, null, null);
                 districts.add(district);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return districts;
         }
+        connectionPool.releaseConnection(connection);
         return districts;
     }
 }

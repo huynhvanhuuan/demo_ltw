@@ -9,7 +9,7 @@ import java.util.List;
 public interface AddressService {
 	AppServiceResult<List<AddressDto>> getAddressByTrademarkId(Long trademarkId);
 	AppServiceResult<List<AddressDto>> getAddressByUserId(Long userId);
-	AppServiceResult<AddressDto> getAddressById(Long id);
+	AppServiceResult<AddressDto> getAddress(Long id);
 	AppServiceResult<AddressDto> getAddressByPath(String path);
 	AppServiceResult<AddressDto> createAddress(AddressCreate address);
 	AppBaseResult updateAddress(AddressUpdate address);

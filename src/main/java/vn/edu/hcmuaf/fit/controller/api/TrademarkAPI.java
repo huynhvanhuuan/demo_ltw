@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import vn.edu.hcmuaf.fit.constant.AppError;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
-import vn.edu.hcmuaf.fit.dto.category.*;
+import vn.edu.hcmuaf.fit.dto.category.CategoryUpdate;
 import vn.edu.hcmuaf.fit.dto.trademark.*;
 import vn.edu.hcmuaf.fit.service.TrademarkService;
 import vn.edu.hcmuaf.fit.service.impl.TrademarkServiceImpl;
@@ -44,7 +44,7 @@ public class TrademarkAPI extends HttpServlet {
 			}
 		} else {
 			try {
-				Long id = Long.valueOf(pathInfo.substring(1));
+				Long id = Long.parseLong(pathInfo.substring(1));
 				AppServiceResult<TrademarkDto> result = trademarkService.getTrademark(id);
 				if (result.isSuccess()) {
 					response.setStatus(200);
@@ -101,7 +101,7 @@ public class TrademarkAPI extends HttpServlet {
 	}
 	
 	@Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			String string = request.getParameter("ids");
 			Type type = new TypeToken<List<Long>>(){}.getType();

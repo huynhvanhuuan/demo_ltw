@@ -44,7 +44,7 @@ public class CategoryAPI extends HttpServlet {
 			}
 		} else {
 			try {
-				Long id = Long.valueOf(pathInfo.substring(1));
+				Long id = Long.parseLong(pathInfo.substring(1));
 				AppServiceResult<CategoryDto> result = categoryService.getCategory(id);
 				if (result.isSuccess()) {
 					response.setStatus(200);

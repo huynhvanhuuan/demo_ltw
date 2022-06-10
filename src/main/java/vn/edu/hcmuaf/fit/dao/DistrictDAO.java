@@ -5,5 +5,5 @@ import vn.edu.hcmuaf.fit.entity.District;
 import java.util.List;
 
 public interface DistrictDAO extends BaseDAO<District> {
-    List<District> findByProvinceId(long provinceId);
+    List<District> findByProvinceId(Long provinceId);
 }

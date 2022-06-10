@@ -1,25 +1,21 @@
 package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.constant.QUERY;
-import vn.edu.hcmuaf.fit.dao.DistrictDAO;
 import vn.edu.hcmuaf.fit.dao.ProvinceDAO;
 import vn.edu.hcmuaf.fit.database.IConnectionPool;
-import vn.edu.hcmuaf.fit.entity.District;
 import vn.edu.hcmuaf.fit.entity.Province;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProvinceDAOImpl implements ProvinceDAO {
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private final DistrictDAO districtDAO;
-
     public ProvinceDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
-        this.districtDAO = new DistrictDAOImpl();
     }
 
     @Override
@@ -33,14 +29,13 @@ public class ProvinceDAOImpl implements ProvinceDAO {
                 long id = rs.getLong("id");
                 String prefix = rs.getString("prefix");
                 String name = rs.getString("name");
-                Set<District> districts = new HashSet<>(districtDAO.findByProvinceId(id));
 
-                Province province = new Province(id, prefix, name, districts);
+                Province province = new Province(id, prefix, name, null);
                 provinces.add(province);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return provinces;
+            connectionPool.releaseConnection(connection);
+            return null;
         }
         connectionPool.releaseConnection(connection);
         return provinces;
@@ -57,12 +52,11 @@ public class ProvinceDAOImpl implements ProvinceDAO {
             if (rs.next()) {
                 String prefix = rs.getString("prefix");
                 String name = rs.getString("name");
-                Set<District> districts = new HashSet<>(districtDAO.findByProvinceId(id));
 
-                province = new Province(id, prefix, name, districts);
+                province = new Province(id, prefix, name, null);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return null;
         }
         connectionPool.releaseConnection(connection);

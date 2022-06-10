@@ -1,10 +1,8 @@
 package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.constant.QUERY;
-import vn.edu.hcmuaf.fit.dao.DistrictDAO;
 import vn.edu.hcmuaf.fit.dao.WardDAO;
 import vn.edu.hcmuaf.fit.database.IConnectionPool;
-import vn.edu.hcmuaf.fit.entity.District;
 import vn.edu.hcmuaf.fit.entity.Ward;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
@@ -16,11 +14,8 @@ public class WardDAOImpl implements WardDAO {
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private final DistrictDAO districtDAO;
-
     public WardDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
-        this.districtDAO = new DistrictDAOImpl();
     }
 
     @Override
@@ -34,13 +29,12 @@ public class WardDAOImpl implements WardDAO {
                 long id = rs.getLong("id");
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
-                District district = districtDAO.findById(rs.getLong("district_id"));
-                Ward ward = new Ward(id, name, prefix, district);
+                Ward ward = new Ward(id, name, prefix, null);
                 wards.add(ward);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            return wards;
+            connectionPool.releaseConnection(connection);
+            return null;
         }
         connectionPool.releaseConnection(connection);
         return wards;
@@ -60,12 +54,11 @@ public class WardDAOImpl implements WardDAO {
             if (rs.next()) {
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
-                District district = districtDAO.findById(rs.getLong("district_id"));
 
-                ward = new Ward(id, name, prefix, district);
+                ward = new Ward(id, name, prefix, null);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return null;
         }
         connectionPool.releaseConnection(connection);
@@ -84,7 +77,6 @@ public class WardDAOImpl implements WardDAO {
 
     @Override
     public List<Ward> findByDistrictId(Long districtId) {
-        District district = districtDAO.findById(districtId);
         List<Ward> wards = new ArrayList<>();
         connection = connectionPool.getConnection();
         try {
@@ -96,11 +88,11 @@ public class WardDAOImpl implements WardDAO {
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
 
-                Ward ward = new Ward(id, name, prefix, district);
+                Ward ward = new Ward(id, name, prefix, null);
                 wards.add(ward);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return wards;
         }
         connectionPool.releaseConnection(connection);

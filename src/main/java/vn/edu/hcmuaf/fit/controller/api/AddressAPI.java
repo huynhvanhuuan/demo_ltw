@@ -6,9 +6,10 @@ import com.google.gson.reflect.TypeToken;
 import vn.edu.hcmuaf.fit.constant.AppError;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
-import vn.edu.hcmuaf.fit.dto.category.*;
-import vn.edu.hcmuaf.fit.service.CategoryService;
-import vn.edu.hcmuaf.fit.service.impl.CategoryServiceImpl;
+import vn.edu.hcmuaf.fit.dto.address.*;
+import vn.edu.hcmuaf.fit.dto.category.CategoryUpdate;
+import vn.edu.hcmuaf.fit.service.AddressService;
+import vn.edu.hcmuaf.fit.service.impl.AddressServiceImpl;
 import vn.edu.hcmuaf.fit.util.StringUtil;
 
 import javax.servlet.ServletException;
@@ -22,11 +23,11 @@ import java.util.Locale;
 @WebServlet(name = "api-address", urlPatterns = "/api/address/*")
 public class AddressAPI extends HttpServlet {
 	private final Gson GSON = new GsonBuilder().create();
-	private CategoryService categoryService;
+	private AddressService addressService;
 	
 	@Override
 	public void init() throws ServletException {
-		categoryService = new CategoryServiceImpl();
+		addressService = new AddressServiceImpl();
 	}
 	
 	@Override
@@ -34,85 +35,8 @@ public class AddressAPI extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		String pathInfo = request.getPathInfo();
-		switch (pathInfo) {
-		}
 	}
 
-	private void doGetProvince(HttpServletRequest request, HttpServletResponse response, String pathInfo) throws IOException {
-		if (pathInfo == null) {
-			AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
-			if (result.isSuccess()) {
-				response.setStatus(200);
-				response.getWriter().println(GSON.toJson(result.getData()));
-			} else {
-				response.sendError(result.getErrorCode(), result.getMessage());
-			}
-		} else {
-			try {
-				Long id = Long.valueOf(pathInfo.substring(1));
-				AppServiceResult<CategoryDto> result = categoryService.getCategory(id);
-				if (result.isSuccess()) {
-					response.setStatus(200);
-					response.getWriter().println(GSON.toJson(result.getData()));
-				} else {
-					response.sendError(result.getErrorCode(), result.getMessage());
-				}
-			} catch (NumberFormatException e) {
-				response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
-			}
-		}
-	}
-
-	private void doGetDistrict(HttpServletRequest request, HttpServletResponse response, String pathInfo) throws IOException {
-		if (pathInfo == null) {
-			AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
-			if (result.isSuccess()) {
-				response.setStatus(200);
-				response.getWriter().println(GSON.toJson(result.getData()));
-			} else {
-				response.sendError(result.getErrorCode(), result.getMessage());
-			}
-		} else {
-			try {
-				Long id = Long.valueOf(pathInfo.substring(1));
-				AppServiceResult<CategoryDto> result = categoryService.getCategory(id);
-				if (result.isSuccess()) {
-					response.setStatus(200);
-					response.getWriter().println(GSON.toJson(result.getData()));
-				} else {
-					response.sendError(result.getErrorCode(), result.getMessage());
-				}
-			} catch (NumberFormatException e) {
-				response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
-			}
-		}
-	}
-
-	private void doGetWard(HttpServletRequest request, HttpServletResponse response, String pathInfo) throws IOException {
-		if (pathInfo == null) {
-			AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
-			if (result.isSuccess()) {
-				response.setStatus(200);
-				response.getWriter().println(GSON.toJson(result.getData()));
-			} else {
-				response.sendError(result.getErrorCode(), result.getMessage());
-			}
-		} else {
-			try {
-				Long id = Long.valueOf(pathInfo.substring(1));
-				AppServiceResult<CategoryDto> result = categoryService.getCategory(id);
-				if (result.isSuccess()) {
-					response.setStatus(200);
-					response.getWriter().println(GSON.toJson(result.getData()));
-				} else {
-					response.sendError(result.getErrorCode(), result.getMessage());
-				}
-			} catch (NumberFormatException e) {
-				response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
-			}
-		}
-	}
-	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
@@ -121,9 +45,9 @@ public class AddressAPI extends HttpServlet {
 		String name = request.getParameter("name");
 		String sku = StringUtil.toStringWithoutSpaces(name).toUpperCase(Locale.ROOT);
 		
-		CategoryCreate newCategory = new CategoryCreate(sku, name);
+		AddressCreate newAddress = new AddressCreate();
 		
-		AppServiceResult<CategoryDto> result = categoryService.createCategory(newCategory);
+		AppServiceResult<AddressDto> result = addressService.createAddress(newAddress);
 		if (result.isSuccess()) {
 			response.setStatus(200);
 			response.getWriter().println(GSON.toJson(result));
@@ -133,16 +57,16 @@ public class AddressAPI extends HttpServlet {
 	}
 
 	@Override
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setHeader("Content-Type", "application/json");
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		try {
 			String json = StringUtil.getStringFromInputStream(request.getInputStream());
 			Type type = new TypeToken<CategoryUpdate>() {}.getType();
-			CategoryUpdate updateCategory = GSON.fromJson(json, type);
+			AddressUpdate addressUpdate = GSON.fromJson(json, type);
 
-			AppBaseResult result = categoryService.updateCategory(updateCategory);
+			AppBaseResult result = addressService.updateAddress(addressUpdate);
 			if (result.isSuccess()) {
 				response.setStatus(200);
 				response.getWriter().println(GSON.toJson(result));
@@ -156,13 +80,13 @@ public class AddressAPI extends HttpServlet {
 	}
 	
 	@Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			String string = request.getParameter("ids");
 			Type type = new TypeToken<List<Long>>(){}.getType();
 			List<Long> ids = GSON.fromJson(string, type);
 			for (long id : ids) {
-				AppBaseResult result = categoryService.deleteCategory(id);
+				AppBaseResult result = addressService.deleteAddress(id);
 				if (result.isSuccess()) {
 					response.setStatus(200);
 					response.getWriter().println(GSON.toJson(result));

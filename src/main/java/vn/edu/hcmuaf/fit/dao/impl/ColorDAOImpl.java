@@ -32,7 +32,7 @@ public class ColorDAOImpl implements ColorDAO {
                 colors.add(color);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return colors;
         }
         connectionPool.releaseConnection(connection);
@@ -54,7 +54,7 @@ public class ColorDAOImpl implements ColorDAO {
                 color = new Color(id, name, hex);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            connectionPool.releaseConnection(connection);
             return null;
         }
         connectionPool.releaseConnection(connection);

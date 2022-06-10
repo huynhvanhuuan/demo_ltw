@@ -5,13 +5,11 @@ import vn.edu.hcmuaf.fit.dao.*;
 import vn.edu.hcmuaf.fit.dao.impl.*;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.address.*;
-import vn.edu.hcmuaf.fit.dto.category.CategoryDto;
 import vn.edu.hcmuaf.fit.dto.product.ColorDto;
 import vn.edu.hcmuaf.fit.dto.product.MaterialDto;
 import vn.edu.hcmuaf.fit.entity.*;
 import vn.edu.hcmuaf.fit.service.CommonService;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,9 +128,9 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public AppServiceResult<List<DistrictDto>> getDistricts() {
+    public AppServiceResult<List<DistrictDto>> getDistricts(Long provinceId) {
         try {
-            List<District> districts = districtDAO.findAll();
+            List<District> districts = provinceId == 0 ? districtDAO.findAll() : districtDAO.findByProvinceId(provinceId);
             List<DistrictDto> result = new ArrayList<>();
 
             districts.forEach(district -> result.add(DistrictDto.createFromEntity(district)));
@@ -163,9 +161,9 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public AppServiceResult<List<WardDto>> getWards() {
+    public AppServiceResult<List<WardDto>> getWards(Long districtId) {
         try {
-            List<Ward> wards = wardDAO.findAll();
+            List<Ward> wards = districtId == 0 ? wardDAO.findAll() : wardDAO.findByDistrictId(districtId);
             List<WardDto> result = new ArrayList<>();
 
             wards.forEach(ward -> result.add(WardDto.createFromEntity(ward)));

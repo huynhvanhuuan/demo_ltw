@@ -61,7 +61,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public AppServiceResult<AddressDto> getAddressById(Long id) {
+	public AppServiceResult<AddressDto> getAddress(Long id) {
 		try {
 			Address address = addressDAO.findById(id);
 
