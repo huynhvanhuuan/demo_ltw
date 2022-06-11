@@ -36,13 +36,60 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public AppServiceResult<ProductDto> getProductByStatus(boolean sold) {
+	public AppServiceResult<List<ProductDto>> getProducts(boolean sold) {
+		try {
+			List<Product> products = productDAO.findByStatus(sold);
+			List<ProductDto> result = new ArrayList<>();
+
+			products.forEach(product -> result.add(ProductDto.createFromEntity(product)));
+
+			return new AppServiceResult<>(true, 0, "Succeed!", result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
+					AppError.Unknown.errorMessage(), null);
+		}
+	}
+
+	@Override
+	public AppServiceResult<List<ProductDto>> getProductsByName(String name) {
+		return null;
+	}
+
+	@Override
+	public AppServiceResult<List<ProductDto>> getProductsBySize(String size) {
+		return null;
+	}
+
+	@Override
+	public AppServiceResult<List<ProductDto>> getProductsByCategoryId(Long categoryId) {
+		return null;
+	}
+
+	@Override
+	public AppServiceResult<List<ProductDto>> getProductsByTrademark(Long trademarkId) {
+		return null;
+	}
+
+	@Override
+	public AppServiceResult<List<ProductDto>> getProductsByStatus(boolean isActive) {
 		return null;
 	}
 
 	@Override
 	public AppServiceResult<ProductDto> getProduct(Long id) {
-		return null;
+		try {
+			Product product = productDAO.findById(id);
+			if (product == null) {
+				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+						AppError.Validation.errorMessage(), null);
+			}
+			return new AppServiceResult<>(true, 0, "Succeed!", ProductDto.createFromEntity(product));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
+					AppError.Unknown.errorMessage(), null);
+		}
 	}
 
 	@Override
@@ -56,12 +103,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public AppBaseResult deleteProduct(Long id) {
+	public AppServiceResult<ProductDto> updateStatus(ProductUpdate product) {
 		return null;
 	}
 
 	@Override
-	public AppServiceResult<ProductDto> updateStatus(Long id) {
+	public AppBaseResult deleteProduct(Long id) {
 		return null;
 	}
 }

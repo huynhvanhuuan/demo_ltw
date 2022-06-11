@@ -116,4 +116,35 @@ public class ProductDAOImpl implements ProductDAO {
         }
         connectionPool.releaseConnection(connection);
     }
+
+    @Override
+    public List<Product> findByStatus(boolean sold) {
+        List<Product> products = new ArrayList<>();
+        connection = connectionPool.getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT.FIND_BY_STATUS);
+            statement.setBoolean(1, sold);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                long id = rs.getLong("id");
+                String name = rs.getString("name");
+                String size = rs.getString("size");
+                String description = rs.getString("description");
+                Trademark trademark = trademarkDAO.findById(rs.getLong("trademark_id"));
+                Category category = categoryDAO.findById(rs.getLong("category_id"));
+                Date dateCreated = rs.getDate("date_created");
+                Date lastUpdated = rs.getDate("last_updated");
+                boolean active = rs.getBoolean("active");
+
+                Product product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active);
+                product.setProducts(new HashSet<>(productDetailDAO.findByProduct(product)));
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            connectionPool.releaseConnection(connection);
+            return null;
+        }
+        connectionPool.releaseConnection(connection);
+        return products;
+    }
 }

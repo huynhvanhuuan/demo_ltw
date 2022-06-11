@@ -30,7 +30,7 @@ public class ProductAPI extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         String pathInfo = request.getPathInfo();
         if (pathInfo == null || pathInfo.equals("/")) {
-            AppServiceResult<List<ProductDto>> result = productService.getProducts();
+            AppServiceResult<List<ProductDto>> result = productService.getProducts(false);
             if (result.isSuccess()) {
                 response.setStatus(200);
                 response.getWriter().println(GSON.toJson(result));

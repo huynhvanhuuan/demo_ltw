@@ -11,6 +11,7 @@ public class QUERY {
         public static final String UPDATE_STATUS = "update product set active = (case active when 1 then 0 when 0 then 1 end) where id = ?";
         public static final String DELETE = "delete from product where id = ?";
         public static final String FIND_WITH_LIMIT = "select * from product limit ?";
+        public static final String FIND_BY_STATUS = "select * from product where active = ?";
     }
 
     /* PRODUCT DETAIL */
