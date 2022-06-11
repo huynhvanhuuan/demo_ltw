@@ -8,11 +8,11 @@ import vn.edu.hcmuaf.fit.dto.product.*;
 import java.util.List;
 
 public interface ProductService {
-	AppServiceResult<List<ProductDto>> getProducts();
-	AppServiceResult<ProductDto> getProductByStatus(boolean sold);
-	AppServiceResult<ProductDto> getProduct(int id);
-	AppServiceResult<ProductDto> createProduct(ProductCreate item);
-	AppServiceResult<ProductDto> updateProduct(ProductUpdate item);
+	AppServiceResult<List<ProductDto>> getProducts(boolean sold);
+	AppServiceResult<List<ProductDto>> getProductsByPrice(boolean sold);
+	AppServiceResult<ProductDto> getProduct(Long id);
+	AppServiceResult<ProductDto> createProduct(ProductCreate product);
+	AppServiceResult<ProductDto> updateProduct(ProductUpdate product);
+	AppServiceResult<ProductDto> updateStatus(ProductUpdate product);
 	AppBaseResult deleteProduct(Long id);
-	AppServiceResult<ProductDto> updateStatus(Long id);
 }

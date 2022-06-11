@@ -17,7 +17,6 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Locale;
 
 @WebServlet(name = "api-category", urlPatterns = "/api/category/*")
 public class CategoryAPI extends HttpServlet {
@@ -64,7 +63,7 @@ public class CategoryAPI extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		
 		String name = request.getParameter("name");
-		String sku = StringUtil.toStringWithoutSpaces(name).toUpperCase(Locale.ROOT);
+		String sku = request.getParameter("sku");
 		
 		CategoryCreate newCategory = new CategoryCreate(sku, name);
 		

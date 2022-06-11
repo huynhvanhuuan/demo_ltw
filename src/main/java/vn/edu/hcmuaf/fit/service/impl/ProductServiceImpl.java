@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public AppServiceResult<ProductDto> getProduct(int id) {
+	public AppServiceResult<ProductDto> getProduct(Long id) {
 		return null;
 	}
 
