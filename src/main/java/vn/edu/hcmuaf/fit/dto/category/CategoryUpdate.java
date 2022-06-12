@@ -6,8 +6,7 @@ public class CategoryUpdate {
     private String name;
     private boolean active;
 
-    public CategoryUpdate() {
-    }
+    public CategoryUpdate() {}
 
     public CategoryUpdate(long id, String sku, String name, boolean active) {
         this.id = id;

@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 	<head>
 		<c:import url="import/management/head.jsp"/>
@@ -18,74 +18,25 @@
 								<div class="card">
 									<div class="card-body">
 										<button type="button" class="btn btn-success mr-2 float-left"
-										        data-toggle="modal" data-target="#create-modal" title="Thêm"><i
+										        data-toggle="modal" data-target="#create-modal" title="Nhấn để thêm mới"><i
 												class="fas fa-plus"></i></button>
 										<button type="button" class="btn btn-danger float-left"
-										        data-toggle="modal" data-target="#delete-modal"><i
+										        data-toggle="modal" data-target="#delete-modal" title="Nhấn để xoá"><i
 												class="fas fa-trash-alt"></i></button>
 										<table id="trademark" class="table table-bordered table-striped">
 											<thead>
 												<tr class="text-center">
-													<th class="align-middle"><input type="checkbox" name="checkBoxAll"
-													                                id="checkBoxAll"></th>
+													<th></th>
+													<th class="align-middle">
+														<input type="checkbox" name="checkBoxAll" id="checkBoxAll">
+													</th>
 													<th class="align-middle">Tên thương hiệu</th>
 													<th class="align-middle">Địa chỉ</th>
 													<th class="align-middle">Website</th>
 													<th class="align-middle">Tác vụ</th>
 												</tr>
 											</thead>
-											<tbody>
-												<jsp:useBean id="trademarks" scope="request" type="java.util.List"/>
-												<c:forEach items="${trademarks}" var="trademark">
-													<tr>
-														<td class="text-center"><input type="checkbox"
-														                               class="checkBoxId" name="id"
-														                               value="${trademark.id}"></td>
-														<td><c:out value="${trademark.name}"/></td>
-														<td>
-															<ul style="list-style-type: none; padding: 0">
-																<c:forEach items="${trademark.addresses}" var="address">
-																	<li>
-																		<input type="hidden" name="addressId"
-																		       value="${address.id}">
-																		<a href=""
-																		   class="text-danger mr-2 address-delete"
-																		   title="Xóa địa chỉ" data-toggle="modal"
-																		   data-target="#delete-address-modal">
-																			<i class="fas fa-minus-square"></i>
-																		</a>
-																		<a href="" class="text-info mr-2 address-update"
-																		   title="Sửa địa chỉ" onclick="updateAddress()"
-																		   data-toggle="modal"
-																		   data-target="#update-address-modal">
-																			<i class="fas fa-pen-square"></i>
-																		</a>
-																		<c:out value="${address.path}"/>
-																	</li>
-																</c:forEach>
-																<li>
-																	<a href="" data-toggle="modal"
-																	   data-target="#add-address-modal"
-																	   title="Thêm địa chỉ" onclick="addAddress(this)">
-																		<i class="fas fa-plus-square"></i>
-																	</a>
-																	<input type="hidden" name="id"
-																	       value="<c:out value="${trademark.id}"/>"/>
-																</li>
-															</ul>
-														</td>
-														<td><c:out value="${trademark.website}"/></td>
-														<td class="d-flex justify-content-center">
-															<input type="hidden" name="id"
-															       value="<c:out value="${trademark.id}"/>"/>
-															<button class="btn btn-warning d-block w-100 update"
-															        data-toggle="modal"
-															        data-target="#update-modal" title="Cập nhật"><i
-																	class="fas fa-edit"></i></button>
-														</td>
-													</tr>
-												</c:forEach>
-											</tbody>
+											<tbody></tbody>
 										</table>
 									</div>
 								</div>
@@ -165,29 +116,59 @@
 							</div>
 						</div>
 					</div>
+					<!-- Update status modal -->
+					<div class="modal fade" id="update-status-modal" style="display: none;" aria-hidden="true">
+						<div class="modal-dialog modal-sm">
+							<div class="modal-content card card-warning">
+								<div class="modal-header card-header">
+									<h5 class="modal-title font-weight-bolder">Cập nhật trạng thái</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								<form action="${pageContext.request.contextPath}/api/category"
+								      id="update-status" novalidate="novalidate">
+									<input type="hidden" name="id">
+									<div class="modal-body card-body">
+										<div class="form-group">
+											<label>Trạng thái</label>
+											<select name="active" class="form-control">
+												<option value="1">Kích hoạt</option>
+												<option value="0">Khóa</option>
+											</select>
+										</div>
+									</div>
+									<div class="modal-footer justify-content-between">
+										<button type="button" class="btn btn-danger font-weight-bolder"
+										        data-dismiss="modal">Đóng
+										</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 					<!-- Delete modal -->
 					<div class="modal fade" id="delete-modal" style="display: none;" aria-hidden="true">
 						<div class="modal-dialog modal-sm">
 							<div class="modal-content card card-danger">
 								<div class="modal-header card-header">
-									<h5 class="modal-title font-weight-bolder">Xác nhận xóa</h5>
+									<h5 class="modal-title font-weight-bolder">Cảnh báo</h5>
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form method="POST">
+								<form id="delete">
 									<div class="modal-body card-body">
 										<div class="form-group">
-											<span>Xác nhận xóa thương hiệu đã chọn?</span>
+											<span>Xác nhận xóa thể loại đã chọn?</span>
 										</div>
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
 										        data-dismiss="modal">Hủy
 										</button>
-										<button type="button" class="btn btn-primary font-weight-bolder"
-										        onclick="deleteTrademark()">Đồng ý
-										</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Đồng ý</button>
 									</div>
 								</form>
 							</div>
@@ -201,11 +182,11 @@
 		</div>
 		<c:import url="import/management/script.jsp"/>
 		<script>
-            const province$ = jQuery('select[name = "province"]');
-            const district$ = jQuery('select[name = "district"]');
-            const ward$ = jQuery('select[name = "ward"]');
-            const street$ = jQuery('input[name = "street"]');
-            const number$ = jQuery('input[name = "number"]');
+            const province$ = $('select[name = "province"]');
+            const district$ = $('select[name = "district"]');
+            const ward$ = $('select[name = "ward"]');
+            const street$ = $('input[name = "street"]');
+            const number$ = $('input[name = "number"]');
             let addressTitle$;
             let address = {
                 number: null,
@@ -216,13 +197,13 @@
             }
 
             function addAddress(element) {
-                let trademarkId = jQuery(element).next('input').val();
-                jQuery('#add-address input[name="trademarkId"]').val(trademarkId);
-                addressTitle$ = jQuery('#add-address-title');
+                let trademarkId = $(element).next('input').val();
+                $('#add-address input[name="trademarkId"]').val(trademarkId);
+                addressTitle$ = $('#add-address-title');
             }
 
             function updateAddress() {
-                addressTitle$ = jQuery('#update-address-title');
+                addressTitle$ = $('#update-address-title');
             }
 
             function getAddress() {
@@ -277,17 +258,17 @@
                         resetSelect("select[name = 'ward']", data);
                         if (data.length === 0) {
                             address.ward = "";
-                            jQuery('select[name = "ward"]').rules("remove", "required");
-                            jQuery('input[name = "number"]').rules("remove", "required");
+                            $('select[name = "ward"]').rules("remove", "required");
+                            $('input[name = "number"]').rules("remove", "required");
                         } else {
                             address.ward = null;
-                            jQuery('select[name = "ward"]').rules("add", {
+                            $('select[name = "ward"]').rules("add", {
                                 required: true,
                                 messages: {
                                     required: "Vui lòng chọn phường, xã"
                                 }
                             });
-                            jQuery('input[name = "number"]').rules("add", {
+                            $('input[name = "number"]').rules("add", {
                                 required: true,
                                 messages: {
                                     required: "Vui lòng nhập số nhà, lô, kios,.."
@@ -303,7 +284,7 @@
             }
 
             function resetSelect(selector, data) {
-                let select$ = jQuery(selector);
+                let select$ = $(selector);
                 select$.find('option').remove();
                 if (select$.attr('name') === 'district') select$.append('<option value="">Quận / Huyện</option>');
                 else select$.append('<option value="">Phường / Xã</option>');
@@ -319,7 +300,7 @@
             }
 
             province$.change(function () {
-                let province = jQuery(this).find('option:selected');
+                let province = $(this).find('option:selected');
                 if (province.val() === '') {
                     address.province = null;
                     address.district = null;
@@ -327,45 +308,45 @@
                     province.val(0);
                 } else if (address.province !== province.text()) {
                     address.province = province.text();
-                    jQuery(this).valid();
+                    $(this).valid();
                     address.district = null;
                     address.ward = null;
                 }
-                if (jQuery(this).val() !== 0) {
-                    getDistrictList(jQuery(this).val());
+                if ($(this).val() !== 0) {
+                    getDistrictList($(this).val());
                 }
             })
             district$.change(function () {
-                let district = jQuery(this).find('option:selected');
+                let district = $(this).find('option:selected');
                 if (district.val() === '') {
                     address.district = null;
                     address.ward = null;
                     district.val(0);
                 } else if (address.district !== district.text()) {
                     address.district = district.text();
-                    jQuery(this).valid();
+                    $(this).valid();
                 }
-                if (jQuery(this).val() !== 0) {
-                    getWardList(jQuery(this).val());
+                if ($(this).val() !== 0) {
+                    getWardList($(this).val());
                 }
             })
             ward$.change(function () {
-                let ward = jQuery(this).find('option:selected');
+                let ward = $(this).find('option:selected');
                 if (ward.val() === '') {
                     address.ward = null;
                     ward.val(0);
                 } else {
                     address.ward = ward.text();
-                    jQuery(this).valid();
+                    $(this).valid();
                 }
                 showAddress();
             })
             street$.keyup(function () {
-                address.street = jQuery(this).val().trim() !== "" ? jQuery(this).val().trim() : null;
+                address.street = $(this).val().trim() !== "" ? $(this).val().trim() : null;
                 showAddress();
             })
             number$.keyup(function () {
-                address.number = jQuery(this).val().trim() !== "" ? jQuery(this).val().trim() : null;
+                address.number = $(this).val().trim() !== "" ? $(this).val().trim() : null;
                 showAddress();
             })
 		</script>
@@ -390,15 +371,15 @@
             function checkValid(type) {
                 let valid, name, oldName, website, oldWebsite;
                 if (type === 'create') {
-                    valid = jQuery('#create').valid();
-                    name = jQuery('#create-modal input[name="name"]').val();
-                    website = jQuery('#create-modal input[name="website"]').val();
+                    valid = $('#create').valid();
+                    name = $('#create-modal input[name="name"]').val();
+                    website = $('#create-modal input[name="website"]').val();
                 } else {
-                    valid = jQuery('#update').valid();
-                    oldName = jQuery('#update-modal input[name="old_name"]').val();
-                    oldWebsite = jQuery('#update-modal input[name="old_website"]').val();
-                    name = jQuery('#update-modal input[name="name"]').val();
-                    website = jQuery('#update-modal input[name="website"]').val();
+                    valid = $('#update').valid();
+                    oldName = $('#update-modal input[name="old_name"]').val();
+                    oldWebsite = $('#update-modal input[name="old_website"]').val();
+                    name = $('#update-modal input[name="name"]').val();
+                    website = $('#update-modal input[name="website"]').val();
                 }
                 if (valid) {
                     $.ajax({
@@ -407,7 +388,7 @@
                         data: {name: name, website: website},
                         success: function (data) {
                             if (type === 'update' && oldName === name && oldWebsite === website) {
-                                jQuery("#update").submit();
+                                $("#update").submit();
                             } else if (data.statusCode === 1) {
                                 if (oldName === name) {
                                     $.ajax({
@@ -420,7 +401,7 @@
                                                     icon: 'error',
                                                     title: data.message,
                                                 })
-                                            } else jQuery("#update").submit();
+                                            } else $("#update").submit();
                                         }
                                     })
                                 } else
@@ -430,7 +411,7 @@
                                     })
                             } else {
                                 if (type === 'create') {
-                                    jQuery("#create").submit();
+                                    $("#create").submit();
                                 } else {
                                     getListNameHasProduct().done(function (data) {
                                         if (data.includes(oldName) && confirm('Tồn tại sản phẩm chứa thương hiệu này.\nCập nhật sẽ làm thay đổi tất cả sản phẩm liên quan. Xác nhận tiếp tục?')) {
@@ -439,10 +420,10 @@
                                                 title: "Đã cập nhật thương hiệu các sản phẩm liên quan",
                                             })
                                             setTimeout(function () {
-                                                jQuery("#update").submit();
+                                                $("#update").submit();
                                             }, 1000);
                                         } else {
-                                            jQuery("#update").submit();
+                                            $("#update").submit();
                                         }
                                     })
                                 }
@@ -455,12 +436,12 @@
             function checkValidAddress(type) {
                 let valid, path, oldPath;
                 if (type === 'add-address') {
-                    valid = jQuery('#add-address').valid();
-                    path = jQuery('#add-address-title').text();
+                    valid = $('#add-address').valid();
+                    path = $('#add-address-title').text();
                 } else {
-                    valid = jQuery('#update-address').valid();
-                    oldPath = jQuery('#update-address input[name="old_path"]').val();
-                    path = jQuery('#update-address-title').text();
+                    valid = $('#update-address').valid();
+                    oldPath = $('#update-address input[name="old_path"]').val();
+                    path = $('#update-address-title').text();
                 }
                 if (valid) {
                     $.ajax({
@@ -469,7 +450,7 @@
                         data: {path: path},
                         success: function (data) {
                             if (type === 'update-address' && path === oldPath) {
-                                jQuery("#update-address").submit();
+                                $("#update-address").submit();
                             } else if (data.statusCode === 1) {
                                 Toast.fire({
                                     icon: 'error',
@@ -482,7 +463,7 @@
                                         title: "\tTạo địa chỉ thành công",
                                     })
                                     setTimeout(function () {
-                                        jQuery("#add-address").submit();
+                                        $("#add-address").submit();
                                     }, 1000);
                                 } else {
                                     Toast.fire({
@@ -490,7 +471,7 @@
                                         title: "\tĐã cập nhật địa chỉ thành công",
                                     })
                                     setTimeout(function () {
-                                        jQuery("#update-address").submit();
+                                        $("#update-address").submit();
                                     }, 1000);
                                 }
                             }
@@ -501,9 +482,9 @@
 
             function deleteTrademark() {
                 let ids = [];
-                jQuery('.checkBoxId').each(function () {
-                    if (jQuery(this).is(":checked")) {
-                        ids.push(jQuery(this).val());
+                $('.checkBoxId').each(function () {
+                    if ($(this).is(":checked")) {
+                        ids.push($(this).val());
                     }
                 })
                 $.ajax({
@@ -529,14 +510,9 @@
                 })
             }
 
-            jQuery(function () {
-                const create$ = jQuery('#create');
-                const update$ = jQuery('#update');
-                const addAddress$ = jQuery('#add-address');
-                const updateAddress$ = jQuery('#update-address');
-
-                jQuery(".modal").on('hide.bs.modal', function () {
-                    jQuery(':input', 'form')
+            $(function () {
+                $(".modal").on('hide.bs.modal', function () {
+                    $(':input', 'form')
                         .not(':button, :submit, :reset, :hidden')
                         .val('')
                         .prop('checked', false)
@@ -549,12 +525,12 @@
                 });
 
                 // Select2
-                jQuery('.select2bs4').select2({
+                $('.select2bs4').select2({
                     theme: 'bootstrap4'
                 })
 
                 // Datatables
-                jQuery("#trademark").DataTable({
+                $("#trademark").DataTable({
                     "responsive": true, "lengthChange": false, "autoWidth": false, "pageLength": 7,
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
                     "order": [[1, "asc"]],
@@ -583,8 +559,8 @@
                         }
                     ],
                     "drawCallback": function () {
-                        jQuery('.update').on('click', function () {
-                            let id = jQuery(this).parent().find('input[name = "id"]').val();
+                        $('.update').on('click', function () {
+                            let id = $(this).parent().find('input[name = "id"]').val();
                             $.ajax({
                                 type: "GET",
                                 url: '${pageContext.request.contextPath}/admin/trademark?action=get',
@@ -592,20 +568,20 @@
                                 dataType: "json",
                                 contentType: "application/json",
                                 success: function (data) {
-                                    jQuery('#update-modal input[name = "id"]').val(data.id);
-                                    jQuery('#update-modal input[name = "name"]').val(data.name);
-                                    jQuery('#update-modal input[name = "old_name"]').val(data.name);
-                                    jQuery('#update-modal input[name = "website"]').val(data.website);
-                                    jQuery('#update-modal input[name = "old_website"]').val(data.website);
+                                    $('#update-modal input[name = "id"]').val(data.id);
+                                    $('#update-modal input[name = "name"]').val(data.name);
+                                    $('#update-modal input[name = "old_name"]').val(data.name);
+                                    $('#update-modal input[name = "website"]').val(data.website);
+                                    $('#update-modal input[name = "old_website"]').val(data.website);
                                 }
                             })
                         });
-                        jQuery('.address-delete').on('click', function () {
-                            let id = jQuery(this).parent().find('input[name="addressId"]').val();
-                            jQuery('#delete-address-modal input[name ="id"]').val(id);
+                        $('.address-delete').on('click', function () {
+                            let id = $(this).parent().find('input[name="addressId"]').val();
+                            $('#delete-address-modal input[name ="id"]').val(id);
                         });
-                        jQuery('.address-update').on('click', function () {
-                            let id = jQuery(this).parent().find('input[name="addressId"]').val();
+                        $('.address-update').on('click', function () {
+                            let id = $(this).parent().find('input[name="addressId"]').val();
                             $.ajax({
                                 type: "GET",
                                 url: '${pageContext.request.contextPath}/admin/address?action=get',
@@ -613,17 +589,17 @@
                                 dataType: "json",
                                 contentType: "application/json",
                                 success: function (data) {
-                                    jQuery('#update-address-modal input[name="id"]').val(data.id);
-                                    jQuery('#update-address-modal select[name="province"]').val(data.district.province.id).trigger('change');
+                                    $('#update-address-modal input[name="id"]').val(data.id);
+                                    $('#update-address-modal select[name="province"]').val(data.district.province.id).trigger('change');
                                     setTimeout(function () {
-                                        jQuery('#update-address-modal select[name="district"]').val(data.district.id).trigger('change');
+                                        $('#update-address-modal select[name="district"]').val(data.district.id).trigger('change');
                                     }, 50);
                                     setTimeout(function () {
-                                        jQuery('#update-address-modal select[name="ward"]').val(data.ward.id).trigger('change');
+                                        $('#update-address-modal select[name="ward"]').val(data.ward.id).trigger('change');
                                     }, 100);
-                                    jQuery('#update-address-modal input[name="street"]').val(data.street).trigger('keyup');
-                                    jQuery('#update-address-modal input[name="number"]').val(data.number).trigger('keyup');
-                                    jQuery('#update-address-modal input[name="old_path"]').val(data.path);
+                                    $('#update-address-modal input[name="street"]').val(data.street).trigger('keyup');
+                                    $('#update-address-modal input[name="number"]').val(data.number).trigger('keyup');
+                                    $('#update-address-modal input[name="old_path"]').val(data.path);
                                 }
                             }).done(function (data) {
                                 showAddress();
@@ -648,10 +624,10 @@
                         element.closest('.form-group').append(error);
                     },
                     highlight: function (element, errorClass, validClass) {
-                        jQuery(element).addClass('is-invalid');
+                        $(element).addClass('is-invalid');
                     },
                     unhighlight: function (element, errorClass, validClass) {
-                        jQuery(element).removeClass('is-invalid');
+                        $(element).removeClass('is-invalid');
                     }
                 });
                 let updateValidate = update$.validate({
@@ -669,13 +645,14 @@
                         element.closest('.form-group').append(error);
                     },
                     highlight: function (element, errorClass, validClass) {
-                        jQuery(element).addClass('is-invalid');
+                        $(element).addClass('is-invalid');
                     },
                     unhighlight: function (element, errorClass, validClass) {
-                        jQuery(element).removeClass('is-invalid');
+                        $(element).removeClass('is-invalid');
                     }
                 });
-                let addAddressValidate = addAddress$.validate({
+
+                let addAddressValidate = $('#create').validate({
                     rules: {
                         province: {
                             required: true,
@@ -709,10 +686,10 @@
                         element.closest('.form-group').append(error);
                     },
                     highlight: function (element, errorClass, validClass) {
-                        jQuery(element).addClass('is-invalid');
+                        $(element).addClass('is-invalid');
                     },
                     unhighlight: function (element, errorClass, validClass) {
-                        jQuery(element).removeClass('is-invalid');
+                        $(element).removeClass('is-invalid');
                     }
                 })
                 let updateAddressValidate = updateAddress$.validate({
@@ -749,15 +726,15 @@
                         element.closest('.form-group').append(error);
                     },
                     highlight: function (element, errorClass, validClass) {
-                        jQuery(element).addClass('is-invalid');
+                        $(element).addClass('is-invalid');
                     },
                     unhighlight: function (element, errorClass, validClass) {
-                        jQuery(element).removeClass('is-invalid');
+                        $(element).removeClass('is-invalid');
                     }
                 })
 
                 addAddress$.submit(function () {
-                    if (jQuery(this).valid()) {
+                    if ($(this).valid()) {
                         $.ajax({
                             type: "GET",
                             url: '${pageContext.request.contextPath}/admin/address?action=checkExistWithPath&path=' + getAddress(),
@@ -774,11 +751,11 @@
                     }
                 })
 
-                jQuery('#checkBoxAll').click(function () {
-                    if (jQuery(this).is(':checked')) {
-                        jQuery('.checkBoxId').prop('checked', true);
+                $('#checkBoxAll').click(function () {
+                    if ($(this).is(':checked')) {
+                        $('.checkBoxId').prop('checked', true);
                     } else {
-                        jQuery('.checkBoxId').prop('checked', false);
+                        $('.checkBoxId').prop('checked', false);
                     }
                 })
             });

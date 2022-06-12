@@ -16,7 +16,7 @@ public class TrademarkDAOImpl implements TrademarkDAO {
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private final AddressDAO addressDAO;
+    private AddressDAO addressDAO;
 
     private TrademarkDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
@@ -28,6 +28,13 @@ public class TrademarkDAOImpl implements TrademarkDAO {
             instance = new TrademarkDAOImpl();
         }
         return instance;
+    }
+
+    public void setAddressDAO(AddressDAO addressDAO) {
+        this.addressDAO = addressDAO;
+
+        ((AddressDAOImpl) addressDAO).setDistrictDAO(DistrictDAOImpl.getInstance());
+        ((AddressDAOImpl) addressDAO).setWardDAO(WardDAOImpl.getInstance());
     }
 
     @Override

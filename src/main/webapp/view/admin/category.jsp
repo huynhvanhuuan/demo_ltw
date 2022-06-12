@@ -28,6 +28,7 @@
 										<table id="category" class="table table-bordered table-striped">
 											<thead>
 												<tr class="text-center">
+													<th></th>
 													<th class="align-middle">
 														<input type="checkbox" name="checkBoxAll" id="checkBoxAll" title="Nhấn để chọn tất cả">
 													</th>
@@ -87,16 +88,15 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/api/category"
+								<form action="${pageContext.request.contextPath}/api/category" enctype="multipart/form-data"
 								      id="update" novalidate="novalidate">
 									<input type="hidden" name="id">
-									<input type="hidden" name="old_sku"/>
-									<input type="hidden" name="old_name"/>
+									<input type="hidden" name="active">
 									<div class="modal-body card-body">
 										<div class="form-group">
 											<label>Mã thể loại (In hoa)</label>
 											<input type="text" name="sku" class="form-control"
-											       style="text-transform:uppercase" placeholder="VD: G, GH, GHE"/>
+											       style="text-transform:uppercase" placeholder="VD: G, GH,..."/>
 										</div>
 										<div class="form-group">
 											<label>Tên thể loại</label>
@@ -183,12 +183,11 @@
 				$.ajax({
 					type: "GET",
 					url: '${pageContext.request.contextPath}/api/category/' + id,
-					success: function (data) {
-						$('#update-modal input[name="id"]').val(data.id);
-						$('#update-modal input[name="old_sku"]').val(data.sku);
-						$('#update-modal input[name="old_name"]').val(data.name);
-						$('#update-modal input[name="sku"]').val(data.sku);
-						$('#update-modal input[name="name"]').val(data.name);
+					success: function (result) {
+						$('#update input[name="id"]').val(result.data.id);
+						$('#update input[name="sku"]').val(result.data.sku);
+						$('#update input[name="name"]').val(result.data.name);
+						$('#update input[name="active"]').val(result.data.active ? 1 : 0).trigger('change');
 					}
 				})
 			}
@@ -199,6 +198,8 @@
 					url: '${pageContext.request.contextPath}/api/category/' + id,
 					success: function (result) {
 						$('#update-status input[name="id"]').val(result.data.id);
+						$('#update-status input[name="sku"]').val(result.data.sku);
+						$('#update-status input[name="name"]').val(result.data.name);
 						$('#update-status select[name="active"]').val(result.data.active ? 1 : 0).trigger('change');
 					}
 				})
@@ -277,20 +278,15 @@
 				/* Update category */
 	            $("#update").submit(function (e) {
 		            e.preventDefault();
+					// get update formData
+		            let formData = new FormData($(this)[0]);
 		            if ($(this).valid()) {
-			            let id = $('#update input[name=id]').val();
-			            let name = $('#update input[name=name]').val();
-			            let sku = $('#update input[name=sku]').val();
-			            let active = $('#update select[name=active]').val();
 			            $.ajax({
 				            url: '${pageContext.request.contextPath}/api/category/update-category',
 				            type: 'PUT',
-				            data: JSON.stringify({
-					            id: id,
-					            name: name,
-					            sku: sku,
-					            active: active
-				            }),
+				            data: formData,
+				            processData: false,
+				            contentType: false,
 				            success: function (result) {
 					            let response = JSON.parse(result);
 					            if (response.success) {
@@ -307,6 +303,7 @@
 							            title: response.message
 						            })
 					            }
+								console.log(result)
 				            },
 				            error: function (result) {
 					            let response = JSON.parse(result);
@@ -324,15 +321,13 @@
 	            $("#update-status").submit(function (e) {
 		            e.preventDefault();
 		            if ($(this).valid()) {
-			            let id = $('#update-status input[name=id]').val();
-			            let active = $('#update-status select[name=active]').val() === '1';
+						let formData = new FormData($(this)[0]);
 			            $.ajax({
 				            url: '${pageContext.request.contextPath}/api/category/update-status',
 				            type: 'PUT',
-				            data: JSON.stringify({
-					            id: id,
-					            active: active
-				            }),
+				            processData: false,
+				            contentType: false,
+				            data: formData,
 				            success: function (result) {
 					            let response = JSON.parse(result);
 					            if (response.success) {
@@ -398,6 +393,11 @@
 		            return element.value.length === 2;
 	            }, "Mã định danh phải có 2 ký tự");
 
+				// create checking only number
+	            $.validator.addMethod("onlyNumber", function (value, element) {
+		            return this.optional(element) || /^[\\d]+$/i.test(value);
+	            }, "Chỉ nhập số");
+
 	            $('#create').validate({
 		            rules: {
 			            sku: {
@@ -428,19 +428,29 @@
 			            $(element).removeClass('is-invalid');
 		            }
 	            });
+
+				$('#create-modal').on('hidden.bs.modal', function () {
+					$("#create").validate().resetForm();
+					$("#create .form-control").removeClass("is-invalid");
+				});
 	
 	            $('#update').validate({
 		            rules: {
 			            sku: {
-				            required: true
+				            required: true,
+				            len2: true,
 			            },
 			            name: {
 				            required: true
 			            }
 		            },
 		            messages: {
-			            sku: "Vui lòng nhập mã định danh",
-			            name: "Vui lòng nhập loại sản phẩm"
+			            sku: {
+							required: "Vui lòng nhập mã định danh"
+			            },
+			            name: {
+							required: "Vui lòng nhập loại sản phẩm"
+						}
 		            },
 		            errorElement: 'span',
 		            errorPlacement: function (error, element) {
@@ -454,6 +464,11 @@
 			            $(element).removeClass('is-invalid');
 		            }
 	            });
+
+	            $('#update-modal').on('hidden.bs.modal', function () {
+		            $("#update").validate().resetForm();
+		            $("#update .form-control").removeClass("is-invalid");
+	            });
 				
 				/* Create datatables */
                 let table = $("#category").DataTable({
@@ -461,7 +476,9 @@
 	                "lengthChange": false,
 	                "autoWidth": false,
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-	                "order": [[1, 'asc']],
+	                "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+	                "pageLength": 5,
+	                "order": [[0, "asc"]],
 	                "initComplete": function () {
 		                table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
 	                },
@@ -471,11 +488,15 @@
 	                },
                     "columnDefs": [
                         {
-                            "targets": [0, 3, 4],
+                            "targets": [1, 4, 5],
                             "className": "text-center",
                         },
+	                    {
+		                    "targets": 0,
+		                    "visible": false,
+	                    },
                         {
-                            "targets": 0,
+                            "targets": 1,
 	                        "orderable": false,
 	                        "sortable": false,
                             "width": "5%",
@@ -484,7 +505,7 @@
                             }
                         },
                         {
-                            "targets": 3,
+                            "targets": 4,
 	                        "width": "20%",
 							"render": function (data, type, row) {
 								return '<button onclick="getCategoryForUpdateStatus(' + data.id + ')" class="btn ' +
@@ -494,7 +515,7 @@
 							}
                         },
                         {
-                            "targets": 4,
+                            "targets": 5,
                             "orderable": false,
                             "width": "10%",
                             "render": function (data, type, row) {
@@ -505,6 +526,7 @@
                         }
                     ],
                     "columns": [
+	                    { "data": "id" },
                         {
 	                        "name": "ID",
 							"data": "id"

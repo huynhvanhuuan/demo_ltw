@@ -9,7 +9,6 @@ import java.io.IOException;
 
 @WebServlet(name = "admin-trademark", value = "/admin/trademark")
 public class TrademarkController extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("title", "QUẢN LÝ THƯƠNG HIỆU");

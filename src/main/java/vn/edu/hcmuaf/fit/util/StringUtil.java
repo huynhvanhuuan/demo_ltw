@@ -4,7 +4,6 @@ import javax.servlet.ServletInputStream;
 import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -203,7 +202,7 @@ public final class StringUtil {
     // get string with utf-8 encoding
     public static String getStringFromInputStream(ServletInputStream inputStream) {
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {

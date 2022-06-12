@@ -8,9 +8,9 @@ import java.util.Date;
 public class ProductDetailDto {
     private Long id;
     private String sku;
-    private ProductDto productDto;
-    private ColorDto colorDto;
-    private MaterialDto materialDto;
+    private ProductDto product;
+    private ColorDto color;
+    private MaterialDto material;
     private String imageUrl;
     private Long unitPrice;
     private int unitInStock;
@@ -35,28 +35,28 @@ public class ProductDetailDto {
         this.sku = sku;
     }
 
-    public ProductDto getProductDto() {
-        return productDto;
+    public ProductDto getProduct() {
+        return product;
     }
 
-    public void setProductDto(ProductDto productDto) {
-        this.productDto = productDto;
+    public void setProduct(ProductDto product) {
+        this.product = product;
     }
 
-    public ColorDto getColorDto() {
-        return colorDto;
+    public ColorDto getColor() {
+        return color;
     }
 
-    public void setColorDto(ColorDto colorDto) {
-        this.colorDto = colorDto;
+    public void setColor(ColorDto color) {
+        this.color = color;
     }
 
-    public MaterialDto getMaterialDto() {
-        return materialDto;
+    public MaterialDto getMaterial() {
+        return material;
     }
 
-    public void setMaterialDto(MaterialDto materialDto) {
-        this.materialDto = materialDto;
+    public void setMaterial(MaterialDto material) {
+        this.material = material;
     }
 
     public String getImageUrl() {
@@ -120,9 +120,6 @@ public class ProductDetailDto {
 
         dest.id = src.getId();
         dest.sku = src.getSku();
-        dest.productDto = ProductDto.createFromEntity(src.getProduct());
-        dest.colorDto = ColorDto.createFromEntity(src.getColor());
-        dest.materialDto = MaterialDto.createFromEntity(src.getMaterial());
         dest.imageUrl = src.getImageUrl();
         dest.unitPrice = src.getUnitPrice();
         dest.unitInStock = src.getUnitInStock();
@@ -130,6 +127,18 @@ public class ProductDetailDto {
         dest.dateCreated = src.getDateCreated();
         dest.lastUpdated = src.getLastUpdated();
         dest.active = src.isActive();
+
+        if (src.getProduct() != null) {
+            dest.product = ProductDto.createFromEntity(src.getProduct());
+        }
+
+        if (src.getColor() != null) {
+            dest.color = ColorDto.createFromEntity(src.getColor());
+        }
+
+        if (src.getMaterial() != null) {
+            dest.material = MaterialDto.createFromEntity(src.getMaterial());
+        }
 
         return dest;
     }

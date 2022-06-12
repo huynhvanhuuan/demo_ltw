@@ -68,7 +68,7 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 			}
 		} catch (Exception e) {
 			connectionPool.releaseConnection(connection);
-			return null;
+			return productDetailList;
 		}
 		connectionPool.releaseConnection(connection);
 		return productDetailList;
@@ -124,11 +124,9 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 
 	@Override
 	public List<ProductDetail> findByProductId(Long productId) {
-		Product product = productDAO.findById(productId);
 		List<ProductDetail> productDetailList = new ArrayList<>();
 		connection = connectionPool.getConnection();
 		try {
-			connectionPool.releaseConnection(connection);
 			PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT_DETAIL.FIND_BY_PRODUCT_ID);
 			statement.setLong(1, productId);
 			ResultSet rs = statement.executeQuery();
@@ -145,12 +143,12 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				Date lastUpdated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("last_updated"));
 				boolean active = rs.getBoolean("active");
 
-				ProductDetail productDetail = new ProductDetail(id, sku, product, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
+				ProductDetail productDetail = new ProductDetail(id, sku, null, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
 				productDetailList.add(productDetail);
 			}
 		} catch (Exception e) {
 			connectionPool.releaseConnection(connection);
-			return null;
+			return productDetailList;
 		}
 		connectionPool.releaseConnection(connection);
 		return productDetailList;

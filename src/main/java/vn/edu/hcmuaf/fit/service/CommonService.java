@@ -1,5 +1,6 @@
 package vn.edu.hcmuaf.fit.service;
 
+import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.address.*;
 import vn.edu.hcmuaf.fit.dto.product.ColorDto;

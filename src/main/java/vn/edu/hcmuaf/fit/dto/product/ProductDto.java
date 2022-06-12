@@ -4,10 +4,9 @@ import vn.edu.hcmuaf.fit.dto.category.CategoryDto;
 import vn.edu.hcmuaf.fit.dto.productDetail.ProductDetailDto;
 import vn.edu.hcmuaf.fit.dto.trademark.TrademarkDto;
 import vn.edu.hcmuaf.fit.entity.Product;
+import vn.edu.hcmuaf.fit.entity.ProductDetail;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ProductDto {
     private long id;
@@ -108,11 +107,22 @@ public class ProductDto {
         dest.name = src.getName();
         dest.size = src.getSize();
         dest.description = src.getDescription();
-        dest.trademark = TrademarkDto.createFromEntity(src.getTrademark());
-        dest.category = CategoryDto.createFromEntity(src.getCategory());
         dest.dateCreated = src.getDateCreated();
         dest.lastUpdated = src.getLastUpdated();
 
+        if (src.getTrademark() != null) {
+            dest.trademark = TrademarkDto.createFromEntity(src.getTrademark());
+        }
+
+        if (src.getCategory() != null) {
+            dest.category = CategoryDto.createFromEntity(src.getCategory());
+        }
+
+        if (src.getProducts() != null)
+            for (ProductDetail productDetail : src.getProducts()) {
+                dest.products.add(ProductDetailDto.createFromEntity(productDetail));
+            }
+        System.out.println(dest);
         return dest;
     }
 }

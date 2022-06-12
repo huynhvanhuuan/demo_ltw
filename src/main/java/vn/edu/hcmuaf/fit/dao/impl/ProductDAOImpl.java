@@ -7,6 +7,7 @@ import vn.edu.hcmuaf.fit.entity.*;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.*;
 
@@ -21,6 +22,13 @@ public class ProductDAOImpl implements ProductDAO {
 
     private ProductDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+
+        trademarkDAO = TrademarkDAOImpl.getInstance();
+        categoryDAO = CategoryDAOImpl.getInstance();
+        productDetailDAO = ProductDetailDAOImpl.getInstance();
+
+        ((ProductDetailDAOImpl) productDetailDAO).setColorDAO(ColorDAOImpl.getInstance());
+        ((ProductDetailDAOImpl) productDetailDAO).setMaterialDAO(MaterialDAOImpl.getInstance());
     }
 
     public static ProductDAOImpl getInstance() {
@@ -65,7 +73,7 @@ public class ProductDAOImpl implements ProductDAO {
             }
         } catch (SQLException e) {
             connectionPool.releaseConnection(connection);
-            return null;
+            return products;
         }
         connectionPool.releaseConnection(connection);
         return products;
@@ -86,15 +94,15 @@ public class ProductDAOImpl implements ProductDAO {
                 String description = rs.getString("description");
                 Trademark trademark = trademarkDAO.findById(rs.getLong("trademark_id"));
                 Category category = categoryDAO.findById(rs.getLong("category_id"));
-                Date dateCreated = rs.getDate("date_created");
-                Date lastUpdated = rs.getDate("last_updated");
+                Date dateCreated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("date_created"));
+                Date lastUpdated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("last_updated"));
                 boolean active = rs.getBoolean("active");
                 Set<ProductDetail> productDetails = new HashSet<>(productDetailDAO.findByProductId(id));
 
                 product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            connectionPool.releaseConnection(connection);
             return null;
         }
         connectionPool.releaseConnection(connection);
@@ -157,7 +165,7 @@ public class ProductDAOImpl implements ProductDAO {
             }
         } catch (SQLException e) {
             connectionPool.releaseConnection(connection);
-            return null;
+            return products;
         }
         connectionPool.releaseConnection(connection);
         return products;

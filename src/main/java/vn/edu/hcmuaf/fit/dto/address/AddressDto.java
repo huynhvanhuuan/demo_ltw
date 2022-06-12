@@ -64,9 +64,13 @@ public class AddressDto {
         dest.id = address.getId();
         dest.number = address.getNumber();
         dest.street = address.getStreet();
-        dest.ward = WardDto.createFromEntity(address.getWard());
-        dest.district = DistrictDto.createFromEntity(address.getDistrict());
         dest.path = address.getPath();
+
+        if (address.getWard() != null)
+            dest.ward = WardDto.createFromEntity(address.getWard());
+
+        if (address.getDistrict() != null)
+            dest.district = DistrictDto.createFromEntity(address.getDistrict());
 
         return dest;
     }
