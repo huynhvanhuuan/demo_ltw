@@ -12,13 +12,21 @@ import java.sql.*;
 import java.util.*;
 
 public class ProvinceDAOImpl implements ProvinceDAO {
+    private static ProvinceDAO instance;
     private final IConnectionPool connectionPool;
     private Connection connection;
 
     private DistrictDAO districtDAO;
 
-    public ProvinceDAOImpl() {
+    private ProvinceDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+    }
+
+    public static ProvinceDAO getInstance() {
+        if (instance == null) {
+            instance = new ProvinceDAOImpl();
+        }
+        return instance;
     }
 
     public void setDistrictDAO(DistrictDAO districtDAO) {

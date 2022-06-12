@@ -11,11 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialDAOImpl implements MaterialDAO {
+    private static MaterialDAOImpl instance;
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    public MaterialDAOImpl() {
+    private MaterialDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+    }
+
+    public static MaterialDAOImpl getInstance() {
+        if (instance == null) {
+            instance = new MaterialDAOImpl();
+        }
+        return instance;
     }
 
     @Override

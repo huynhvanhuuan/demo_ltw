@@ -12,17 +12,22 @@ import java.sql.*;
 import java.util.*;
 
 public class TrademarkDAOImpl implements TrademarkDAO {
+    private static TrademarkDAOImpl instance;
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private AddressDAO addressDAO;
+    private final AddressDAO addressDAO;
 
-    public TrademarkDAOImpl() {
+    private TrademarkDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+        this.addressDAO = AddressDAOImpl.getInstance();
     }
 
-    public void setAddressDAO(AddressDAO addressDAO) {
-        this.addressDAO = addressDAO;
+    public static TrademarkDAOImpl getInstance() {
+        if (instance == null) {
+            instance = new TrademarkDAOImpl();
+        }
+        return instance;
     }
 
     @Override

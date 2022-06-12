@@ -14,23 +14,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommonServiceImpl implements CommonService {
+    private static CommonServiceImpl instance;
     private final ColorDAO colorDAO;
     private final MaterialDAO materialDAO;
     private final ProvinceDAO provinceDAO;
     private final DistrictDAO districtDAO;
     private final WardDAO wardDAO;
 
-    public CommonServiceImpl() {
-        this.colorDAO = new ColorDAOImpl();
-        this.materialDAO = new MaterialDAOImpl();
-        this.provinceDAO = new ProvinceDAOImpl();
-        this.districtDAO = new DistrictDAOImpl();
-        this.wardDAO = new WardDAOImpl();
+    private CommonServiceImpl() {
+        colorDAO = ColorDAOImpl.getInstance();
+        materialDAO = MaterialDAOImpl.getInstance();
+        provinceDAO = ProvinceDAOImpl.getInstance();
+        districtDAO = DistrictDAOImpl.getInstance();
+        wardDAO = WardDAOImpl.getInstance();
 
-        ((ProvinceDAOImpl) this.provinceDAO).setDistrictDAO(this.districtDAO);
-        ((DistrictDAOImpl) this.districtDAO).setProvinceDAO(this.provinceDAO);
-        ((DistrictDAOImpl) this.districtDAO).setWardDAO(this.wardDAO);
-        ((WardDAOImpl) this.wardDAO).setDistrictDAO(this.districtDAO);
+        ((ProvinceDAOImpl) provinceDAO).setDistrictDAO(districtDAO);
+        ((DistrictDAOImpl) districtDAO).setProvinceDAO(provinceDAO);
+        ((DistrictDAOImpl) districtDAO).setWardDAO(wardDAO);
+        ((WardDAOImpl) wardDAO).setDistrictDAO(districtDAO);
+    }
+
+    public static CommonServiceImpl getInstance() {
+        if (instance == null) {
+            instance = new CommonServiceImpl();
+        }
+        return instance;
     }
 
     @Override

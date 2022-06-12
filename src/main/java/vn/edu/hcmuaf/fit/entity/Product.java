@@ -1,9 +1,7 @@
 package vn.edu.hcmuaf.fit.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Product implements Serializable {
     private Long id;
@@ -20,7 +18,7 @@ public class Product implements Serializable {
     public Product() {}
 
     public Product(Long id, String name, String size, String description, Trademark trademark, Category category,
-                   Date dateCreated, Date lastUpdated, boolean active) {
+                   Date dateCreated, Date lastUpdated, boolean active, Set<ProductDetail> products) {
         this.id = id;
         this.name = name;
         this.size = size;
@@ -30,6 +28,7 @@ public class Product implements Serializable {
         this.dateCreated = dateCreated;
         this.lastUpdated = lastUpdated;
         this.active = active;
+        this.products = products;
     }
 
     public Long getId() {

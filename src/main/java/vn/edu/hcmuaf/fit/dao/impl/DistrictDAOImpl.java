@@ -10,14 +10,22 @@ import java.sql.*;
 import java.util.*;
 
 public class DistrictDAOImpl implements DistrictDAO {
+    private static DistrictDAO instance;
     private final IConnectionPool connectionPool;
     private Connection connection;
 
     private ProvinceDAO provinceDAO;
     private WardDAO wardDAO;
 
-    public DistrictDAOImpl() {
+    private DistrictDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+    }
+
+    public static DistrictDAO getInstance() {
+        if (instance == null) {
+            instance = new DistrictDAOImpl();
+        }
+        return instance;
     }
 
     public void setProvinceDAO(ProvinceDAO provinceDAO) {

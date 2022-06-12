@@ -11,20 +11,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressDAOImpl implements AddressDAO {
+    private static AddressDAOImpl instance;
     private final IConnectionPool connectionPool;
     private Connection connection;
 
     private DistrictDAO districtDAO;
     private WardDAO wardDAO;
 
-    public AddressDAOImpl() {
+    private AddressDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
-        this.districtDAO = new DistrictDAOImpl();
-        this.wardDAO = new WardDAOImpl();
+    }
 
-        ((DistrictDAOImpl) districtDAO).setProvinceDAO(new ProvinceDAOImpl());
-        ((DistrictDAOImpl) districtDAO).setWardDAO(wardDAO);
-        ((WardDAOImpl) wardDAO).setDistrictDAO(districtDAO);
+    public static AddressDAOImpl getInstance() {
+        if (instance == null) {
+            instance = new AddressDAOImpl();
+        }
+        return instance;
     }
 
     public void setDistrictDAO(DistrictDAO districtDAO) {

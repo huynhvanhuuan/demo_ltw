@@ -11,11 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColorDAOImpl implements ColorDAO {
+    private static ColorDAOImpl instance;
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    public ColorDAOImpl() {
+    private ColorDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+    }
+
+    public static ColorDAOImpl getInstance() {
+        if (instance == null) {
+            instance = new ColorDAOImpl();
+        }
+        return instance;
     }
 
     @Override

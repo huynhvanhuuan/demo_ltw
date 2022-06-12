@@ -17,13 +17,7 @@ import java.util.List;
 @WebServlet(name = "api-ward", urlPatterns = "/api/ward/*")
 public class WardAPI extends HttpServlet {
     private final Gson GSON = new GsonBuilder().create();
-
-    private CommonService wardService;
-
-    @Override
-    public void init() throws ServletException {
-        wardService = new CommonServiceImpl();
-    }
+    private final CommonService wardService = CommonServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

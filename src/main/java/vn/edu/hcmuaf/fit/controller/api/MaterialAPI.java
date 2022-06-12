@@ -17,12 +17,7 @@ import java.util.List;
 @WebServlet(name = "api-material", urlPatterns = "/api/material/*")
 public class MaterialAPI extends HttpServlet {
     private final Gson GSON = new GsonBuilder().create();
-    private CommonService materialService;
-
-    @Override
-    public void init() throws ServletException {
-        materialService = new CommonServiceImpl();
-    }
+    private final CommonService materialService = CommonServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

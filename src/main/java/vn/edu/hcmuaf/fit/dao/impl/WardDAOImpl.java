@@ -13,13 +13,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WardDAOImpl implements WardDAO {
+    private static WardDAOImpl instance;
     private final IConnectionPool connectionPool;
     private Connection connection;
 
     private DistrictDAO districtDAO;
 
-    public WardDAOImpl() {
+    private WardDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+    }
+
+    public static WardDAOImpl getInstance() {
+        if (instance == null) {
+            instance = new WardDAOImpl();
+        }
+        return instance;
     }
 
     public void setDistrictDAO(DistrictDAO districtDAO) {

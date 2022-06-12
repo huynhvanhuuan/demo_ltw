@@ -21,12 +21,7 @@ import java.util.List;
 @WebServlet(name = "api-category", urlPatterns = "/api/category/*")
 public class CategoryAPI extends HttpServlet {
 	private final Gson GSON = new GsonBuilder().create();
-	private CategoryService categoryService;
-	
-	@Override
-	public void init() throws ServletException {
-		categoryService = new CategoryServiceImpl();
-	}
+	private final CategoryService categoryService = CategoryServiceImpl.getInstance();
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

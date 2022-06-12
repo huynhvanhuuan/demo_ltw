@@ -11,11 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDAOImpl implements CategoryDAO {
+	private static CategoryDAOImpl instance;
 	private final IConnectionPool connectionPool;
 	private Connection connection;
 	
-	public CategoryDAOImpl() {
+	private CategoryDAOImpl() {
 		this.connectionPool = DbManager.connectionPool;
+	}
+
+	public static CategoryDAOImpl getInstance() {
+		if (instance == null) {
+			instance = new CategoryDAOImpl();
+		}
+		return instance;
 	}
 	
 	@Override

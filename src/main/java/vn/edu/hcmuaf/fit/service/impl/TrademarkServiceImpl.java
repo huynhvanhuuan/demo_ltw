@@ -2,7 +2,6 @@ package vn.edu.hcmuaf.fit.service.impl;
 
 import vn.edu.hcmuaf.fit.constant.AppError;
 import vn.edu.hcmuaf.fit.dao.TrademarkDAO;
-import vn.edu.hcmuaf.fit.dao.impl.AddressDAOImpl;
 import vn.edu.hcmuaf.fit.dao.impl.TrademarkDAOImpl;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
@@ -13,12 +12,18 @@ import vn.edu.hcmuaf.fit.service.TrademarkService;
 import java.util.*;
 
 public class TrademarkServiceImpl implements TrademarkService {
+	private static TrademarkServiceImpl instance;
 	private final TrademarkDAO trademarkDAO;
 
-	public TrademarkServiceImpl() {
-		this.trademarkDAO = new TrademarkDAOImpl();
+	private TrademarkServiceImpl() {
+		this.trademarkDAO = TrademarkDAOImpl.getInstance();
+	}
 
-		((TrademarkDAOImpl) trademarkDAO).setAddressDAO(new AddressDAOImpl());
+	public static TrademarkServiceImpl getInstance() {
+		if (instance == null) {
+			instance = new TrademarkServiceImpl();
+		}
+		return instance;
 	}
 
 	@Override

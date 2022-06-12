@@ -12,20 +12,37 @@ import java.util.Date;
 import java.util.*;
 
 public class ProductDetailDAOImpl implements ProductDetailDAO {
+	private static ProductDetailDAOImpl instance;
 	private final IConnectionPool connectionPool;
 	private Connection connection;
 
-	private final ProductDAO productDAO;
-	private final ColorDAO colorDAO;
-	private final MaterialDAO materialDAO;
+	private ProductDAO productDAO;
+	private ColorDAO colorDAO;
+	private MaterialDAO materialDAO;
 	
-	public ProductDetailDAOImpl() {
+	private ProductDetailDAOImpl() {
 		this.connectionPool = DbManager.connectionPool;
-		this.productDAO = new ProductDAOImpl();
-		this.colorDAO = new ColorDAOImpl();
-		this.materialDAO = new MaterialDAOImpl();
 	}
-	
+
+	public static ProductDetailDAOImpl getInstance() {
+		if (instance == null) {
+			instance = new ProductDetailDAOImpl();
+		}
+		return instance;
+	}
+
+	public void setProductDAO(ProductDAO productDAO) {
+		this.productDAO = productDAO;
+	}
+
+	public void setColorDAO(ColorDAO colorDAO) {
+		this.colorDAO = colorDAO;
+	}
+
+	public void setMaterialDAO(MaterialDAO materialDAO) {
+		this.materialDAO = materialDAO;
+	}
+
 	@Override
 	public List<ProductDetail> findAll() {
 		List<ProductDetail> productDetailList = new ArrayList<>();
@@ -106,13 +123,14 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 	}
 
 	@Override
-	public List<ProductDetail> findByProduct(Product product) {
+	public List<ProductDetail> findByProductId(Long productId) {
+		Product product = productDAO.findById(productId);
 		List<ProductDetail> productDetailList = new ArrayList<>();
 		connection = connectionPool.getConnection();
 		try {
 			connectionPool.releaseConnection(connection);
 			PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT_DETAIL.FIND_BY_PRODUCT_ID);
-			statement.setLong(1, product.getId());
+			statement.setLong(1, productId);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
 				Long id = rs.getLong("id");
@@ -126,6 +144,7 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				Date dateCreated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("date_created"));
 				Date lastUpdated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("last_updated"));
 				boolean active = rs.getBoolean("active");
+
 				ProductDetail productDetail = new ProductDetail(id, sku, product, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
 				productDetailList.add(productDetail);
 			}

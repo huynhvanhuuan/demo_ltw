@@ -14,22 +14,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressServiceImpl implements AddressService {
+	private static AddressService instance;
 	private final AddressDAO addressDAO;
 	private final DistrictDAO districtDAO;
 	private final WardDAO wardDAO;
 	
-	public AddressServiceImpl() {
-
-		this.addressDAO = new AddressDAOImpl();
-		this.districtDAO = new DistrictDAOImpl();
-		this.wardDAO = new WardDAOImpl();
+	private AddressServiceImpl() {
+		this.addressDAO = AddressDAOImpl.getInstance();
+		this.districtDAO = DistrictDAOImpl.getInstance();
+		this.wardDAO = WardDAOImpl.getInstance();
 
 		((AddressDAOImpl) addressDAO).setDistrictDAO(districtDAO);
 		((AddressDAOImpl) addressDAO).setWardDAO(wardDAO);
 
-		((DistrictDAOImpl) districtDAO).setProvinceDAO(new ProvinceDAOImpl());
+		((DistrictDAOImpl) districtDAO).setProvinceDAO(ProvinceDAOImpl.getInstance());
 		((DistrictDAOImpl) districtDAO).setWardDAO(wardDAO);
 		((WardDAOImpl) wardDAO).setDistrictDAO(districtDAO);
+	}
+
+	public static AddressService getInstance() {
+		if (instance == null) {
+			instance = new AddressServiceImpl();
+		}
+		return instance;
 	}
 
 	@Override

@@ -2,11 +2,11 @@ package vn.edu.hcmuaf.fit.service.impl;
 
 import vn.edu.hcmuaf.fit.constant.AppError;
 import vn.edu.hcmuaf.fit.dao.ProductDetailDAO;
-import vn.edu.hcmuaf.fit.dao.impl.ProductDetailDAOImpl;
+import vn.edu.hcmuaf.fit.dao.impl.*;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.productDetail.*;
-import vn.edu.hcmuaf.fit.entity.*;
+import vn.edu.hcmuaf.fit.entity.ProductDetail;
 import vn.edu.hcmuaf.fit.service.ProductDetailService;
 
 import java.util.ArrayList;
@@ -16,13 +16,17 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 	private final ProductDetailDAO productDetailDAO;
 	
 	public ProductDetailServiceImpl() {
-		this.productDetailDAO = new ProductDetailDAOImpl();
+		this.productDetailDAO = ProductDetailDAOImpl.getInstance();
+
+		((ProductDetailDAOImpl) productDetailDAO).setProductDAO(ProductDAOImpl.getInstance());
+		((ProductDetailDAOImpl) productDetailDAO).setColorDAO(ColorDAOImpl.getInstance());
+		((ProductDetailDAOImpl) productDetailDAO).setMaterialDAO(MaterialDAOImpl.getInstance());
 	}
 	
 	@Override
-	public AppServiceResult<List<ProductDetailDto>> getProductDetails(Product product) {
+	public AppServiceResult<List<ProductDetailDto>> getProductDetails(Long productId) {
 		try {
-			List<ProductDetail> productDetails = product == null ? productDetailDAO.findAll() : productDetailDAO.findByProduct(product);
+			List<ProductDetail> productDetails = productId == null ? productDetailDAO.findAll() : productDetailDAO.findByProductId(productId);
 			List<ProductDetailDto> result = new ArrayList<>();
 
 			productDetails.forEach(productDetail -> result.add(ProductDetailDto.createFromEntity(productDetail)));

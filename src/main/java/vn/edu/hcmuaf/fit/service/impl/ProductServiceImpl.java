@@ -2,7 +2,7 @@ package vn.edu.hcmuaf.fit.service.impl;
 
 import vn.edu.hcmuaf.fit.constant.AppError;
 import vn.edu.hcmuaf.fit.dao.ProductDAO;
-import vn.edu.hcmuaf.fit.dao.impl.ProductDAOImpl;
+import vn.edu.hcmuaf.fit.dao.impl.*;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.product.*;
@@ -16,7 +16,11 @@ public class ProductServiceImpl implements ProductService {
 	private final ProductDAO productDAO;
 	
 	public ProductServiceImpl() {
-		this.productDAO = new ProductDAOImpl();
+		this.productDAO = ProductDAOImpl.getInstance();
+
+		((ProductDAOImpl) productDAO).setTrademarkDAO(TrademarkDAOImpl.getInstance());
+		((ProductDAOImpl) productDAO).setCategoryDAO(CategoryDAOImpl.getInstance());
+		((ProductDAOImpl) productDAO).setProductDetailDAO(ProductDetailDAOImpl.getInstance());
 	}
 
 	@Override

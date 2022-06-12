@@ -17,12 +17,7 @@ import java.util.List;
 @WebServlet(name = "api-color", urlPatterns = "/api/color/*")
 public class ColorAPI extends HttpServlet {
     private final Gson GSON = new GsonBuilder().create();
-    private CommonService colorService;
-
-    @Override
-    public void init() throws ServletException {
-        colorService = new CommonServiceImpl();
-    }
+    private final CommonService colorService = CommonServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -11,18 +11,35 @@ import java.util.Date;
 import java.util.*;
 
 public class ProductDAOImpl implements ProductDAO {
+    private static ProductDAOImpl instance;
     private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private final TrademarkDAO trademarkDAO;
-    private final CategoryDAO categoryDAO;
-    private final ProductDetailDAO productDetailDAO;
+    private TrademarkDAO trademarkDAO;
+    private CategoryDAO categoryDAO;
+    private ProductDetailDAO productDetailDAO;
 
-    public ProductDAOImpl() {
+    private ProductDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
-        trademarkDAO = new TrademarkDAOImpl();
-        categoryDAO = new CategoryDAOImpl();
-        productDetailDAO = new ProductDetailDAOImpl();
+    }
+
+    public static ProductDAOImpl getInstance() {
+        if (instance == null) {
+            instance = new ProductDAOImpl();
+        }
+        return instance;
+    }
+
+    public void setTrademarkDAO(TrademarkDAO trademarkDAO) {
+        this.trademarkDAO = trademarkDAO;
+    }
+
+    public void setCategoryDAO(CategoryDAO categoryDAO) {
+        this.categoryDAO = categoryDAO;
+    }
+
+    public void setProductDetailDAO(ProductDetailDAO productDetailDAO) {
+        this.productDetailDAO = productDetailDAO;
     }
 
     @Override
@@ -41,9 +58,9 @@ public class ProductDAOImpl implements ProductDAO {
                 Date dateCreated = rs.getDate("date_created");
                 Date lastUpdated = rs.getDate("last_updated");
                 boolean active = rs.getBoolean("active");
+                Set<ProductDetail> productDetails = new HashSet<>(productDetailDAO.findByProductId(id));
 
-                Product product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active);
-                product.setProducts(new HashSet<>(productDetailDAO.findByProduct(product)));
+                Product product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -72,11 +89,9 @@ public class ProductDAOImpl implements ProductDAO {
                 Date dateCreated = rs.getDate("date_created");
                 Date lastUpdated = rs.getDate("last_updated");
                 boolean active = rs.getBoolean("active");
+                Set<ProductDetail> productDetails = new HashSet<>(productDetailDAO.findByProductId(id));
 
-                product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active);
-
-                Set<ProductDetail> productDetails = new HashSet<>(productDetailDAO.findByProduct(product));
-                product.setProducts(productDetails);
+                product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -135,9 +150,9 @@ public class ProductDAOImpl implements ProductDAO {
                 Date dateCreated = rs.getDate("date_created");
                 Date lastUpdated = rs.getDate("last_updated");
                 boolean active = rs.getBoolean("active");
+                Set<ProductDetail> productDetails = new HashSet<>(productDetailDAO.findByProductId(id));
 
-                Product product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active);
-                product.setProducts(new HashSet<>(productDetailDAO.findByProduct(product)));
+                Product product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
                 products.add(product);
             }
         } catch (SQLException e) {

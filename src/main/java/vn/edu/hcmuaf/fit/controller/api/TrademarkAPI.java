@@ -22,12 +22,7 @@ import java.util.List;
 @WebServlet(name = "api-trademark", urlPatterns = "/api/trademark/*")
 public class TrademarkAPI extends HttpServlet {
 	private final Gson GSON = new GsonBuilder().create();
-	private TrademarkService trademarkService;
-	
-	@Override
-	public void init() throws ServletException {
-		trademarkService = new TrademarkServiceImpl();
-	}
+	private final TrademarkService trademarkService = TrademarkServiceImpl.getInstance();
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

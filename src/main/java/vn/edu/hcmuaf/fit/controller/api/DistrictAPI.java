@@ -17,13 +17,7 @@ import java.util.List;
 @WebServlet(name = "api-district", urlPatterns = "/api/district/*")
 public class DistrictAPI extends HttpServlet {
     private final Gson GSON = new GsonBuilder().create();
-
-    private CommonService districtService;
-
-    @Override
-    public void init() throws ServletException {
-        districtService = new CommonServiceImpl();
-    }
+    private final CommonService districtService = CommonServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

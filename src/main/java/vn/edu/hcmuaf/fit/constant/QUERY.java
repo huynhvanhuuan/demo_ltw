@@ -5,7 +5,6 @@ public class QUERY {
     public static class PRODUCT {
         public static final String FIND_ALL = "select * from product";
         public static final String FIND_BY_ID = "select * from product where id = ?";
-        public static final String FIND_LAST = "select * from product order by id desc limit 1";
         public static final String CREATE = "insert into product(name, description, trademark_id, category_id) values(?,?,?,?)";
         public static final String UPDATE = "update product set name = ?, description = ?, trademark_id = ?, category_sku = ?, active = ? where id = ?";
         public static final String UPDATE_STATUS = "update product set active = (case active when 1 then 0 when 0 then 1 end) where id = ?";

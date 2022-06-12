@@ -17,13 +17,7 @@ import java.util.List;
 @WebServlet(name = "api-province", urlPatterns = "/api/province/*")
 public class ProvinceAPI extends HttpServlet {
     private final Gson GSON = new GsonBuilder().create();
-
-    private CommonService provinceService;
-
-    @Override
-    public void init() throws ServletException {
-        provinceService = new CommonServiceImpl();
-    }
+    private final CommonService provinceService = CommonServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
