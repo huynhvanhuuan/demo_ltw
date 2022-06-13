@@ -11,6 +11,7 @@ public class TrademarkDto {
     private Long id;
     private String name;
     private String website;
+    private boolean active;
     private Set<AddressDto> addresses = new HashSet<>();
 
     public Long getId() {
@@ -51,6 +52,7 @@ public class TrademarkDto {
         dest.id = src.getId();
         dest.name = src.getName();
         dest.website = src.getWebsite();
+        dest.active = src.isActive();
 
         if (src.getAddresses() != null)
             for (Address address : src.getAddresses()) {

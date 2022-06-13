@@ -70,8 +70,7 @@
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng
-										</button>
+										        data-dismiss="modal">Đóng</button>
 										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
@@ -126,6 +125,8 @@
 								<form action="${pageContext.request.contextPath}/api/category"
 								      id="update-status" novalidate="novalidate">
 									<input type="hidden" name="id">
+									<input type="hidden" name="sku">
+									<input type="hidden" name="name">
 									<div class="modal-body card-body">
 										<div class="form-group">
 											<label>Trạng thái</label>
@@ -278,11 +279,10 @@
 				/* Update category */
 	            $("#update").submit(function (e) {
 		            e.preventDefault();
-					// get update formData
 		            let formData = new FormData($(this)[0]);
 		            if ($(this).valid()) {
 			            $.ajax({
-				            url: '${pageContext.request.contextPath}/api/category/update-category',
+				            url: '${pageContext.request.contextPath}/api/category',
 				            type: 'PUT',
 				            data: formData,
 				            processData: false,
@@ -323,7 +323,7 @@
 		            if ($(this).valid()) {
 						let formData = new FormData($(this)[0]);
 			            $.ajax({
-				            url: '${pageContext.request.contextPath}/api/category/update-status',
+				            url: '${pageContext.request.contextPath}/api/category',
 				            type: 'PUT',
 				            processData: false,
 				            contentType: false,
@@ -336,7 +336,6 @@
 							            title: response.message
 						            });
 						            reloadData();
-						            $("#update-status").trigger("reset");
 						            $('#update-status-modal').modal('hide');
 					            } else {
 						            Toast.fire({
@@ -393,12 +392,11 @@
 		            return element.value.length === 2;
 	            }, "Mã định danh phải có 2 ký tự");
 
-				// create checking only number
 	            $.validator.addMethod("onlyNumber", function (value, element) {
 		            return this.optional(element) || /^[\\d]+$/i.test(value);
 	            }, "Chỉ nhập số");
 
-	            $('#create').validate({
+	            $("#create").validate({
 		            rules: {
 			            sku: {
 				            required: true,
@@ -428,11 +426,6 @@
 			            $(element).removeClass('is-invalid');
 		            }
 	            });
-
-				$('#create-modal').on('hidden.bs.modal', function () {
-					$("#create").validate().resetForm();
-					$("#create .form-control").removeClass("is-invalid");
-				});
 	
 	            $('#update').validate({
 		            rules: {
@@ -465,7 +458,10 @@
 		            }
 	            });
 
-	            $('#update-modal').on('hidden.bs.modal', function () {
+	            /* Reset form */
+	            $('.modal').on('hidden.bs.modal', function () {
+		            $("#create").validate().resetForm();
+		            $("#create .form-control").removeClass("is-invalid");
 		            $("#update").validate().resetForm();
 		            $("#update .form-control").removeClass("is-invalid");
 	            });
@@ -475,10 +471,10 @@
                     "responsive": true,
 	                "lengthChange": false,
 	                "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-	                "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
 	                "pageLength": 5,
+	                "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
 	                "order": [[0, "asc"]],
+                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
 	                "initComplete": function () {
 		                table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
 	                },

@@ -20,6 +20,10 @@ public class AddressDAOImpl implements AddressDAO {
 
     private AddressDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+        this.districtDAO = DistrictDAOImpl.getInstance();
+        this.wardDAO = WardDAOImpl.getInstance();
+
+        ((WardDAOImpl) wardDAO).setDistrictDAO(districtDAO);
     }
 
     public static AddressDAOImpl getInstance() {

@@ -20,6 +20,4 @@ public interface CategoryService {
     AppBaseResult updateCategory(CategoryUpdate category);
 
     AppBaseResult deleteCategory(Long id);
-
-    AppBaseResult updateStatus(CategoryUpdate category);
 }

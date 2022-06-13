@@ -16,7 +16,7 @@ import java.util.List;
 
 @WebServlet(name = "api-ward", urlPatterns = "/api/ward/*")
 public class WardAPI extends HttpServlet {
-    private final Gson GSON = new GsonBuilder().create();
+    private final Gson GSON = new GsonBuilder().serializeNulls().create();
     private final CommonService wardService = CommonServiceImpl.getInstance();
 
     @Override

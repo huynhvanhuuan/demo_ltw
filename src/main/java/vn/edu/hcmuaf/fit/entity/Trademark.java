@@ -8,15 +8,17 @@ public class Trademark implements Serializable {
     private Long id;
     private String name;
     private String website;
+    private boolean active;
     private Set<Address> addresses = new HashSet<>();
 
     public Trademark() {
     }
 
-    public Trademark(Long id, String name, String website, Set<Address> addresses) {
+    public Trademark(Long id, String name, String website, boolean active, Set<Address> addresses) {
         this.id = id;
         this.name = name;
         this.website = website;
+        this.active = active;
         this.addresses = addresses;
     }
 
@@ -42,6 +44,14 @@ public class Trademark implements Serializable {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Set<Address> getAddresses() {

@@ -174,23 +174,4 @@ public class CategoryServiceImpl implements CategoryService {
 			return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
 		}
 	}
-	
-	@Override
-	public AppBaseResult updateStatus(CategoryUpdate category) {
-		try {
-			Category updatedCategory = categoryDAO.findById(category.getId());
-
-			if (updatedCategory == null) return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(), "Category id is not exist: " + category.getId());
-
-			updatedCategory.setActive(category.isActive());
-
-			categoryDAO.save(updatedCategory);
-
-			return AppBaseResult.GenarateIsSucceed();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-					AppError.Unknown.errorMessage(), null);
-		}
-	}
 }

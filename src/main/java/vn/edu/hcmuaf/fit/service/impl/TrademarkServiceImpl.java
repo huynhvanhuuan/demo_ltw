@@ -117,6 +117,7 @@ public class TrademarkServiceImpl implements TrademarkService {
 
 			updatedTrademark.setName(trademark.getName());
 			updatedTrademark.setWebsite(trademark.getWebsite());
+			updatedTrademark.setActive(trademark.isActive());
 
 			trademarkDAO.save(updatedTrademark);
 

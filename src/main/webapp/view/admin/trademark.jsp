@@ -33,6 +33,7 @@
 													<th class="align-middle">Tên thương hiệu</th>
 													<th class="align-middle">Địa chỉ</th>
 													<th class="align-middle">Website</th>
+													<th class="align-middle">Trạng thái</th>
 													<th class="align-middle">Tác vụ</th>
 												</tr>
 											</thead>
@@ -53,7 +54,7 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/admin/trademark?action=create"
+								<form action="${pageContext.request.contextPath}/api/trademark"
 								      method="POST" id="create" novalidate="novalidate">
 									<div class="modal-body card-body">
 										<div class="form-group">
@@ -68,11 +69,8 @@
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng
-										</button>
-										<button type="button" class="btn btn-primary font-weight-bolder"
-										        onclick="checkValid('create');">Lưu
-										</button>
+										        data-dismiss="modal">Đóng</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
 							</div>
@@ -106,11 +104,8 @@
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng
-										</button>
-										<button type="button" class="btn btn-primary font-weight-bolder"
-										        onclick="checkValid('update');">Lưu
-										</button>
+										        data-dismiss="modal">Đóng</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
 							</div>
@@ -126,9 +121,11 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/api/category"
+								<form action="${pageContext.request.contextPath}/api/trademark"
 								      id="update-status" novalidate="novalidate">
 									<input type="hidden" name="id">
+									<input type="hidden" name="name">
+									<input type="hidden" name="website">
 									<div class="modal-body card-body">
 										<div class="form-group">
 											<label>Trạng thái</label>
@@ -140,8 +137,7 @@
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng
-										</button>
+										        data-dismiss="modal">Đóng</button>
 										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
@@ -161,13 +157,12 @@
 								<form id="delete">
 									<div class="modal-body card-body">
 										<div class="form-group">
-											<span>Xác nhận xóa thể loại đã chọn?</span>
+											<span>Xác nhận xóa thương hiệu đã chọn?</span>
 										</div>
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Hủy
-										</button>
+										        data-dismiss="modal">Hủy</button>
 										<button type="submit" class="btn btn-primary font-weight-bolder">Đồng ý</button>
 									</div>
 								</form>
@@ -182,112 +177,11 @@
 		</div>
 		<c:import url="import/management/script.jsp"/>
 		<script>
-            const province$ = $('select[name = "province"]');
-            const district$ = $('select[name = "district"]');
-            const ward$ = $('select[name = "ward"]');
-            const street$ = $('input[name = "street"]');
-            const number$ = $('input[name = "number"]');
-            let addressTitle$;
-            let address = {
-                number: null,
-                street: null,
-                ward: null,
-                district: null,
-                province: null,
-            }
-
-            function addAddress(element) {
-                let trademarkId = $(element).next('input').val();
-                $('#add-address input[name="trademarkId"]').val(trademarkId);
-                addressTitle$ = $('#add-address-title');
-            }
-
-            function updateAddress() {
-                addressTitle$ = $('#update-address-title');
-            }
-
-            function getAddress() {
-                let str;
-                if (address.province == null) str = "";
-                else if (address.district == null) str = address.province;
-                else if (address.ward == null) str = address.district + ', ' + address.province;
-                else if (address.street == null)
-                    if (address.ward === "") str = address.district + ', ' + address.province;
-                    else str = address.ward + ', ' + address.district + ', ' + address.province;
-                else if (address.number == null)
-                    if (address.ward === "") str = address.street + ', ' + address.district + ', ' + address.province;
-                    else str = address.street + ', ' + address.ward + ', ' + address.district + ', ' + address.province;
-                else if (address.ward === "") str = address.number + ', ' + address.street + ', ' + address.district + ', ' + address.province;
-                else str = address.number + ', ' + address.street + ', ' + address.ward + ', ' + address.district + ', ' + address.province;
-                return str;
-            }
-
-            function showAddress() {
-                addressTitle$.text(getAddress());
-            }
-
-            function getDistrictList(id) {
-                $.ajax({
-                    type: "GET",
-                    url: '${pageContext.request.contextPath}/admin/address?action=getDistrictList',
-                    data: {id: id},
-                    dataType: "json",
-                    contentType: "application/json",
-                    success: function (data) {
-                        resetSelect("select[name = 'district']", data);
-                        resetSelect("select[name = 'ward']", []);
-                        address.district = null;
-                        address.ward = null;
-                        showAddress();
-                        district$.valid();
-                        ward$.valid();
-                        street$.valid();
-                        number$.valid();
-                    }
-                })
-            }
-
-            function getWardList(id) {
-                $.ajax({
-                    type: "GET",
-                    url: '${pageContext.request.contextPath}/admin/address?action=getWardList',
-                    data: {id: id},
-                    dataType: "json",
-                    contentType: "application/json",
-                    success: function (data) {
-                        resetSelect("select[name = 'ward']", data);
-                        if (data.length === 0) {
-                            address.ward = "";
-                            $('select[name = "ward"]').rules("remove", "required");
-                            $('input[name = "number"]').rules("remove", "required");
-                        } else {
-                            address.ward = null;
-                            $('select[name = "ward"]').rules("add", {
-                                required: true,
-                                messages: {
-                                    required: "Vui lòng chọn phường, xã"
-                                }
-                            });
-                            $('input[name = "number"]').rules("add", {
-                                required: true,
-                                messages: {
-                                    required: "Vui lòng nhập số nhà, lô, kios,.."
-                                }
-                            });
-                        }
-                        ward$.valid();
-                        street$.valid();
-                        number$.valid();
-                        showAddress();
-                    }
-                })
-            }
 
             function resetSelect(selector, data) {
-                let select$ = $(selector);
-                select$.find('option').remove();
-                if (select$.attr('name') === 'district') select$.append('<option value="">Quận / Huyện</option>');
-                else select$.append('<option value="">Phường / Xã</option>');
+	            $(selector).find('option').remove();
+                if ($(selector).attr('name') === 'district') $(selector).append('<option value="">Quận / Huyện</option>');
+                else $(selector).append('<option value="">Phường / Xã</option>');
                 for (let object of data) {
                     let str;
                     if (object.prefix === '') {
@@ -295,190 +189,84 @@
                     } else {
                         str = '<option value="' + object.id + '">' + object.prefix + ' ' + object.name + '</option>';
                     }
-                    select$.append(str);
+	                selector.append(str);
                 }
             }
-
-            province$.change(function () {
-                let province = $(this).find('option:selected');
-                if (province.val() === '') {
-                    address.province = null;
-                    address.district = null;
-                    address.ward = null;
-                    province.val(0);
-                } else if (address.province !== province.text()) {
-                    address.province = province.text();
-                    $(this).valid();
-                    address.district = null;
-                    address.ward = null;
-                }
-                if ($(this).val() !== 0) {
-                    getDistrictList($(this).val());
-                }
-            })
-            district$.change(function () {
-                let district = $(this).find('option:selected');
-                if (district.val() === '') {
-                    address.district = null;
-                    address.ward = null;
-                    district.val(0);
-                } else if (address.district !== district.text()) {
-                    address.district = district.text();
-                    $(this).valid();
-                }
-                if ($(this).val() !== 0) {
-                    getWardList($(this).val());
-                }
-            })
-            ward$.change(function () {
-                let ward = $(this).find('option:selected');
-                if (ward.val() === '') {
-                    address.ward = null;
-                    ward.val(0);
-                } else {
-                    address.ward = ward.text();
-                    $(this).valid();
-                }
-                showAddress();
-            })
-            street$.keyup(function () {
-                address.street = $(this).val().trim() !== "" ? $(this).val().trim() : null;
-                showAddress();
-            })
-            number$.keyup(function () {
-                address.number = $(this).val().trim() !== "" ? $(this).val().trim() : null;
-                showAddress();
-            })
 		</script>
 		<script>
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-            });
+			/* Get districts by province id */
+			function getDistrictsByProvinceId(productId) {
+				$.ajax({
+					type: "GET",
+					url: '${pageContext.request.contextPath}/api/district/p/' + productId,
+					dataType: "json",
+					contentType: "application/json",
+					success: function (result) {
+						let response = JSON.parse(result);
+						resetSelect("select[name = 'district']", response.data);
+						resetSelect("select[name = 'ward']", []);
+					}
+				})
+			}
 
-            function getListNameHasProduct() {
-                return $.ajax({
-                    type: "GET",
-                    url: '${pageContext.request.contextPath}/admin/trademark?action=getListNameHasProduct',
-                    success: function (data) {
-                        console.log(data)
-                    }
-                })
-            }
+			/* Get wards by district id */
+			function getWardsByDistrictId(districtId) {
+				$.ajax({
+					type: "GET",
+					url: '${pageContext.request.contextPath}/api/ward/d/' + districtId,
+					dataType: "json",
+					contentType: "application/json",
+					success: function (result) {
+						resetSelect("select[name = 'ward']", data);
+						if (data.length === 0) {
+							address.ward = "";
+							$('select[name = "ward"]').rules("remove", "required");
+							$('input[name = "number"]').rules("remove", "required");
+						} else {
+							address.ward = null;
+							$('select[name = "ward"]').rules("add", {
+								required: true,
+								messages: {
+									required: "Vui lòng chọn phường, xã"
+								}
+							});
+							$('input[name = "number"]').rules("add", {
+								required: true,
+								messages: {
+									required: "Vui lòng nhập số nhà, lô, kios,.."
+								}
+							});
+						}
+					}
+				})
+			}
 
-            function checkValid(type) {
-                let valid, name, oldName, website, oldWebsite;
-                if (type === 'create') {
-                    valid = $('#create').valid();
-                    name = $('#create-modal input[name="name"]').val();
-                    website = $('#create-modal input[name="website"]').val();
-                } else {
-                    valid = $('#update').valid();
-                    oldName = $('#update-modal input[name="old_name"]').val();
-                    oldWebsite = $('#update-modal input[name="old_website"]').val();
-                    name = $('#update-modal input[name="name"]').val();
-                    website = $('#update-modal input[name="website"]').val();
-                }
-                if (valid) {
-                    $.ajax({
-                        type: "GET",
-                        url: '${pageContext.request.contextPath}/admin/trademark?action=checkExist',
-                        data: {name: name, website: website},
-                        success: function (data) {
-                            if (type === 'update' && oldName === name && oldWebsite === website) {
-                                $("#update").submit();
-                            } else if (data.statusCode === 1) {
-                                if (oldName === name) {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: '${pageContext.request.contextPath}/admin/trademark?action=checkExist',
-                                        data: {name: "", website: website},
-                                        success: function (data) {
-                                            if (data.statusCode === 2) {
-                                                Toast.fire({
-                                                    icon: 'error',
-                                                    title: data.message,
-                                                })
-                                            } else $("#update").submit();
-                                        }
-                                    })
-                                } else
-                                    Toast.fire({
-                                        icon: 'error',
-                                        title: data.message,
-                                    })
-                            } else {
-                                if (type === 'create') {
-                                    $("#create").submit();
-                                } else {
-                                    getListNameHasProduct().done(function (data) {
-                                        if (data.includes(oldName) && confirm('Tồn tại sản phẩm chứa thương hiệu này.\nCập nhật sẽ làm thay đổi tất cả sản phẩm liên quan. Xác nhận tiếp tục?')) {
-                                            Toast.fire({
-                                                icon: 'success',
-                                                title: "Đã cập nhật thương hiệu các sản phẩm liên quan",
-                                            })
-                                            setTimeout(function () {
-                                                $("#update").submit();
-                                            }, 1000);
-                                        } else {
-                                            $("#update").submit();
-                                        }
-                                    })
-                                }
-                            }
-                        }
-                    })
-                }
-            }
+			/* Get trademark */
+			function getTrademarkForUpdate(id) {
+				$.ajax({
+					type: "GET",
+					url: '${pageContext.request.contextPath}/api/trademark/' + id,
+					success: function (result) {
+						$('#update input[name="id"]').val(result.data.id);
+						$('#update input[name="name"]').val(result.data.name);
+						$('#update input[name="website"]').val(result.data.website);
+						$('#update input[name="active"]').val(result.data.active ? 1 : 0).trigger('change');
+					}
+				})
+			}
 
-            function checkValidAddress(type) {
-                let valid, path, oldPath;
-                if (type === 'add-address') {
-                    valid = $('#add-address').valid();
-                    path = $('#add-address-title').text();
-                } else {
-                    valid = $('#update-address').valid();
-                    oldPath = $('#update-address input[name="old_path"]').val();
-                    path = $('#update-address-title').text();
-                }
-                if (valid) {
-                    $.ajax({
-                        type: "GET",
-                        url: '${pageContext.request.contextPath}/admin/address?action=checkExist',
-                        data: {path: path},
-                        success: function (data) {
-                            if (type === 'update-address' && path === oldPath) {
-                                $("#update-address").submit();
-                            } else if (data.statusCode === 1) {
-                                Toast.fire({
-                                    icon: 'error',
-                                    title: data.message,
-                                })
-                            } else {
-                                if (type === 'add-address') {
-                                    Toast.fire({
-                                        icon: 'success',
-                                        title: "\tTạo địa chỉ thành công",
-                                    })
-                                    setTimeout(function () {
-                                        $("#add-address").submit();
-                                    }, 1000);
-                                } else {
-                                    Toast.fire({
-                                        icon: 'success',
-                                        title: "\tĐã cập nhật địa chỉ thành công",
-                                    })
-                                    setTimeout(function () {
-                                        $("#update-address").submit();
-                                    }, 1000);
-                                }
-                            }
-                        }
-                    })
-                }
-            }
+			function getTrademarkForUpdateStatus(id) {
+				$.ajax({
+					type: "GET",
+					url: '${pageContext.request.contextPath}/api/trademark/' + id,
+					success: function (result) {
+						$('#update-status input[name="id"]').val(result.data.id);
+						$('#update-status input[name="name"]').val(result.data.name);
+						$('#update-status input[name="website"]').val(result.data.website);
+						$('#update-status select[name="active"]').val(result.data.active ? 1 : 0).trigger('change');
+					}
+				})
+			}
 
             function deleteTrademark() {
                 let ids = [];
@@ -510,254 +298,483 @@
                 })
             }
 
+			function checkValid(type) {
+				let valid, name, oldName, website, oldWebsite;
+				if (type === 'create') {
+					valid = $('#create').valid();
+					name = $('#create-modal input[name="name"]').val();
+					website = $('#create-modal input[name="website"]').val();
+				} else {
+					valid = $('#update').valid();
+					oldName = $('#update-modal input[name="old_name"]').val();
+					oldWebsite = $('#update-modal input[name="old_website"]').val();
+					name = $('#update-modal input[name="name"]').val();
+					website = $('#update-modal input[name="website"]').val();
+				}
+				if (valid) {
+					$.ajax({
+						type: "GET",
+						url: '${pageContext.request.contextPath}/admin/trademark?action=checkExist',
+						data: {name: name, website: website},
+						success: function (data) {
+							if (type === 'update' && oldName === name && oldWebsite === website) {
+								$("#update").submit();
+							} else if (data.statusCode === 1) {
+								if (oldName === name) {
+									$.ajax({
+										type: "GET",
+										url: '${pageContext.request.contextPath}/admin/trademark?action=checkExist',
+										data: {name: "", website: website},
+										success: function (data) {
+											if (data.statusCode === 2) {
+												Toast.fire({
+													icon: 'error',
+													title: data.message,
+												})
+											} else $("#update").submit();
+										}
+									})
+								} else
+									Toast.fire({
+										icon: 'error',
+										title: data.message,
+									})
+							} else {
+								if (type === 'create') {
+									$("#create").submit();
+								} else {
+									getListNameHasProduct().done(function (data) {
+										if (data.includes(oldName) && confirm('Tồn tại sản phẩm chứa thương hiệu này.\nCập nhật sẽ làm thay đổi tất cả sản phẩm liên quan. Xác nhận tiếp tục?')) {
+											Toast.fire({
+												icon: 'success',
+												title: "Đã cập nhật thương hiệu các sản phẩm liên quan",
+											})
+											setTimeout(function () {
+												$("#update").submit();
+											}, 1000);
+										} else {
+											$("#update").submit();
+										}
+									})
+								}
+							}
+						}
+					})
+				}
+			}
+
+			function checkValidAddress(type) {
+				let valid, path, oldPath;
+				if (type === 'add-address') {
+					valid = $('#add-address').valid();
+					path = $('#add-address-title').text();
+				} else {
+					valid = $('#update-address').valid();
+					oldPath = $('#update-address input[name="old_path"]').val();
+					path = $('#update-address-title').text();
+				}
+				if (valid) {
+					$.ajax({
+						type: "GET",
+						url: '${pageContext.request.contextPath}/admin/address?action=checkExist',
+						data: {path: path},
+						success: function (data) {
+							if (type === 'update-address' && path === oldPath) {
+								$("#update-address").submit();
+							} else if (data.statusCode === 1) {
+								Toast.fire({
+									icon: 'error',
+									title: data.message,
+								})
+							} else {
+								if (type === 'add-address') {
+									Toast.fire({
+										icon: 'success',
+										title: "\tTạo địa chỉ thành công",
+									})
+									setTimeout(function () {
+										$("#add-address").submit();
+									}, 1000);
+								} else {
+									Toast.fire({
+										icon: 'success',
+										title: "\tĐã cập nhật địa chỉ thành công",
+									})
+									setTimeout(function () {
+										$("#update-address").submit();
+									}, 1000);
+								}
+							}
+						}
+					})
+				}
+			}
+
+            /* Reload datatables */
+            function reloadData() {
+	            $('#trademark').DataTable().ajax.reload();
+            }
+
             $(function () {
+				/* Create toast */
+	            const Toast = Swal.mixin({
+		            toast: true,
+		            position: 'top-end',
+		            showConfirmButton: false,
+		            timer: 3000
+	            });
+
+	            /* Create select2bs4 */
+	            $('.select2bs4').select2({
+		            theme: 'bootstrap4'
+	            });
+
+	            /* Action on change handle */
+	            $("select[name=province]").change(function () {
+		            let province = $(this).find('option:selected');
+		            if (province.val() === '') {
+			            address.province = null;
+			            address.district = null;
+			            address.ward = null;
+			            province.val(0);
+		            } else if (address.province !== province.text()) {
+			            address.province = province.text();
+			            $(this).valid();
+			            address.district = null;
+			            address.ward = null;
+		            }
+		            if ($(this).val() !== 0) {
+			            getDistrictList($(this).val());
+		            }
+	            })
+
+	            $("select[name=district]").change(function () {
+		            let district = $(this).find('option:selected');
+		            if (district.val() === '') {
+			            address.district = null;
+			            address.ward = null;
+			            district.val(0);
+		            } else if (address.district !== district.text()) {
+			            address.district = district.text();
+			            $(this).valid();
+		            }
+		            if ($(this).val() !== 0) {
+			            getWardList($(this).val());
+		            }
+	            })
+
+	            $("select[name=ward]").change(function () {
+		            let ward = $(this).find('option:selected');
+		            if (ward.val() === '') {
+			            address.ward = null;
+			            ward.val(0);
+		            } else {
+			            address.ward = ward.text();
+			            $(this).valid();
+		            }
+		            showAddress();
+	            })
+
+	            /* Checkbox handle */
+	            $('#checkBoxAll').click(function () {
+		            if ($(this).is(':checked')) {
+			            $('.checkBoxId').prop('checked', true);
+		            } else {
+			            $('.checkBoxId').prop('checked', false);
+		            }
+	            });
+
+	            /* Create trademark */
+	            $("#create").submit(function (e) {
+		            e.preventDefault();
+	            });
+
+	            /* Update trademark */
+	            $("#update").submit(function (e) {
+		            e.preventDefault();
+	            });
+
+	            /* Update status trademark */
+				$("#update-status").submit(function (e) {
+					e.preventDefault();
+					if ($(this).valid()) {
+						let formData = new FormData($(this)[0]);
+						$.ajax({
+							url: '${pageContext.request.contextPath}/api/trademark',
+							type: 'PUT',
+							processData: false,
+							contentType: false,
+							data: formData,
+							success: function (result) {
+								let response = JSON.parse(result);
+								if (response.success) {
+									Toast.fire({
+										icon: 'success',
+										title: response.message
+									});
+									reloadData();
+									$('#update-status-modal').modal('hide');
+								} else {
+									Toast.fire({
+										icon: 'error',
+										title: response.message
+									})
+								}
+							},
+							error: function (result) {
+								let response = JSON.parse(result);
+								Toast.fire({
+									icon: 'error',
+									title: response.message
+								});
+								$('#update-status-modal').modal('hide');
+							}
+						})
+					}
+				});
+
+	            /* Delete trademark */
+	            $("#delete").submit(function (e) {
+		            e.preventDefault();
+		            deleteTrademark();
+	            });
+
+	            /* Create address */
+	            $('#create-address').submit(function (e) {
+		            e.preventDefault();
+	            });
+
+	            /* Update address */
+	            $('#update-address').submit(function (e) {
+		            e.preventDefault();
+	            });
+
+	            /* Delete address */
+	            $('#delete-address').submit(function (e) {
+		            e.preventDefault();
+		            $.ajax({
+			            type: "DELETE",
+			            url: '${pageContext.request.contextPath}/api/address',
+		            })
+	            });
+
+	            /* Validate form */
+	            $("#create").validate({
+		            rules: {
+			            name: {
+				            required: true,
+			            }
+		            },
+		            messages: {
+			            name: "Vui lòng nhập tên thương hiệu"
+		            },
+		            errorElement: 'span',
+		            errorPlacement: function (error, element) {
+			            error.addClass('invalid-feedback');
+			            element.closest('.form-group').append(error);
+		            },
+		            highlight: function (element, errorClass, validClass) {
+			            $(element).addClass('is-invalid');
+		            },
+		            unhighlight: function (element, errorClass, validClass) {
+			            $(element).removeClass('is-invalid');
+		            }
+	            });
+
+	            $("#update").validate({
+		            rules: {
+			            name: {
+				            required: true,
+			            }
+		            },
+		            messages: {
+			            name: "Vui lòng nhập tên thương hiệu"
+		            },
+		            errorElement: 'span',
+		            errorPlacement: function (error, element) {
+			            error.addClass('invalid-feedback');
+			            element.closest('.form-group').append(error);
+		            },
+		            highlight: function (element, errorClass, validClass) {
+			            $(element).addClass('is-invalid');
+		            },
+		            unhighlight: function (element, errorClass, validClass) {
+			            $(element).removeClass('is-invalid');
+		            }
+	            });
+
+	            $('#create-address').validate({
+		            rules: {
+			            province: {
+				            required: true,
+				            min: '1'
+			            },
+			            district: {
+				            required: true,
+				            min: '1'
+			            },
+			            ward: {
+				            required: true,
+				            min: '1'
+			            },
+			            street: {
+				            required: true
+			            },
+			            number: {
+				            required: true
+			            }
+		            },
+		            messages: {
+			            province: "Vui lòng chọn tỉnh, thành phố",
+			            district: "Vui lòng chọn quận, huyện",
+			            ward: "Vui lòng chọn phường, xã",
+			            street: "Vui lòng nhập tên đường",
+			            number: "Vui lòng nhập số nhà, lô, kios,.."
+		            },
+		            errorElement: 'span',
+		            errorPlacement: function (error, element) {
+			            error.addClass('invalid-feedback');
+			            element.closest('.form-group').append(error);
+		            },
+		            highlight: function (element, errorClass, validClass) {
+			            $(element).addClass('is-invalid');
+		            },
+		            unhighlight: function (element, errorClass, validClass) {
+			            $(element).removeClass('is-invalid');
+		            }
+	            })
+
+	            $('#update-address').validate({
+		            rules: {
+			            province: {
+				            required: true,
+				            min: '1'
+			            },
+			            district: {
+				            required: true,
+				            min: '1'
+			            },
+			            ward: {
+				            required: true,
+				            min: '1'
+			            },
+			            street: {
+				            required: true
+			            },
+			            number: {
+				            required: true
+			            }
+		            },
+		            messages: {
+			            province: "Vui lòng chọn tỉnh, thành phố",
+			            district: "Vui lòng chọn quận, huyện",
+			            ward: "Vui lòng chọn phường, xã",
+			            street: "Vui lòng nhập tên đường",
+			            number: "Vui lòng nhập số nhà, lô, kios,.."
+		            },
+		            errorElement: 'span',
+		            errorPlacement: function (error, element) {
+			            error.addClass('invalid-feedback');
+			            element.closest('.form-group').append(error);
+		            },
+		            highlight: function (element, errorClass, validClass) {
+			            $(element).addClass('is-invalid');
+		            },
+		            unhighlight: function (element, errorClass, validClass) {
+			            $(element).removeClass('is-invalid');
+		            }
+	            })
+
+	            /* Reset form */
                 $(".modal").on('hide.bs.modal', function () {
                     $(':input', 'form')
                         .not(':button, :submit, :reset, :hidden')
                         .val('')
                         .prop('checked', false)
                         .prop('selected', false);
-                    createValidate.resetForm();
-                    updateValidate.resetForm();
-                    addAddressValidate.resetForm();
-                    updateAddressValidate.resetForm();
+                    $("#create").validate().resetForm();
+	                $("#create .form-control").removeClass("is-invalid");
+                    $("#update").validate().resetForm();
+	                $("#update .form-control").removeClass("is-invalid");
+	                $("#create-address").validate().resetForm();
+	                $("#create-address .form-control").removeClass("is-invalid");
+	                $("#update-address").validate().resetForm();
+	                $("#update-address .form-control").removeClass("is-invalid");
 
                 });
 
-                // Select2
-                $('.select2bs4').select2({
-                    theme: 'bootstrap4'
-                })
-
-                // Datatables
-                $("#trademark").DataTable({
-                    "responsive": true, "lengthChange": false, "autoWidth": false, "pageLength": 7,
+	            /* Create datatables */
+                let table = $("#trademark").DataTable({
+                    "responsive": true,
+	                "lengthChange": false,
+	                "autoWidth": false,
+	                "pageLength": 5,
+	                "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+	                "order": [[0, "asc"]],
                     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-                    "order": [[1, "asc"]],
-                    "columnDefs": [
+	                "initComplete": function () {
+		                table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
+	                },
+	                "ajax": {
+		                "url": "${pageContext.request.contextPath}/api/trademark",
+		                "dataSrc": "data"
+	                },
+	                "columnDefs": [
+		                {
+			                "targets": [1, 5, 6],
+			                "className": "text-center",
+		                },
                         {
                             "targets": 0,
                             "orderable": false,
-                            "width": "5%"
                         },
                         {
                             "targets": 1,
-                            "width": "20%"
+	                        "orderable": false,
+	                        "sortable": false,
+	                        "width": "5%",
+	                        "render": function (data, type, row) {
+		                        return '<input type="checkbox" class="checkBoxId" value="' + data + '">';
+	                        }
                         },
                         {
-                            "targets": 2,
-                            "width": "45%"
+                            "targets": 5,
+	                        "width": "20%",
+	                        "render": function (data, type, row) {
+		                        return '<button onclick="getTrademarkForUpdateStatus(' + data.id + ')" class="btn ' +
+				                        (data.active ? 'btn-success' : 'btn-danger') +
+				                        ' btn-sm" title="Nhấn để đổi trạng thái" data-toggle="modal" data-target="#update-status-modal">' +
+				                        (data.active ? 'Đã kích hoạt' : 'Đã khoá') + '</button>';
+	                        }
                         },
-                        {
-                            "targets": 3,
-                            "width": "25%"
-                        },
-                        {
-                            "targets": 4,
-                            "orderable": false,
-                            "width": "5%"
-                        }
+		                {
+			                "targets": 6,
+			                "orderable": false,
+			                "width": "10%",
+			                "render": function (data, type, row) {
+				                return '<button onclick="getTrademarkForUpdate(' + data + ')" class="btn btn-primary btn-block" title="Nhấn để chỉnh sửa" data-toggle="modal" data-target="#update-modal">' +
+						                '<i class="fas fa-pencil-alt"></i>' +
+						                '</button>';
+			                }
+		                }
                     ],
-                    "drawCallback": function () {
-                        $('.update').on('click', function () {
-                            let id = $(this).parent().find('input[name = "id"]').val();
-                            $.ajax({
-                                type: "GET",
-                                url: '${pageContext.request.contextPath}/admin/trademark?action=get',
-                                data: {id: id},
-                                dataType: "json",
-                                contentType: "application/json",
-                                success: function (data) {
-                                    $('#update-modal input[name = "id"]').val(data.id);
-                                    $('#update-modal input[name = "name"]').val(data.name);
-                                    $('#update-modal input[name = "old_name"]').val(data.name);
-                                    $('#update-modal input[name = "website"]').val(data.website);
-                                    $('#update-modal input[name = "old_website"]').val(data.website);
-                                }
-                            })
-                        });
-                        $('.address-delete').on('click', function () {
-                            let id = $(this).parent().find('input[name="addressId"]').val();
-                            $('#delete-address-modal input[name ="id"]').val(id);
-                        });
-                        $('.address-update').on('click', function () {
-                            let id = $(this).parent().find('input[name="addressId"]').val();
-                            $.ajax({
-                                type: "GET",
-                                url: '${pageContext.request.contextPath}/admin/address?action=get',
-                                data: {id: id},
-                                dataType: "json",
-                                contentType: "application/json",
-                                success: function (data) {
-                                    $('#update-address-modal input[name="id"]').val(data.id);
-                                    $('#update-address-modal select[name="province"]').val(data.district.province.id).trigger('change');
-                                    setTimeout(function () {
-                                        $('#update-address-modal select[name="district"]').val(data.district.id).trigger('change');
-                                    }, 50);
-                                    setTimeout(function () {
-                                        $('#update-address-modal select[name="ward"]').val(data.ward.id).trigger('change');
-                                    }, 100);
-                                    $('#update-address-modal input[name="street"]').val(data.street).trigger('keyup');
-                                    $('#update-address-modal input[name="number"]').val(data.number).trigger('keyup');
-                                    $('#update-address-modal input[name="old_path"]').val(data.path);
-                                }
-                            }).done(function (data) {
-                                showAddress();
-                            })
-                        });
-                    }
-                }).buttons().container().appendTo('#trademark_wrapper .col-md-6:eq(0)');
-
-                // Validator
-                let createValidate = create$.validate({
-                    rules: {
-                        name: {
-                            required: true,
-                        }
-                    },
-                    messages: {
-                        name: "Vui lòng nhập tên thương hiệu"
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function (error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function (element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function (element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    }
+	                "columns": [
+		                { "data": "id" },
+		                {
+			                "name": "ID",
+			                "data": "id"
+		                },
+		                {"data": "name"},
+		                {"data": "addresses"},
+		                {"data": "website"},
+		                {"data": {
+				                id: "id",
+				                active: "active"
+			                }
+		                },
+		                {"data": "id"}
+	                ],
                 });
-                let updateValidate = update$.validate({
-                    rules: {
-                        name: {
-                            required: true,
-                        }
-                    },
-                    messages: {
-                        name: "Vui lòng nhập tên thương hiệu"
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function (error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function (element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function (element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    }
-                });
-
-                let addAddressValidate = $('#create').validate({
-                    rules: {
-                        province: {
-                            required: true,
-                            min: '1'
-                        },
-                        district: {
-                            required: true,
-                            min: '1'
-                        },
-                        ward: {
-                            required: true,
-                            min: '1'
-                        },
-                        street: {
-                            required: true
-                        },
-                        number: {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        province: "Vui lòng chọn tỉnh, thành phố",
-                        district: "Vui lòng chọn quận, huyện",
-                        ward: "Vui lòng chọn phường, xã",
-                        street: "Vui lòng nhập tên đường",
-                        number: "Vui lòng nhập số nhà, lô, kios,.."
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function (error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function (element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function (element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    }
-                })
-                let updateAddressValidate = updateAddress$.validate({
-                    rules: {
-                        province: {
-                            required: true,
-                            min: '1'
-                        },
-                        district: {
-                            required: true,
-                            min: '1'
-                        },
-                        ward: {
-                            required: true,
-                            min: '1'
-                        },
-                        street: {
-                            required: true
-                        },
-                        number: {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        province: "Vui lòng chọn tỉnh, thành phố",
-                        district: "Vui lòng chọn quận, huyện",
-                        ward: "Vui lòng chọn phường, xã",
-                        street: "Vui lòng nhập tên đường",
-                        number: "Vui lòng nhập số nhà, lô, kios,.."
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function (error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function (element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function (element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    }
-                })
-
-                addAddress$.submit(function () {
-                    if ($(this).valid()) {
-                        $.ajax({
-                            type: "GET",
-                            url: '${pageContext.request.contextPath}/admin/address?action=checkExistWithPath&path=' + getAddress(),
-                            data: {},
-                            dataType: "json",
-                            contentType: "application/json",
-                            success: function (data) {
-                                if (data != null) {
-                                    alert('Địa chỉ đã được thêm');
-                                    return false;
-                                }
-                            }
-                        })
-                    }
-                })
-
-                $('#checkBoxAll').click(function () {
-                    if ($(this).is(':checked')) {
-                        $('.checkBoxId').prop('checked', true);
-                    } else {
-                        $('.checkBoxId').prop('checked', false);
-                    }
-                })
             });
 		</script>
 	</body>

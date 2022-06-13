@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!-- Add -->
-<div class="modal fade" id="add-address-modal" style="display: none;" aria-hidden="true">
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!-- Create address modal  -->
+<div class="modal fade" id="create-address-modal" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content card card-success">
             <div class="modal-header card-header">
@@ -11,7 +11,7 @@
                 </button>
             </div>
             <form action="${pageContext.request.contextPath}/admin/address?action=createTrademarkAddress" method="POST"
-                  id="add-address" novalidate="novalidate">
+                  id="create-address" novalidate="novalidate">
                 <input type="hidden" name="trademarkId">
                 <input type="hidden" name="redirect" value="admin/trademark">
                 <div class="modal-body card-body">
@@ -21,10 +21,10 @@
                                 <div class="form-group">
                                     <select class="select2bs4" name="province" style="width: 100%;">
                                         <option value="0">Tỉnh / Thành phố</option>
-                                        <jsp:useBean id="provinces" scope="request" type="java.util.List"/>
+                                        <%--<jsp:useBean id="provinces" scope="request" type="java.util.List"/>
                                         <c:forEach items="${provinces}" var="province">
                                             <option value="${province.id}">${province.prefix} ${province.name}</option>
-                                        </c:forEach>
+                                        </c:forEach>--%>
                                     </select>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
         </div>
     </div>
 </div>
-<!-- Update -->
+<!-- Update address modal -->
 <div class="modal fade" id="update-address-modal" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content card card-success">
@@ -92,9 +92,9 @@
                                 <div class="form-group">
                                     <select class="select2bs4" name="province" style="width: 100%;">
                                         <option value="0">Tỉnh / Thành phố</option>
-                                        <c:forEach items="${provinces}" var="province">
+                                        <%--<c:forEach items="${provinces}" var="province">
                                             <option value="${province.id}">${province.prefix} ${province.name}</option>
-                                        </c:forEach>
+                                        </c:forEach>--%>
                                     </select>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@
         </div>
     </div>
 </div>
-<!-- Delete -->
+<!-- Delete address modal -->
 <div class="modal fade" id="delete-address-modal" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content card card-danger">
@@ -150,7 +150,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form action="${pageContext.request.contextPath}/admin/address?action=delete" method="POST">
+            <form action="${pageContext.request.contextPath}/api/trademark?action=delete" id="delete-address" method="POST">
                 <input type="hidden" name="id"/>
                 <input type="hidden" name="redirect" value="admin/trademark">
                 <div class="modal-body card-body">

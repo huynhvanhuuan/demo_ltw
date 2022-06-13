@@ -16,7 +16,7 @@ import java.util.List;
 
 @WebServlet(name = "api-product", urlPatterns = "/api/product/*")
 public class ProductAPI extends HttpServlet {
-    private final Gson GSON = new GsonBuilder().create();
+    private final Gson GSON = new GsonBuilder().serializeNulls().create();
     private ProductService productService;
 
     @Override

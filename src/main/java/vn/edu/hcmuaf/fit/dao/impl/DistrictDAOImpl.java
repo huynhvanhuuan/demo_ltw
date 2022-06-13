@@ -19,6 +19,7 @@ public class DistrictDAOImpl implements DistrictDAO {
 
     private DistrictDAOImpl() {
         this.connectionPool = DbManager.connectionPool;
+        this.provinceDAO = ProvinceDAOImpl.getInstance();
     }
 
     public static DistrictDAO getInstance() {

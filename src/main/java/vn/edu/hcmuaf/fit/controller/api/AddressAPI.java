@@ -23,7 +23,7 @@ import java.util.Locale;
 @WebServlet(name = "api-address", urlPatterns = "/api/address/*")
 public class AddressAPI extends HttpServlet {
 	private final AddressService addressService = AddressServiceImpl.getInstance();
-	private final Gson GSON = new GsonBuilder().create();
+	private final Gson GSON = new GsonBuilder().serializeNulls().create();
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

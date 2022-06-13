@@ -4,11 +4,13 @@ public class TrademarkUpdate {
     private Long id;
     private String name;
     private String website;
+    private boolean active;
 
-    public TrademarkUpdate(Long id, String name, String website) {
+    public TrademarkUpdate(Long id, String name, String website, boolean active) {
         this.id = id;
         this.name = name;
         this.website = website;
+        this.active = active;
     }
 
     public Long getId() {
@@ -33,5 +35,13 @@ public class TrademarkUpdate {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

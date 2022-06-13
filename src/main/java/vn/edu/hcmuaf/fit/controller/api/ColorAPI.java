@@ -16,7 +16,7 @@ import java.util.List;
 
 @WebServlet(name = "api-color", urlPatterns = "/api/color/*")
 public class ColorAPI extends HttpServlet {
-    private final Gson GSON = new GsonBuilder().create();
+    private final Gson GSON = new GsonBuilder().serializeNulls().create();
     private final CommonService colorService = CommonServiceImpl.getInstance();
 
     @Override

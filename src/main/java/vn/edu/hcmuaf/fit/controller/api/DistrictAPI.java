@@ -16,7 +16,7 @@ import java.util.List;
 
 @WebServlet(name = "api-district", urlPatterns = "/api/district/*")
 public class DistrictAPI extends HttpServlet {
-    private final Gson GSON = new GsonBuilder().create();
+    private final Gson GSON = new GsonBuilder().serializeNulls().create();
     private final CommonService districtService = CommonServiceImpl.getInstance();
 
     @Override

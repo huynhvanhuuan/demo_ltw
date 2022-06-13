@@ -56,9 +56,8 @@ public class QUERY {
         public static final String FIND_BY_NAME = "select * from trademark where website like ?";
         public static final String FIND_BY_WEBSITE = "select * from trademark where website like ?";
         public static final String CREATE = "insert into trademark(name, website) values(?,?)";
-        public static final String UPDATE = "update trademark set name = ?, website = ? where id = ?";
+        public static final String UPDATE = "update trademark set name = ?, website = ?, active = ? where id = ?";
         public static final String DELETE = "delete from trademark where id = ?";
-        public static final String UPDATE_STATUS = "update trademark set active = (case active when 1 then 0 when 0 then 1 end) where id = ?";
         public static final String ADD_ADDRESS = "insert into trademark_address(trademark_id, address_id) values(?,?)";
     }
 

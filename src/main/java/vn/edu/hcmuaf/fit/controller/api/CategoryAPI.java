@@ -21,7 +21,7 @@ import java.util.List;
 @WebServlet(name = "api-category", urlPatterns = "/api/category/*")
 @MultipartConfig
 public class CategoryAPI extends HttpServlet {
-	private final Gson GSON = new GsonBuilder().create();
+	private final Gson GSON = new GsonBuilder().serializeNulls().create();
 	private final CategoryService categoryService = CategoryServiceImpl.getInstance();
 
 	@Override
@@ -77,7 +77,6 @@ public class CategoryAPI extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		try {
-			AppBaseResult result = new AppBaseResult(false, AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
 			long id = Long.parseLong(request.getParameter("id"));
 			String name = request.getParameter("name");
 			String sku = request.getParameter("sku");
@@ -86,14 +85,7 @@ public class CategoryAPI extends HttpServlet {
 //			Type type = new TypeToken<CategoryUpdate>() {}.getType();
 //			CategoryUpdate updateCategory = GSON.fromJson(json, type);
 			CategoryUpdate updateCategory = new CategoryUpdate(id, sku, name, active);
-			switch (request.getPathInfo()) {
-				case "/update-category":
-					result = categoryService.updateCategory(updateCategory);
-					break;
-				case "/update-status":
-					result = categoryService.updateStatus(updateCategory);
-					break;
-			}
+			AppBaseResult result = categoryService.updateCategory(updateCategory);
 
 			if (result.isSuccess()) {
 				response.setStatus(200);

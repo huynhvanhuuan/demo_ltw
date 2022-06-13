@@ -16,7 +16,7 @@ import java.util.List;
 
 @WebServlet(name = "api-material", urlPatterns = "/api/material/*")
 public class MaterialAPI extends HttpServlet {
-    private final Gson GSON = new GsonBuilder().create();
+    private final Gson GSON = new GsonBuilder().serializeNulls().create();
     private final CommonService materialService = CommonServiceImpl.getInstance();
 
     @Override
