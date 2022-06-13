@@ -13,14 +13,15 @@ import vn.edu.hcmuaf.fit.service.impl.AddressServiceImpl;
 import vn.edu.hcmuaf.fit.util.StringUtil;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Locale;
 
 @WebServlet(name = "api-address", urlPatterns = "/api/address/*")
+@MultipartConfig
 public class AddressAPI extends HttpServlet {
 	private final AddressService addressService = AddressServiceImpl.getInstance();
 	private final Gson GSON = new GsonBuilder().serializeNulls().create();
@@ -86,18 +87,38 @@ public class AddressAPI extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		
-		String name = request.getParameter("name");
-		String sku = StringUtil.toStringWithoutSpaces(name).toUpperCase(Locale.ROOT);
-		
-		AddressCreate newAddress = new AddressCreate();
-		
-		AppServiceResult<AddressDto> result = addressService.createAddress(newAddress);
-		if (result.isSuccess()) {
-			response.setStatus(200);
-			response.getWriter().println(GSON.toJson(result));
-		} else {
-			response.sendError(result.getErrorCode(), result.getMessage());
+		request.setCharacterEncoding("UTF-8");
+
+		try {
+			AddressCreate newAddress = new AddressCreate();
+
+			long provinceId = Long.parseLong(request.getParameter("provinceId"));
+			long districtId = Long.parseLong(request.getParameter("districtId"));
+			long wardId = Long.parseLong(request.getParameter("wardId"));
+			String street = request.getParameter("street");
+			String number = request.getParameter("number");
+
+			switch (request.getPathInfo()) {
+				case "/t":
+					long trademarkId = Long.parseLong(request.getParameter("trademarkId"));
+					newAddress = new AddressCreate(number, street, wardId, districtId, provinceId, true, trademarkId);
+					break;
+				case "/u":
+					long userId = Long.parseLong(request.getParameter("userId"));
+					newAddress = new AddressCreate(number, street, wardId, districtId, provinceId, false, userId);
+					break;
+			}
+
+			AppServiceResult<AddressDto> result = addressService.createAddress(newAddress);
+			if (result.isSuccess()) {
+				response.setStatus(200);
+				response.getWriter().println(GSON.toJson(result));
+			} else {
+				response.sendError(result.getErrorCode(), result.getMessage());
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
 		}
 	}
 

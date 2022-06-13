@@ -1,14 +1,14 @@
 package vn.edu.hcmuaf.fit.entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Province implements Serializable {
     private long id;
     private String name;
     private String prefix;
-    private Set<District> districts = new HashSet<>();
+    private Set<District> districts = new LinkedHashSet<>();
 
     public Province() {
     }

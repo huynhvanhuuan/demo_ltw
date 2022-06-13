@@ -2,7 +2,6 @@ package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.constant.QUERY;
 import vn.edu.hcmuaf.fit.dao.ColorDAO;
-import vn.edu.hcmuaf.fit.database.IConnectionPool;
 import vn.edu.hcmuaf.fit.entity.Color;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
@@ -12,12 +11,9 @@ import java.util.List;
 
 public class ColorDAOImpl implements ColorDAO {
     private static ColorDAOImpl instance;
-    private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private ColorDAOImpl() {
-        this.connectionPool = DbManager.connectionPool;
-    }
+    private ColorDAOImpl() {}
 
     public static ColorDAOImpl getInstance() {
         if (instance == null) {

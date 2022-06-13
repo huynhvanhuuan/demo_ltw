@@ -359,12 +359,12 @@
 				/* Delete category */
 	            $("#delete").submit(function (e) {
 		            e.preventDefault();
-		            let ids = []
+		            let ids = [];
 		            $('.checkBoxId').each(function () {
 			            if ($(this).is(":checked")) {
 				            ids.push($(this).val());
 			            }
-		            })
+		            });
 		            $.ajax({
 			            type: "DELETE",
 			            url: '${pageContext.request.contextPath}/api/category?ids=' + encodeURIComponent(JSON.stringify(ids)),
@@ -493,7 +493,6 @@
 	                    },
                         {
                             "targets": 1,
-	                        "orderable": false,
 	                        "sortable": false,
                             "width": "5%",
                             "render": function (data, type, row) {

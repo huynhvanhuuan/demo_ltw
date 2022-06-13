@@ -1,5 +1,7 @@
 package vn.edu.hcmuaf.fit.database;
 
+import vn.edu.hcmuaf.fit.infrastructure.DbManager;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class DbConnection implements IConnectionPool {
                 if (usedConnections.size() < MAX_POOL_SIZE) {
                     connectionPool.add(createConnection(uid, pwd, database));
                 } else {
+                    DbManager.connectionPool = DbConnection.init(uid, pwd, database);
                     throw new RuntimeException("Maximum pool size reached, no available connections!");
                 }
             }

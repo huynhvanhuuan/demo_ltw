@@ -3,7 +3,6 @@ package vn.edu.hcmuaf.fit.dao.impl;
 import vn.edu.hcmuaf.fit.constant.QUERY;
 import vn.edu.hcmuaf.fit.dao.DistrictDAO;
 import vn.edu.hcmuaf.fit.dao.WardDAO;
-import vn.edu.hcmuaf.fit.database.IConnectionPool;
 import vn.edu.hcmuaf.fit.entity.District;
 import vn.edu.hcmuaf.fit.entity.Ward;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
@@ -14,13 +13,11 @@ import java.util.List;
 
 public class WardDAOImpl implements WardDAO {
     private static WardDAOImpl instance;
-    private final IConnectionPool connectionPool;
     private Connection connection;
 
     private DistrictDAO districtDAO;
 
     private WardDAOImpl() {
-        this.connectionPool = DbManager.connectionPool;
     }
 
     public static WardDAOImpl getInstance() {

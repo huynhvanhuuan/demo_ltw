@@ -2,7 +2,6 @@ package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.constant.QUERY;
 import vn.edu.hcmuaf.fit.dao.MaterialDAO;
-import vn.edu.hcmuaf.fit.database.IConnectionPool;
 import vn.edu.hcmuaf.fit.entity.Material;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
@@ -12,12 +11,9 @@ import java.util.List;
 
 public class MaterialDAOImpl implements MaterialDAO {
     private static MaterialDAOImpl instance;
-    private final IConnectionPool connectionPool;
     private Connection connection;
 
-    private MaterialDAOImpl() {
-        this.connectionPool = DbManager.connectionPool;
-    }
+    private MaterialDAOImpl() {}
 
     public static MaterialDAOImpl getInstance() {
         if (instance == null) {

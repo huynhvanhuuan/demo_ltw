@@ -1,7 +1,7 @@
 package vn.edu.hcmuaf.fit.entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Trademark implements Serializable {
@@ -9,7 +9,7 @@ public class Trademark implements Serializable {
     private String name;
     private String website;
     private boolean active;
-    private Set<Address> addresses = new HashSet<>();
+    private Set<Address> addresses = new LinkedHashSet<>();
 
     public Trademark() {
     }

@@ -1,7 +1,7 @@
 package vn.edu.hcmuaf.fit.entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class District implements Serializable {
@@ -9,7 +9,7 @@ public class District implements Serializable {
     private String name;
     private String prefix;
     private Province province;
-    private Set<Ward> wards = new HashSet<>();
+    private Set<Ward> wards = new LinkedHashSet<>();
 
     public District() {
     }

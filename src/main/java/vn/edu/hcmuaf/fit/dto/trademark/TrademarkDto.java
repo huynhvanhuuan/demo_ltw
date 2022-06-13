@@ -4,7 +4,7 @@ import vn.edu.hcmuaf.fit.dto.address.AddressDto;
 import vn.edu.hcmuaf.fit.entity.Address;
 import vn.edu.hcmuaf.fit.entity.Trademark;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class TrademarkDto {
@@ -12,7 +12,7 @@ public class TrademarkDto {
     private String name;
     private String website;
     private boolean active;
-    private Set<AddressDto> addresses = new HashSet<>();
+    private Set<AddressDto> addresses = new LinkedHashSet<>();
 
     public Long getId() {
         return id;

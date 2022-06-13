@@ -2,7 +2,6 @@ package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.constant.QUERY;
 import vn.edu.hcmuaf.fit.dao.*;
-import vn.edu.hcmuaf.fit.database.IConnectionPool;
 import vn.edu.hcmuaf.fit.entity.*;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
@@ -13,16 +12,13 @@ import java.util.*;
 
 public class ProductDetailDAOImpl implements ProductDetailDAO {
 	private static ProductDetailDAOImpl instance;
-	private final IConnectionPool connectionPool;
 	private Connection connection;
 
 	private ProductDAO productDAO;
 	private ColorDAO colorDAO;
 	private MaterialDAO materialDAO;
 	
-	private ProductDetailDAOImpl() {
-		this.connectionPool = DbManager.connectionPool;
-	}
+	private ProductDetailDAOImpl() {}
 
 	public static ProductDetailDAOImpl getInstance() {
 		if (instance == null) {

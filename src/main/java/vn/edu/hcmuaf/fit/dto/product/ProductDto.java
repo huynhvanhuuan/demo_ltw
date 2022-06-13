@@ -18,7 +18,7 @@ public class ProductDto {
     private Date dateCreated;
     private Date lastUpdated;
     private boolean active;
-    private Set<ProductDetailDto> products = new HashSet<>();
+    private Set<ProductDetailDto> products = new LinkedHashSet<>();
 
     public long getId() {
         return id;

@@ -2,9 +2,7 @@ package vn.edu.hcmuaf.fit.entity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Order implements Serializable {
 	private String id;
@@ -13,7 +11,7 @@ public class Order implements Serializable {
 	private String address;
 	private Date dateCreated;
 	private Date lastUpdated;
-	private Set<OrderItem> orderItems = new HashSet<>();
+	private Set<OrderItem> orderItems = new LinkedHashSet<>();
 	
 	public Order() {
 	}
@@ -85,7 +83,7 @@ public class Order implements Serializable {
 	}
 
 	public void addItem(OrderItem item) {
-		if (orderItems == null) orderItems = new HashSet<>();
+		if (orderItems == null) orderItems = new LinkedHashSet<>();
 		orderItems.add(item);
 		item.setOrder(this);
 	}

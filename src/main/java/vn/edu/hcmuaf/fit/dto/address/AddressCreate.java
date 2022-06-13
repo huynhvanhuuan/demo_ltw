@@ -6,16 +6,19 @@ public class AddressCreate {
     private Long wardId;
     private Long districtId;
     private Long provinceId;
+    private boolean isCreateTrademark;
+    private Long id;
 
-    public AddressCreate() {
-    }
+    public AddressCreate() {}
 
-    public AddressCreate(String number, String street, Long wardId, Long districtId, Long provinceId) {
+    public AddressCreate(String number, String street, Long wardId, Long districtId, Long provinceId, boolean isCreateTrademark, Long id) {
         this.number = number;
         this.street = street;
         this.wardId = wardId;
         this.districtId = districtId;
         this.provinceId = provinceId;
+        this.isCreateTrademark = isCreateTrademark;
+        this.id = id;
     }
 
     public String getNumber() {
@@ -56,5 +59,21 @@ public class AddressCreate {
 
     public void setProvinceId(Long provinceId) {
         this.provinceId = provinceId;
+    }
+
+    public boolean isCreateTrademark() {
+        return isCreateTrademark;
+    }
+
+    public void setCreateTrademark(boolean createTrademark) {
+        isCreateTrademark = createTrademark;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

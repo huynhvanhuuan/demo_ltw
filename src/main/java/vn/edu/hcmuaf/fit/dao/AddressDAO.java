@@ -8,6 +8,6 @@ public interface AddressDAO extends BaseDAO<Address> {
 	List<Address> findByTrademarkId(Long trademarkId);
 	List<Address> findByUserId(Long userId);
 	Address findByPath(String path);
-
-	/* PROVINCE, DISTRICT, WARD */
+	void saveForTrademark(Address address, Long trademarkId);
+	void saveForUser(Address address, Long userId);
 }

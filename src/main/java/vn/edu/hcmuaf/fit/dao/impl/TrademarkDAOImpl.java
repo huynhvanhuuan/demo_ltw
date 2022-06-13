@@ -3,7 +3,6 @@ package vn.edu.hcmuaf.fit.dao.impl;
 import vn.edu.hcmuaf.fit.constant.QUERY;
 import vn.edu.hcmuaf.fit.dao.AddressDAO;
 import vn.edu.hcmuaf.fit.dao.TrademarkDAO;
-import vn.edu.hcmuaf.fit.database.IConnectionPool;
 import vn.edu.hcmuaf.fit.entity.Address;
 import vn.edu.hcmuaf.fit.entity.Trademark;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
@@ -13,13 +12,11 @@ import java.util.*;
 
 public class TrademarkDAOImpl implements TrademarkDAO {
     private static TrademarkDAOImpl instance;
-    private final IConnectionPool connectionPool;
     private Connection connection;
 
     private AddressDAO addressDAO;
 
     private TrademarkDAOImpl() {
-        this.connectionPool = DbManager.connectionPool;
         this.addressDAO = AddressDAOImpl.getInstance();
     }
 
@@ -116,19 +113,6 @@ public class TrademarkDAOImpl implements TrademarkDAO {
             e.printStackTrace();
         }
         DbManager.connectionPool.releaseConnection(connection);
-    }
-
-    @Override
-    public void addAddress(Long trademarkId, Long addressId) {
-        connection = DbManager.connectionPool.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(QUERY.TRADEMARK.ADD_ADDRESS);
-            statement.setLong(1, trademarkId);
-            statement.setLong(2, addressId);
-            statement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

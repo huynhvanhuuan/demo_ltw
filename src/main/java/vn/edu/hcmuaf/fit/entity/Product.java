@@ -13,7 +13,7 @@ public class Product implements Serializable {
     private Date dateCreated;
     private Date lastUpdated;
     private boolean active;
-    private Set<ProductDetail> products = new HashSet<>();
+    private Set<ProductDetail> products = new LinkedHashSet<>();
 
     public Product() {}
 
@@ -112,7 +112,7 @@ public class Product implements Serializable {
     }
 
     public void addProductDetail(ProductDetail productDetail) {
-        if (products == null) products = new HashSet<>();
+        if (products == null) products = new LinkedHashSet<>();
         products.add(productDetail);
         productDetail.setProduct(this);
     }

@@ -3,7 +3,6 @@ package vn.edu.hcmuaf.fit.dao.impl;
 import vn.edu.hcmuaf.fit.constant.QUERY;
 import vn.edu.hcmuaf.fit.dao.DistrictDAO;
 import vn.edu.hcmuaf.fit.dao.ProvinceDAO;
-import vn.edu.hcmuaf.fit.database.IConnectionPool;
 import vn.edu.hcmuaf.fit.entity.District;
 import vn.edu.hcmuaf.fit.entity.Province;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
@@ -13,13 +12,11 @@ import java.util.*;
 
 public class ProvinceDAOImpl implements ProvinceDAO {
     private static ProvinceDAO instance;
-    private final IConnectionPool connectionPool;
     private Connection connection;
 
     private DistrictDAO districtDAO;
 
     private ProvinceDAOImpl() {
-        this.connectionPool = DbManager.connectionPool;
     }
 
     public static ProvinceDAO getInstance() {

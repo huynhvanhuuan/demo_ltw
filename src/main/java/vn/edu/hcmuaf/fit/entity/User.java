@@ -1,9 +1,7 @@
 package vn.edu.hcmuaf.fit.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class User implements Serializable {
     private Long id;
@@ -20,9 +18,9 @@ public class User implements Serializable {
     private Role role;
     private boolean isNotLocked;
     private boolean active;
-    private Set<Wishlist> wishlists = new HashSet<>();
-    private Set<Address> addresses = new HashSet<>();
-    private Set<Order> orders = new HashSet<>();
+    private Set<Wishlist> wishlists = new LinkedHashSet<>();
+    private Set<Address> addresses = new LinkedHashSet<>();
+    private Set<Order> orders = new LinkedHashSet<>();
 
     public User() {
     }

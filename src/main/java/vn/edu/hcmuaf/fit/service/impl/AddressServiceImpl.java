@@ -124,7 +124,6 @@ public class AddressServiceImpl implements AddressService {
 		}
 	}
 
-	@Override
 	public AppServiceResult<AddressDto> createAddress(AddressCreate address) {
 		try {
 			Address newAddress = new Address();
@@ -141,7 +140,8 @@ public class AddressServiceImpl implements AddressService {
 
 			District district = districtDAO.findById(address.getDistrictId());
 
-			if (district.getWards().size() > 0) {
+			List<Ward> wards = wardDAO.findByDistrictId(address.getDistrictId());
+			if (wards.size() > 0) {
 				if (address.getWardId() == null) {
 					return new AppServiceResult<>(false, AppError.Validation.errorCode(), "Ward is required!", null);
 				}
@@ -175,7 +175,11 @@ public class AddressServiceImpl implements AddressService {
 			newAddress.setDistrict(district);
 			newAddress.setPath(path);
 
-			addressDAO.save(newAddress);
+			if (address.isCreateTrademark()) {
+				addressDAO.saveForTrademark(newAddress, address.getId());
+			} else {
+				addressDAO.saveForUser(newAddress, address.getId());
+			}
 
 			return new AppServiceResult<>(true, 0, "Succeed!", AddressDto.createFromEntity(newAddress));
 		} catch (Exception e) {

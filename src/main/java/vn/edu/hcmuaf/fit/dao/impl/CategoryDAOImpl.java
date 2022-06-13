@@ -2,7 +2,6 @@ package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.constant.QUERY;
 import vn.edu.hcmuaf.fit.dao.CategoryDAO;
-import vn.edu.hcmuaf.fit.database.IConnectionPool;
 import vn.edu.hcmuaf.fit.entity.Category;
 import vn.edu.hcmuaf.fit.infrastructure.DbManager;
 
@@ -12,12 +11,9 @@ import java.util.List;
 
 public class CategoryDAOImpl implements CategoryDAO {
 	private static CategoryDAOImpl instance;
-	private final IConnectionPool connectionPool;
 	private Connection connection;
 	
-	private CategoryDAOImpl() {
-		this.connectionPool = DbManager.connectionPool;
-	}
+	private CategoryDAOImpl() {}
 
 	public static CategoryDAOImpl getInstance() {
 		if (instance == null) {

@@ -58,7 +58,7 @@ public class QUERY {
         public static final String CREATE = "insert into trademark(name, website) values(?,?)";
         public static final String UPDATE = "update trademark set name = ?, website = ?, active = ? where id = ?";
         public static final String DELETE = "delete from trademark where id = ?";
-        public static final String ADD_ADDRESS = "insert into trademark_address(trademark_id, address_id) values(?,?)";
+        public static final String CREATE_ADDRESS = "insert into trademark_address(trademark_id, address_id) values(?,?)";
     }
 
     /* USER */
@@ -71,7 +71,7 @@ public class QUERY {
         public static final String DELETE = "delete from user where id = ?";
         public static final String CHANGE_PASSWORD = "update user set password = ? where id = ?";
         public static final String UPDATE_LOCK_STATUS = "update user set locked = ? where id = ?";
-        public static final String ADD_ADDRESS = "insert into user_address(user_id, address_id) values(?,?)";
+        public static final String CREATE_ADDRESS = "insert into user_address(user_id, address_id) values(?,?)";
     }
 
     /* ROLE */
