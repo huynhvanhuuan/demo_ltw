@@ -53,7 +53,7 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public List<Product> findAll() {
         List<Product> products = new ArrayList<>();
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             ResultSet rs = connection.prepareStatement(QUERY.PRODUCT.FIND_ALL).executeQuery();
             while (rs.next()) {
@@ -66,23 +66,23 @@ public class ProductDAOImpl implements ProductDAO {
                 Date dateCreated = rs.getDate("date_created");
                 Date lastUpdated = rs.getDate("last_updated");
                 boolean active = rs.getBoolean("active");
-                Set<ProductDetail> productDetails = new HashSet<>(productDetailDAO.findByProductId(id));
+                Set<ProductDetail> productDetails = new LinkedHashSet<>(productDetailDAO.findByProductId(id));
 
                 Product product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
                 products.add(product);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return products;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return products;
     }
 
     @Override
     public Product findById(Long id) {
         Product product = null;
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT.FIND_BY_ID);
             statement.setLong(1, id);
@@ -97,21 +97,21 @@ public class ProductDAOImpl implements ProductDAO {
                 Date dateCreated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("date_created"));
                 Date lastUpdated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("last_updated"));
                 boolean active = rs.getBoolean("active");
-                Set<ProductDetail> productDetails = new HashSet<>(productDetailDAO.findByProductId(id));
+                Set<ProductDetail> productDetails = new LinkedHashSet<>(productDetailDAO.findByProductId(id));
 
                 product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
             }
         } catch (Exception e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return product;
     }
 
     @Override
     public void save(Product product) {
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(product.getId() == 0 ? QUERY.PRODUCT.CREATE : QUERY.PRODUCT.UPDATE);
             statement.setString(1, product.getName());
@@ -129,7 +129,7 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public void remove(Long id) {
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT.DELETE);
             statement.setLong(1, id);
@@ -137,13 +137,13 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
     }
 
     @Override
     public List<Product> findByStatus(boolean sold) {
         List<Product> products = new ArrayList<>();
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT.FIND_BY_STATUS);
             statement.setBoolean(1, sold);
@@ -158,16 +158,16 @@ public class ProductDAOImpl implements ProductDAO {
                 Date dateCreated = rs.getDate("date_created");
                 Date lastUpdated = rs.getDate("last_updated");
                 boolean active = rs.getBoolean("active");
-                Set<ProductDetail> productDetails = new HashSet<>(productDetailDAO.findByProductId(id));
+                Set<ProductDetail> productDetails = new LinkedHashSet<>(productDetailDAO.findByProductId(id));
 
                 Product product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
                 products.add(product);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return products;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return products;
     }
 }

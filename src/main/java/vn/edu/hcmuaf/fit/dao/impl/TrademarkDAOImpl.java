@@ -40,7 +40,7 @@ public class TrademarkDAOImpl implements TrademarkDAO {
     @Override
     public List<Trademark> findAll() {
         List<Trademark> trademarks = new ArrayList<>();
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.TRADEMARK.FIND_ALL);
             ResultSet rs = statement.executeQuery();
@@ -49,23 +49,23 @@ public class TrademarkDAOImpl implements TrademarkDAO {
                 String name = rs.getString("name");
                 String website = rs.getString("website");
                 boolean active = rs.getBoolean("active");
-                Set<Address> addresses = new HashSet<>(addressDAO.findByTrademarkId(id));
+                Set<Address> addresses = new LinkedHashSet<>(addressDAO.findByTrademarkId(id));
 
                 Trademark trademark = new Trademark(id, name, website, active, addresses);
                 trademarks.add(trademark);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return trademarks;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return trademarks;
     }
 
     @Override
     public Trademark findById(Long id) {
         Trademark trademark = null;
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.TRADEMARK.FIND_BY_ID);
             statement.setLong(1, id);
@@ -75,21 +75,21 @@ public class TrademarkDAOImpl implements TrademarkDAO {
                 String name = rs.getString("name");
                 String website = rs.getString("website");
                 boolean active = rs.getBoolean("active");
-                Set<Address> addresses = new HashSet<>(addressDAO.findByTrademarkId(id));
+                Set<Address> addresses = new LinkedHashSet<>(addressDAO.findByTrademarkId(id));
 
                 trademark = new Trademark(id, name, website, active, addresses);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return trademark;
     }
 
     @Override
     public void save(Trademark trademark) {
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(trademark.getId() == 0 ? QUERY.TRADEMARK.CREATE : QUERY.TRADEMARK.UPDATE);
             statement.setString(1, trademark.getName());
@@ -102,12 +102,12 @@ public class TrademarkDAOImpl implements TrademarkDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
     }
 
     @Override
     public void remove(Long id) {
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.TRADEMARK.DELETE);
             statement.setLong(1, id);
@@ -115,12 +115,12 @@ public class TrademarkDAOImpl implements TrademarkDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
     }
 
     @Override
     public void addAddress(Long trademarkId, Long addressId) {
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.TRADEMARK.ADD_ADDRESS);
             statement.setLong(1, trademarkId);
@@ -134,7 +134,7 @@ public class TrademarkDAOImpl implements TrademarkDAO {
     @Override
     public Trademark findByName(String name) {
         Trademark trademark = null;
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.TRADEMARK.FIND_BY_NAME);
             statement.setString(1, name);
@@ -144,22 +144,22 @@ public class TrademarkDAOImpl implements TrademarkDAO {
                 long id = rs.getLong("id");
                 String website = rs.getString("website");
                 boolean active = rs.getBoolean("active");
-                Set<Address> addresses = new HashSet<>(addressDAO.findByTrademarkId(id));
+                Set<Address> addresses = new LinkedHashSet<>(addressDAO.findByTrademarkId(id));
 
                 trademark = new Trademark(id, name, website, active, addresses);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return trademark;
     }
 
     @Override
     public Trademark findByWebsite(String website) {
         Trademark trademark = null;
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.TRADEMARK.FIND_BY_WEBSITE);
             statement.setString(1, website);
@@ -169,15 +169,15 @@ public class TrademarkDAOImpl implements TrademarkDAO {
                 long id = rs.getLong("id");
                 String name = rs.getString("name");
                 boolean active = rs.getBoolean("active");
-                Set<Address> addresses = new HashSet<>(addressDAO.findByTrademarkId(id));
+                Set<Address> addresses = new LinkedHashSet<>(addressDAO.findByTrademarkId(id));
 
                 trademark = new Trademark(id, name, website, active, addresses);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return trademark;
     }
 }

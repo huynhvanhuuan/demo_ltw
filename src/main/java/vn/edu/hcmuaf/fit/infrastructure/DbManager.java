@@ -25,7 +25,10 @@ public class DbManager implements ServletContextListener, HttpSessionListener, H
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		/* This method is called when the servlet Context is undeployed or Application Server shuts down. */
-		if (connectionPool != null) connectionPool = null;
+		if (connectionPool != null) {
+			connectionPool.shutdown();
+			connectionPool = null;
+		}
 	}
 	
 	@Override

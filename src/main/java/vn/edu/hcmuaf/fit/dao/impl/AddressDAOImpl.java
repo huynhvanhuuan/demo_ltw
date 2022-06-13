@@ -49,7 +49,7 @@ public class AddressDAOImpl implements AddressDAO {
     @Override
     public Address findById(Long id) {
         Address address = null;
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.FIND_BY_ID);
             statement.setLong(1, id);
@@ -65,16 +65,16 @@ public class AddressDAOImpl implements AddressDAO {
                 address = new Address(id, number, street, ward, district, path);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return address;
     }
 
     @Override
     public void save(Address address) {
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.CREATE);
             statement.setString(1, address.getNumber());
@@ -86,12 +86,12 @@ public class AddressDAOImpl implements AddressDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
     }
 
     @Override
     public void remove(Long id) {
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.DELETE);
             statement.setLong(1, id);
@@ -99,13 +99,13 @@ public class AddressDAOImpl implements AddressDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
     }
 
     @Override
     public List<Address> findByTrademarkId(Long trademarkId) {
         List<Address> addresses = new ArrayList<>();
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.FIND_BY_TRADEMARK_ID);
             statement.setLong(1, trademarkId);
@@ -122,17 +122,17 @@ public class AddressDAOImpl implements AddressDAO {
                 addresses.add(address);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return addresses;
     }
     
     @Override
     public List<Address> findByUserId(Long userId) {
         List<Address> addresses = new ArrayList<>();
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.FIND_BY_USER_ID);
             statement.setLong(1, userId);
@@ -149,17 +149,17 @@ public class AddressDAOImpl implements AddressDAO {
                 addresses.add(address);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return addresses;
     }
 
     @Override
     public Address findByPath(String path) {
         Address address = null;
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.FIND_BY_PATH);
             statement.setString(1, path);
@@ -175,10 +175,10 @@ public class AddressDAOImpl implements AddressDAO {
                 address = new Address(id, number, street, ward, district, path);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return address;
     }
 

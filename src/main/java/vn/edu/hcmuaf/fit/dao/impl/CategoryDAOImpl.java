@@ -29,7 +29,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 	@Override
 	public List<Category> findAll() {
 		List<Category> categories = new ArrayList<>();
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.CATEGORY.FIND_ALL);
 			ResultSet rs = statement.executeQuery();
@@ -42,17 +42,17 @@ public class CategoryDAOImpl implements CategoryDAO {
 				categories.add(category);
 			}
 		} catch (SQLException e) {
-			connectionPool.releaseConnection(connection);
+			DbManager.connectionPool.releaseConnection(connection);
 			return null;
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 		return categories;
 	}
 	
 	@Override
 	public Category findById(Long id) {
 		Category category = null;
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.CATEGORY.FIND_BY_ID);
 			statement.setLong(1, id);
@@ -65,16 +65,16 @@ public class CategoryDAOImpl implements CategoryDAO {
 				category = new Category(id, sku, name, active);
 			}
 		} catch (SQLException e) {
-			connectionPool.releaseConnection(connection);
+			DbManager.connectionPool.releaseConnection(connection);
 			return null;
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 		return category;
 	}
 	
 	@Override
 	public void save(Category category) {
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(category.getId() == 0 ? QUERY.CATEGORY.CREATE : QUERY.CATEGORY.UPDATE);
 			statement.setString(1, category.getSku());
@@ -87,12 +87,12 @@ public class CategoryDAOImpl implements CategoryDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 	}
 	
 	@Override
 	public void remove(Long id) {
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.CATEGORY.DELETE);
 			statement.setLong(1, id);
@@ -100,27 +100,27 @@ public class CategoryDAOImpl implements CategoryDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 	}
 
 //    @Override
 //    public List<String> getListSkuHasProduct() throws SQLException {
 //        List<String> skus = new ArrayList<>();
-//        connection = connectionPool.getConnection();
+//        connection = DbManager.connectionPool.getConnection();
 //        PreparedStatement statement = connection.prepareStatement(QUERY.CATEGORY.GET_LIST_SKU_HAS_PRODUCT);
 //        ResultSet rs = statement.executeQuery();
 //        while (rs.next()) {
 //            String sku = rs.getString("category_sku");
 //            skus.add(sku);
 //        }
-//        connectionPool.releaseConnection(connection);
+//        DbManager.connectionPool.releaseConnection(connection);
 //        return skus;
 //    }
 	
 	@Override
 	public Category findBySku(String sku) {
 		Category category = null;
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.CATEGORY.FIND_BY_SKU);
 			statement.setString(1, sku);
@@ -133,17 +133,17 @@ public class CategoryDAOImpl implements CategoryDAO {
 				category = new Category(id, sku, name, active);
 			}
 		} catch (SQLException e) {
-			connectionPool.releaseConnection(connection);
+			DbManager.connectionPool.releaseConnection(connection);
 			return null;
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 		return category;
 	}
 	
 	@Override
 	public Category findByName(String name) {
 		Category category = null;
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.CATEGORY.FIND_BY_NAME);
 			statement.setString(1, name);
@@ -156,10 +156,10 @@ public class CategoryDAOImpl implements CategoryDAO {
 				category = new Category(id, sku, name, active);
 			}
 		} catch (SQLException e) {
-			connectionPool.releaseConnection(connection);
+			DbManager.connectionPool.releaseConnection(connection);
 			return null;
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 		return category;
 	}
 }

@@ -47,7 +47,7 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 	public List<ProductDetail> findAll() {
 		List<ProductDetail> productDetailList = new ArrayList<>();
 		try {
-			connection = connectionPool.getConnection();
+			connection = DbManager.connectionPool.getConnection();
 			PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT_DETAIL.FIND_ALL);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
@@ -67,17 +67,17 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				productDetailList.add(productDetail);
 			}
 		} catch (Exception e) {
-			connectionPool.releaseConnection(connection);
+			DbManager.connectionPool.releaseConnection(connection);
 			return productDetailList;
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 		return productDetailList;
 	}
 
 	@Override
 	public ProductDetail findById(Long id) {
 		ProductDetail productDetail = null;
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT_DETAIL.FIND_BY_ID);
 			statement.setLong(1, id);
@@ -97,10 +97,10 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				productDetail = new ProductDetail(id, sku, product, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
 			}
 		} catch (Exception e) {
-			connectionPool.releaseConnection(connection);
+			DbManager.connectionPool.releaseConnection(connection);
 			return null;
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 		return productDetail;
 	}
 
@@ -111,7 +111,7 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 
 	@Override
 	public void remove(Long id) {
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT_DETAIL.DELETE);
 			statement.setLong(1, id);
@@ -119,13 +119,13 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 	}
 
 	@Override
 	public List<ProductDetail> findByProductId(Long productId) {
 		List<ProductDetail> productDetailList = new ArrayList<>();
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT_DETAIL.FIND_BY_PRODUCT_ID);
 			statement.setLong(1, productId);
@@ -147,16 +147,16 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				productDetailList.add(productDetail);
 			}
 		} catch (Exception e) {
-			connectionPool.releaseConnection(connection);
+			DbManager.connectionPool.releaseConnection(connection);
 			return productDetailList;
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 		return productDetailList;
 	}
 
 	@Override
 	public ProductDetail findBySku(String sku) {
-		connection = connectionPool.getConnection();
+		connection = DbManager.connectionPool.getConnection();
 		ProductDetail productDetail = null;
 		try {
 			PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT_DETAIL.FIND_BY_SKU);
@@ -177,10 +177,10 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 				productDetail = new ProductDetail(id, sku, product, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
 			}
 		} catch (Exception e) {
-			connectionPool.releaseConnection(connection);
+			DbManager.connectionPool.releaseConnection(connection);
 			return null;
 		}
-		connectionPool.releaseConnection(connection);
+		DbManager.connectionPool.releaseConnection(connection);
 		return productDetail;
 	}
 }

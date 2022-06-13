@@ -29,7 +29,7 @@ public class ColorDAOImpl implements ColorDAO {
     @Override
     public List<Color> findAll() {
         List<Color> colors = new ArrayList<>();
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             ResultSet rs = connection.prepareStatement(QUERY.COLOR.FIND_ALL).executeQuery();
             while (rs.next()) {
@@ -40,17 +40,17 @@ public class ColorDAOImpl implements ColorDAO {
                 colors.add(color);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return colors;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return colors;
     }
 
     @Override
     public Color findById(Long id) {
         Color color = null;
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.COLOR.FIND_BY_ID);
             statement.setLong(1, id);
@@ -62,10 +62,10 @@ public class ColorDAOImpl implements ColorDAO {
                 color = new Color(id, name, hex);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return color;
     }
 

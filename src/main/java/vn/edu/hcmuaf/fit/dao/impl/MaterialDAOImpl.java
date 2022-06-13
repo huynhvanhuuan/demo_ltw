@@ -29,7 +29,7 @@ public class MaterialDAOImpl implements MaterialDAO {
     @Override
     public List<Material> findAll() {
         List<Material> materials = new ArrayList<>();
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.MATERIAL.FIND_ALL);
             ResultSet rs = statement.executeQuery();
@@ -40,17 +40,17 @@ public class MaterialDAOImpl implements MaterialDAO {
                 materials.add(material);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return materials;
     }
 
     @Override
     public Material findById(Long id) {
         Material material = null;
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.MATERIAL.FIND_BY_ID);
             statement.setLong(1, id);
@@ -61,10 +61,10 @@ public class MaterialDAOImpl implements MaterialDAO {
                 material = new Material(id, name);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return material;
     }
 

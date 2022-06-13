@@ -36,7 +36,7 @@ public class ProvinceDAOImpl implements ProvinceDAO {
     @Override
     public List<Province> findAll() {
         List<Province> provinces = new ArrayList<>();
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.PROVINCE.FIND_ALL);
             ResultSet rs = statement.executeQuery();
@@ -44,23 +44,22 @@ public class ProvinceDAOImpl implements ProvinceDAO {
                 long id = rs.getLong("id");
                 String name = rs.getString("name");
                 String prefix = rs.getString("prefix");
-                Set<District> districts = new HashSet<>(districtDAO.findByProvinceId(id));
-
+                Set<District> districts = new LinkedHashSet<>(districtDAO.findByProvinceId(id));
                 Province province = new Province(id, name, prefix, districts);
                 provinces.add(province);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return provinces;
     }
 
     @Override
     public Province findById(Long id) {
         Province province = null;
-        connection = connectionPool.getConnection();
+        connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.PROVINCE.FIND_BY_ID);
             statement.setLong(1, id);
@@ -73,10 +72,10 @@ public class ProvinceDAOImpl implements ProvinceDAO {
                 province = new Province(id, name, prefix, null);
             }
         } catch (SQLException e) {
-            connectionPool.releaseConnection(connection);
+            DbManager.connectionPool.releaseConnection(connection);
             return null;
         }
-        connectionPool.releaseConnection(connection);
+        DbManager.connectionPool.releaseConnection(connection);
         return province;
     }
 

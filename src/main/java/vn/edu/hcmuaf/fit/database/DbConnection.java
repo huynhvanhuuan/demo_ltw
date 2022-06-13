@@ -1,8 +1,6 @@
 package vn.edu.hcmuaf.fit.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +39,7 @@ public class DbConnection implements IConnectionPool {
                 }
             }
             Connection connection = connectionPool.remove(connectionPool.size() - 1);
-            if (!connection.isValid(MAX_TIMEOUT)) {
+            if (connection == null || !connection.isValid(MAX_TIMEOUT)) {
                 connection = createConnection(uid, pwd, database);
             }
             usedConnections.add(connection);
@@ -49,6 +47,17 @@ public class DbConnection implements IConnectionPool {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public void shutdown() {
+        try {
+            usedConnections.forEach(this::releaseConnection);
+            for (Connection c : connectionPool) c.close();
+            connectionPool.clear();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -63,6 +72,7 @@ public class DbConnection implements IConnectionPool {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
             return DriverManager.getConnection("jdbc:mysql://localhost/" + database, uid, pwd);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
