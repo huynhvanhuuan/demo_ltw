@@ -18,10 +18,10 @@
 								<div class="card">
 									<div class="card-body">
 										<button type="button" class="btn btn-success mr-2 float-left"
-										        data-toggle="modal" data-target="#create-modal" title="Nhấn để thêm mới"><i
+												data-toggle="modal" data-target="#create-modal" title="Nhấn để thêm mới"><i
 												class="fas fa-plus"></i></button>
 										<button type="button" class="btn btn-danger float-left"
-										        data-toggle="modal" data-target="#delete-modal" title="Nhấn để xoá"><i
+												data-toggle="modal" data-target="#delete-modal" title="Nhấn để xoá"><i
 												class="fas fa-trash-alt"></i></button>
 										<table id="trademark" class="table table-bordered table-striped">
 											<thead>
@@ -56,7 +56,7 @@
 									</button>
 								</div>
 								<form action="${pageContext.request.contextPath}/api/trademark"
-								      method="POST" id="create" novalidate="novalidate">
+									  method="POST" id="create" novalidate="novalidate">
 									<div class="modal-body card-body">
 										<div class="form-group">
 											<label>Tên thương hiệu</label>
@@ -65,12 +65,12 @@
 										<div class="form-group">
 											<label>Website</label>
 											<input type="text" name="website" class="form-control"
-											       placeholder="VD: https://ltw.com/"/>
+												   placeholder="VD: https://ltw.com/"/>
 										</div>
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng</button>
+												data-dismiss="modal">Đóng</button>
 										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
@@ -88,11 +88,9 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/admin/trademark?action=update"
-								      method="POST" id="update" novalidate="novalidate">
+								<form id="update" novalidate="novalidate">
 									<input type="hidden" name="id"/>
-									<input type="hidden" name="old_name"/>
-									<input type="hidden" name="old_website"/>
+									<input type="hidden" name="active">
 									<div class="modal-body card-body">
 										<div class="form-group">
 											<label>Tên thương hiệu</label>
@@ -101,12 +99,12 @@
 										<div class="form-group">
 											<label>Website</label>
 											<input type="text" name="website" class="form-control"
-											       placeholder="VD: https://ltw.com/"/>
+												   placeholder="VD: https://ltw.com/"/>
 										</div>
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng</button>
+												data-dismiss="modal">Đóng</button>
 										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
@@ -124,7 +122,7 @@
 									</button>
 								</div>
 								<form action="${pageContext.request.contextPath}/api/trademark"
-								      id="update-status" novalidate="novalidate">
+									  id="update-status" novalidate="novalidate">
 									<input type="hidden" name="id">
 									<input type="hidden" name="name">
 									<input type="hidden" name="website">
@@ -139,7 +137,7 @@
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng</button>
+												data-dismiss="modal">Đóng</button>
 										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
@@ -164,7 +162,7 @@
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Hủy</button>
+												data-dismiss="modal">Hủy</button>
 										<button type="submit" class="btn btn-primary font-weight-bolder">Đồng ý</button>
 									</div>
 								</form>
@@ -235,22 +233,22 @@
 				})
 			}
 
-            $(function () {
+			$(function () {
 				/* Create toast */
-	            const Toast = Swal.mixin({
-		            toast: true,
-		            position: 'top-end',
-		            showConfirmButton: false,
-		            timer: 3000
-	            });
+				const Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000
+				});
 
-	            /* Create select2bs4 */
-	            $('.select2bs4').select2({
-		            theme: 'bootstrap4'
-	            });
+				/* Create select2bs4 */
+				$('.select2bs4').select2({
+					theme: 'bootstrap4'
+				});
 
-	            /* Action on change handle */
-	            $("select[name=provinceId]").change(function () {
+				/* Action on change handle */
+				$("select[name=provinceId]").change(function () {
 					let district = $(this).closest('form').find('select[name=districtId]');
 					district.empty();
 					district.append($('<option>', {value: '', text: 'Chọn quận, huyện'}));
@@ -271,9 +269,9 @@
 					ward.empty();
 					ward.append($('<option>', {value: '', text: 'Chọn phường, xã'}));
 					ward.removeClass("is-invalid");
-	            });
+				});
 
-	            $("select[name=districtId]").change(function () {
+				$("select[name=districtId]").change(function () {
 					let ward = $(this).closest('form').find('select[name=wardId]');
 					ward.empty();
 					if ($(this).valid()) {
@@ -296,24 +294,24 @@
 						ward.append($('<option>', {value: '', text: 'Chọn phường, xã'}));
 						ward.removeClass("is-invalid");
 					}
-	            });
+				});
 
 				$("select[name=wardId]").change(function () {
 					$(this).valid();
 				});
 
-	            /* Checkbox handle */
-	            $('#checkBoxAll').click(function () {
-		            if ($(this).is(':checked')) {
-			            $('.checkBoxId').prop('checked', true);
-		            } else {
-			            $('.checkBoxId').prop('checked', false);
-		            }
-	            });
+				/* Checkbox handle */
+				$('#checkBoxAll').click(function () {
+					if ($(this).is(':checked')) {
+						$('.checkBoxId').prop('checked', true);
+					} else {
+						$('.checkBoxId').prop('checked', false);
+					}
+				});
 
-	            /* Create trademark */
-	            $("#create").submit(function (e) {
-		            e.preventDefault();
+				/* Create trademark */
+				$("#create").submit(function (e) {
+					e.preventDefault();
 					if ($(this).valid()) {
 						let formData = new FormData($(this)[0]);
 						$.ajax({
@@ -345,14 +343,45 @@
 							}
 						});
 					}
-	            });
+				});
 
-	            /* Update trademark */
-	            $("#update").submit(function (e) {
-		            e.preventDefault();
-	            });
+				/* Update trademark */
+				$("#update").submit(function (e) {
+					e.preventDefault();
+					if ($(this).valid()) {
+						let formData = new FormData($(this)[0]);
+						$.ajax({
+							type: "PUT",
+							url: '${pageContext.request.contextPath}/api/trademark',
+							data: formData,
+							processData: false,
+							contentType: false,
+							success: function (response) {
+								if (response.success) {
+									Toast.fire({
+										icon: 'success',
+										title: response.message,
+									})
+									reloadData();
+								} else {
+									Toast.fire({
+										icon: 'error',
+										title: response.message,
+									})
+								}
+								$('#update-modal').modal('hide');
+							},
+							error: function (error) {
+								Toast.fire({
+									icon: 'error',
+									title: error.message,
+								})
+							}
+						});
+					}
+				});
 
-	            /* Update status trademark */
+				/* Update status trademark */
 				$("#update-status").submit(function (e) {
 					e.preventDefault();
 					if ($(this).valid()) {
@@ -391,9 +420,9 @@
 					}
 				});
 
-	            /* Delete trademark */
-	            $("#delete").submit(function (e) {
-		            e.preventDefault();
+				/* Delete trademark */
+				$("#delete").submit(function (e) {
+					e.preventDefault();
 					let ids = [];
 					$('.checkBoxId').each(function () {
 						if ($(this).is(":checked")) {
@@ -426,11 +455,11 @@
 							$('#delete-modal').modal('hide');
 						}
 					});
-	            });
+				});
 
-	            /* Create address */
-	            $('#create-address').submit(function (e) {
-		            e.preventDefault();
+				/* Create address */
+				$('#create-address').submit(function (e) {
+					e.preventDefault();
 					if ($(this).valid()) {
 						let formData = new FormData($(this)[0]);
 						for (let pair of formData.entries()) {
@@ -468,271 +497,271 @@
 							}
 						});
 					}
-	            });
+				});
 
-	            /* Update address */
-	            $('#update-address').submit(function (e) {
-		            e.preventDefault();
+				/* Update address */
+				$('#update-address').submit(function (e) {
+					e.preventDefault();
 					if ($(this).valid()) {
 						let formData = new FormData($(this)[0]);
 						reloadData();
 						$('#update-address-modal').modal('hide');
 					}
-	            });
+				});
 
-	            /* Delete address */
-	            $('#delete-address').submit(function (e) {
-		            e.preventDefault();
-		            $.ajax({
-			            type: "DELETE",
-			            url: '${pageContext.request.contextPath}/api/address',
-		            })
-	            });
+				/* Delete address */
+				$('#delete-address').submit(function (e) {
+					e.preventDefault();
+					$.ajax({
+						type: "DELETE",
+						url: '${pageContext.request.contextPath}/api/address',
+					})
+				});
 
-	            /* Validate form */
+				/* Validate form */
 				$.validator.addMethod('mustChoose', function (value, element) {
 					return value !== '';
 				}, 'Vui lòng chọn');
 
-	            $("#create").validate({
-		            rules: {
-			            name: {
-				            required: true,
-			            }
-		            },
-		            messages: {
-			            name: "Vui lòng nhập tên thương hiệu"
-		            },
-		            errorElement: 'span',
-		            errorPlacement: function (error, element) {
-			            error.addClass('invalid-feedback');
-			            element.closest('.form-group').append(error);
-		            },
-		            highlight: function (element, errorClass, validClass) {
-			            $(element).addClass('is-invalid');
-		            },
-		            unhighlight: function (element, errorClass, validClass) {
-			            $(element).removeClass('is-invalid');
-		            }
-	            });
+				$("#create").validate({
+					rules: {
+						name: {
+							required: true,
+						}
+					},
+					messages: {
+						name: "Vui lòng nhập tên thương hiệu"
+					},
+					errorElement: 'span',
+					errorPlacement: function (error, element) {
+						error.addClass('invalid-feedback');
+						element.closest('.form-group').append(error);
+					},
+					highlight: function (element, errorClass, validClass) {
+						$(element).addClass('is-invalid');
+					},
+					unhighlight: function (element, errorClass, validClass) {
+						$(element).removeClass('is-invalid');
+					}
+				});
 
-	            $("#update").validate({
-		            rules: {
-			            name: {
-				            required: true,
-			            }
-		            },
-		            messages: {
-			            name: "Vui lòng nhập tên thương hiệu"
-		            },
-		            errorElement: 'span',
-		            errorPlacement: function (error, element) {
-			            error.addClass('invalid-feedback');
-			            element.closest('.form-group').append(error);
-		            },
-		            highlight: function (element, errorClass, validClass) {
-			            $(element).addClass('is-invalid');
-		            },
-		            unhighlight: function (element, errorClass, validClass) {
-			            $(element).removeClass('is-invalid');
-		            }
-	            });
+				$("#update").validate({
+					rules: {
+						name: {
+							required: true,
+						}
+					},
+					messages: {
+						name: "Vui lòng nhập tên thương hiệu"
+					},
+					errorElement: 'span',
+					errorPlacement: function (error, element) {
+						error.addClass('invalid-feedback');
+						element.closest('.form-group').append(error);
+					},
+					highlight: function (element, errorClass, validClass) {
+						$(element).addClass('is-invalid');
+					},
+					unhighlight: function (element, errorClass, validClass) {
+						$(element).removeClass('is-invalid');
+					}
+				});
 
-	            $('#create-address').validate({
-		            rules: {
-			            province: {
-				            mustChoose: true
-			            },
-			            district: {
+				$('#create-address').validate({
+					rules: {
+						province: {
 							mustChoose: true
-			            },
-			            ward: {
+						},
+						district: {
 							mustChoose: true
-			            },
-			            street: {
-				            required: true
-			            },
-			            number: {
-				            required: true
-			            }
-		            },
-		            messages: {
-			            province: "Vui lòng chọn tỉnh, thành phố",
-			            district: "Vui lòng chọn quận, huyện",
-			            ward: "Vui lòng chọn phường, xã",
-			            street: "Vui lòng nhập tên đường",
-			            number: "Vui lòng nhập số nhà, lô, kios,.."
-		            },
-		            errorElement: 'span',
-		            errorPlacement: function (error, element) {
-			            error.addClass('invalid-feedback');
-			            element.closest('.form-group').append(error);
-		            },
-		            highlight: function (element, errorClass, validClass) {
-			            $(element).addClass('is-invalid');
-		            },
-		            unhighlight: function (element, errorClass, validClass) {
-			            $(element).removeClass('is-invalid');
-		            }
-	            })
-
-	            $('#update-address').validate({
-		            rules: {
-			            province: {
+						},
+						ward: {
 							mustChoose: true
-			            },
-			            district: {
+						},
+						street: {
+							required: true
+						},
+						number: {
+							required: true
+						}
+					},
+					messages: {
+						province: "Vui lòng chọn tỉnh, thành phố",
+						district: "Vui lòng chọn quận, huyện",
+						ward: "Vui lòng chọn phường, xã",
+						street: "Vui lòng nhập tên đường",
+						number: "Vui lòng nhập số nhà, lô, kios,.."
+					},
+					errorElement: 'span',
+					errorPlacement: function (error, element) {
+						error.addClass('invalid-feedback');
+						element.closest('.form-group').append(error);
+					},
+					highlight: function (element, errorClass, validClass) {
+						$(element).addClass('is-invalid');
+					},
+					unhighlight: function (element, errorClass, validClass) {
+						$(element).removeClass('is-invalid');
+					}
+				})
+
+				$('#update-address').validate({
+					rules: {
+						province: {
 							mustChoose: true
-			            },
-			            ward: {
+						},
+						district: {
 							mustChoose: true
-			            },
-			            street: {
-				            required: true
-			            },
-			            number: {
-				            required: true
-			            }
-		            },
-		            messages: {
-			            province: "Vui lòng chọn tỉnh, thành phố",
-			            district: "Vui lòng chọn quận, huyện",
-			            ward: "Vui lòng chọn phường, xã",
-			            street: "Vui lòng nhập tên đường",
-			            number: "Vui lòng nhập số nhà, lô, kios,.."
-		            },
-		            errorElement: 'span',
-		            errorPlacement: function (error, element) {
-			            error.addClass('invalid-feedback');
-			            element.closest('.form-group').append(error);
-		            },
-		            highlight: function (element, errorClass, validClass) {
-			            $(element).addClass('is-invalid');
-		            },
-		            unhighlight: function (element, errorClass, validClass) {
-			            $(element).removeClass('is-invalid');
-		            }
-	            })
+						},
+						ward: {
+							mustChoose: true
+						},
+						street: {
+							required: true
+						},
+						number: {
+							required: true
+						}
+					},
+					messages: {
+						province: "Vui lòng chọn tỉnh, thành phố",
+						district: "Vui lòng chọn quận, huyện",
+						ward: "Vui lòng chọn phường, xã",
+						street: "Vui lòng nhập tên đường",
+						number: "Vui lòng nhập số nhà, lô, kios,.."
+					},
+					errorElement: 'span',
+					errorPlacement: function (error, element) {
+						error.addClass('invalid-feedback');
+						element.closest('.form-group').append(error);
+					},
+					highlight: function (element, errorClass, validClass) {
+						$(element).addClass('is-invalid');
+					},
+					unhighlight: function (element, errorClass, validClass) {
+						$(element).removeClass('is-invalid');
+					}
+				})
 
-	            /* Reset form */
-                $(".modal").on('hide.bs.modal', function () {
-                    $(':input', 'form')
-                        .not(':button, :submit, :reset, :hidden')
-                        .val('')
-                        .prop('checked', false)
-                        .prop('selected', false);
-                    $("#create").validate().resetForm();
-	                $("#create .form-control").removeClass("is-invalid");
-                    $("#update").validate().resetForm();
-	                $("#update .form-control").removeClass("is-invalid");
-	                $("#create-address").validate().resetForm();
-	                $("#create-address .form-control").removeClass("is-invalid");
-	                $("#update-address").validate().resetForm();
-	                $("#update-address .form-control").removeClass("is-invalid");
+				/* Reset form */
+				$(".modal").on('hide.bs.modal', function () {
+					$(':input', 'form')
+							.not(':button, :submit, :reset, :hidden')
+							.val('')
+							.prop('checked', false)
+							.prop('selected', false);
+					$("#create").validate().resetForm();
+					$("#create .form-control").removeClass("is-invalid");
+					$("#update").validate().resetForm();
+					$("#update .form-control").removeClass("is-invalid");
+					$("#create-address").validate().resetForm();
+					$("#create-address .form-control").removeClass("is-invalid");
+					$("#update-address").validate().resetForm();
+					$("#update-address .form-control").removeClass("is-invalid");
 
-                });
+				});
 
-	            /* Create datatables */
-                let table = $("#trademark").DataTable({
-                    "responsive": true,
-	                "lengthChange": false,
-	                "autoWidth": false,
-	                "pageLength": 5,
-	                "lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
-	                "order": [[0, "asc"]],
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-	                "initComplete": function () {
-		                table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
-	                },
-	                "ajax": {
-		                "url": "${pageContext.request.contextPath}/api/trademark",
-		                "dataSrc": "data"
-	                },
-	                "columnDefs": [
-		                {
-			                "targets": [1, 5, 6],
-			                "className": "text-center",
-		                },
-                        {
-                            "targets": 0,
+				/* Create datatables */
+				let table = $("#trademark").DataTable({
+					"responsive": true,
+					"lengthChange": false,
+					"autoWidth": false,
+					"pageLength": 5,
+					"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+					"order": [[0, "asc"]],
+					"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+					"initComplete": function () {
+						table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
+					},
+					"ajax": {
+						"url": "${pageContext.request.contextPath}/api/trademark",
+						"dataSrc": "data"
+					},
+					"columnDefs": [
+						{
+							"targets": [1, 5, 6],
+							"className": "text-center",
+						},
+						{
+							"targets": 0,
 							"visible": false,
-                        },
-                        {
-                            "targets": 1,
-	                        "sortable": false,
-	                        "width": "5%",
-	                        "render": function (data, type, row) {
-		                        return '<input type="checkbox" class="checkBoxId" value="' + data + '">';
-	                        }
-                        },
+						},
+						{
+							"targets": 1,
+							"sortable": false,
+							"width": "5%",
+							"render": function (data, type, row) {
+								return '<input type="checkbox" class="checkBoxId" value="' + data + '">';
+							}
+						},
 						{
 							"targets": 2,
 							"width": "15%",
 						},
-		                {
-			                "targets": 3,
-			                "render": function (data, type, row) {
-				                let li = '';
-				                for (let address of data.addresses) {
-					                li += '<li>' +
+						{
+							"targets": 3,
+							"render": function (data, type, row) {
+								let li = '';
+								for (let address of data.addresses) {
+									li += '<li>' +
 											'<i role="button" class="fas fa-minus-square text-danger" ' +
-												'data-toggle="modal" data-target="#delete-address-modal" ' +
-												'onclick="setAddressIdForDelete(' + address.id + ')" ></i>&ensp;' +
+											'data-toggle="modal" data-target="#delete-address-modal" ' +
+											'onclick="setAddressIdForDelete(' + address.id + ')" ></i>&ensp;' +
 											'<i role="button" class="fas fa-pen-square text-warning" ' +
 											'data-toggle="modal" data-target="#update-address-modal" ' +
 											'onclick="getAddress(' + address.id + ')" ></i>&ensp;'+ address.path + '</li>';
-				                }
+								}
 								li += '<li><i role="button" class="fas fa-plus-square text-success" ' +
 										'data-toggle="modal" data-target="#create-address-modal" onclick="setTrademarkIdForCreate(' + data.id + ')"></i></li>';
 								return '<ul class="list-unstyled">' + li + '</ul>';
-			                }
-		                },
+							}
+						},
 						{
 							"targets": 4,
 							"width": "20%",
 						},
-                        {
-                            "targets": 5,
+						{
+							"targets": 5,
 							"width": "10%",
-	                        "render": function (data, type, row) {
-		                        return '<button onclick="getTrademarkForUpdateStatus(' + data.id + ')" class="btn ' +
-				                        (data.active ? 'btn-success' : 'btn-danger') +
-				                        ' btn-sm" title="Nhấn để đổi trạng thái" data-toggle="modal" data-target="#update-status-modal">' +
-				                        (data.active ? 'Đã kích hoạt' : 'Đã khoá') + '</button>';
-	                        }
-                        },
-		                {
-			                "targets": 6,
-			                "orderable": false,
-			                "width": "5%",
-			                "render": function (data, type, row) {
-				                return '<button onclick="getTrademarkForUpdate(' + data + ')" class="btn btn-primary btn-block" title="Nhấn để chỉnh sửa" data-toggle="modal" data-target="#update-modal">' +
-						                '<i class="fas fa-pencil-alt"></i>' +
-						                '</button>';
-			                }
-		                }
-                    ],
-	                "columns": [
-		                { "data": "id" },
-		                {
-			                "name": "ID",
-			                "data": "id"
-		                },
-		                {"data": "name"},
-		                {"data": {
+							"render": function (data, type, row) {
+								return '<button onclick="getTrademarkForUpdateStatus(' + data.id + ')" class="btn ' +
+										(data.active ? 'btn-success' : 'btn-danger') +
+										' btn-sm" title="Nhấn để đổi trạng thái" data-toggle="modal" data-target="#update-status-modal">' +
+										(data.active ? 'Đã kích hoạt' : 'Đã khoá') + '</button>';
+							}
+						},
+						{
+							"targets": 6,
+							"orderable": false,
+							"width": "5%",
+							"render": function (data, type, row) {
+								return '<button onclick="getTrademarkForUpdate(' + data + ')" class="btn btn-primary btn-block" title="Nhấn để chỉnh sửa" data-toggle="modal" data-target="#update-modal">' +
+										'<i class="fas fa-pencil-alt"></i>' +
+										'</button>';
+							}
+						}
+					],
+					"columns": [
+						{ "data": "id" },
+						{
+							"name": "ID",
+							"data": "id"
+						},
+						{"data": "name"},
+						{"data": {
 								id: "id",
 								address: "address"
 							}
 						},
-		                {"data": "website"},
-		                {"data": {
-				                id: "id",
-				                active: "active"
-			                }
-		                },
-		                {"data": "id"}
-	                ],
-                });
+						{"data": "website"},
+						{"data": {
+								id: "id",
+								active: "active"
+							}
+						},
+						{"data": "id"}
+					],
+				});
 
 				/* Reload datatables */
 				function reloadData() {
@@ -756,7 +785,7 @@
 						});
 					}
 				});
-            });
+			});
 		</script>
 	</body>
 </html>

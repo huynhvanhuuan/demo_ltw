@@ -80,6 +80,7 @@ public class TrademarkAPI extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		try {
