@@ -95,7 +95,6 @@ public class CategoryAPI extends HttpServlet {
 			}
 		} catch (Exception e) {
 			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
-			System.out.println(e.getMessage());
 		}
 	}
 	

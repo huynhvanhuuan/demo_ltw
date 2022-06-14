@@ -122,7 +122,6 @@ public class ProductDto {
             for (ProductDetail productDetail : src.getProducts()) {
                 dest.products.add(ProductDetailDto.createFromEntity(productDetail));
             }
-        System.out.println(dest);
         return dest;
     }
 }

@@ -124,7 +124,7 @@ public class AddressAPI extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setHeader("Content-Type", "application/json");
+		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		try {
@@ -141,24 +141,21 @@ public class AddressAPI extends HttpServlet {
 			}
 		} catch (NumberFormatException e) {
 			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
-			System.out.println(e.getMessage());
 		}
 	}
 	
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("application/json");
 		try {
-			String string = request.getParameter("ids");
-			Type type = new TypeToken<List<Long>>(){}.getType();
-			List<Long> ids = GSON.fromJson(string, type);
-			for (long id : ids) {
-				AppBaseResult result = addressService.deleteAddress(id);
-				if (result.isSuccess()) {
-					response.setStatus(200);
-					response.getWriter().println(GSON.toJson(result));
-				} else {
-					response.sendError(result.getErrorCode(), result.getMessage());
-				}
+			long id = Long.parseLong(request.getPathInfo().substring(1));
+
+			AppBaseResult result = addressService.deleteAddress(id);
+			if (result.isSuccess()) {
+				response.setStatus(200);
+				response.getWriter().println(GSON.toJson(result));
+			} else {
+				response.sendError(result.getErrorCode(), result.getMessage());
 			}
 		} catch (NumberFormatException e) {
 			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());

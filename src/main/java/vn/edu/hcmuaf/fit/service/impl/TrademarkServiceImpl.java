@@ -83,8 +83,6 @@ public class TrademarkServiceImpl implements TrademarkService {
 				}
 			}
 
-			System.out.println(trademark.getWebsite());
-
 			newTrademark.setId(0L);
 			newTrademark.setName(trademark.getName());
 			newTrademark.setWebsite(trademark.getWebsite());

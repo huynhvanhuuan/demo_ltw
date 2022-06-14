@@ -19,17 +19,20 @@
 								<div class="card">
 									<div class="card-body">
 										<button type="button" class="btn btn-success mr-2 float-left"
-										        data-toggle="modal" data-target="#create-modal" title="Thêm"><i
+												data-toggle="modal" data-target="#create-modal" title="Thêm"><i
 												class="fas fa-plus"></i></button>
 										<button type="button" class="btn btn-danger float-left"
-										        data-toggle="modal" data-target="#delete-modal"><i
+												data-toggle="modal" data-target="#delete-modal"><i
 												class="fas fa-trash-alt"></i></button>
 										<table id="product" class="table table-bordered table-striped">
 											<thead>
 												<tr class="text-center">
-													<th class="align-middle"><label for="checkBoxAll"></label><input
-															type="checkbox" name="checkBoxAll" id="checkBoxAll"></th>
+													<th></th>
+													<th class="align-middle">
+														<input type="checkbox" name="checkBoxAll" id="checkBoxAll">
+													</th>
 													<th class="align-middle">Tên</th>
+													<th class="align-middle">Kích thước</th>
 													<th class="align-middle">Mô tả</th>
 													<th class="align-middle">Thương hiệu</th>
 													<th class="align-middle">Loại</th>
@@ -39,88 +42,20 @@
 													<th class="align-middle">Tác vụ</th>
 												</tr>
 											</thead>
-											<tbody>
-												<%--<jsp:useBean id="products" scope="request" type="java.util.List"/>
-												<c:forEach items="${products}" var="product" varStatus="i">
-													<tr>
-														<td class="text-center">${i.index + 1}</td>
-														<td>${product.name}</td>
-														<td class="text-center">
-															<input type="hidden" name="description"
-																   value="${product.description}"/>
-															<a href="#" class="btn btn-info" data-toggle="modal"
-															   data-target="#description-modal"
-															   onclick="showDescription(this)">Xem mô tả</a>
-														</td>
-														<td class="text-center">${product.trademark.name}</td>
-														<td class="text-center">${product.category.name}</td>
-														<td class="text-center">
-															<fmt:formatDate value="${product.dateCreated}"
-																			pattern="HH:mm:ss dd-MM-yyyy"/>
-														</td>
-														<td class="text-center">
-															<fmt:formatDate value="${product.lastUpdated}"
-																			pattern="HH:mm:ss dd-MM-yyyy"/>
-														</td>
-														<c:choose>
-															<c:when test="${product.active}">
-																<td class="text-center text-success">
-																	Đang mở bán
-																	<form action="${pageContext.request.contextPath}/admin/product?action=changeActive"
-																		  method="POST" class="d-inline-block">
-																		<input type="hidden" name="id"
-																			   value="${product.id}">
-																		<button type="submit"
-																				class="btn p-1 bg-transparent text-danger">
-																			<i class="fas fa-sync-alt"></i></button>
-																	</form>
-																</td>
-															</c:when>
-															<c:otherwise>
-																<td class="text-center text-danger">
-																	Không mở bán
-																	<form action="${pageContext.request.contextPath}/admin/product?action=changeActive"
-																		  method="POST" class="d-inline-block">
-																		<input type="hidden" name="id"
-																			   value="${product.id}">
-																		<button type="submit"
-																				class="btn p-1 bg-transparent text-success">
-																			<i class="fas fa-sync-alt"></i></button>
-																	</form>
-																</td>
-															</c:otherwise>
-														</c:choose>
-														<td class="d-flex justify-content-center">
-															<input type="hidden" name="id" value="${product.id}"/>
-															<button class="btn btn-dark d-block w-100 mr-1 create-detail"
-																	data-toggle="modal"
-																	data-target="#create-detail-modal"
-																	title="Thêm chi tiết sản phẩm"><i
-																	class="fas fa-plus"></i></button>
-															<button class="btn btn-warning d-block w-100 mr-1 update"
-																	data-toggle="modal"
-																	data-target="#update-modal" title="Cập nhật"><i
-																	class="fas fa-edit"></i></button>
-															<button class="btn btn-danger d-block w-100 ml-1 delete"
-																	data-toggle="modal"
-																	data-target="#delete-modal" title="Xóa"><i
-																	class="fas fa-trash-alt"></i></button>
-														</td>
-													</tr>
-												</c:forEach>--%>
-											</tbody>
+											<tbody></tbody>
 										</table>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+
 					<!-- Create modal -->
 					<div class="modal fade" id="create-modal" style="display: none;" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
 							<div class="modal-content card card-success">
 								<div class="modal-header card-header">
-									<h5 class="modal-title font-weight-bolder">Tạo mới</h5>
+									<h5 class="modal-title font-weight-bolder">Thêm sản phẩm chính</h5>
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 										<span aria-hidden="true">×</span>
 									</button>
@@ -132,7 +67,7 @@
 												<div class="form-group">
 													<label>Tên sản phẩm</label>
 													<input type="text" name="name" class="form-control"
-													       placeholder="VD: Ghế sofa cao cấp"/>
+														   placeholder="VD: Ghế sofa cao cấp"/>
 												</div>
 											</div>
 										</div>
@@ -140,27 +75,13 @@
 											<div class="col">
 												<div class="form-group">
 													<label>Thương hiệu</label>
-													<select class="select2bs4" name="trademark" style="width: 100%;">
-														<option value="">-- Chọn thương hiệu --</option>
-														<%--<jsp:useBean id="trademarks" scope="request"
-																	 type="java.util.List"/>
-														<c:forEach items="${trademarks}" var="trademark">
-															<option value="${trademark.id}">${trademark.name}</option>
-														</c:forEach>--%>
-													</select>
+													<select class="select2bs4" name="trademark" style="width: 100%;"></select>
 												</div>
 											</div>
 											<div class="col">
 												<div class="form-group">
 													<label>Loại sản phẩm</label>
-													<select class="select2bs4" name="category" style="width: 100%;">
-														<option value="">-- Chọn loại sản phẩm --</option>
-														<%--<jsp:useBean id="categories" scope="request"
-																	 type="java.util.List"/>
-														<c:forEach items="${categories}" var="category">
-															<option value="${category.id}">${category.name}</option>
-														</c:forEach>--%>
-													</select>
+													<select class="select2bs4" name="category" style="width: 100%;"></select>
 												</div>
 											</div>
 										</div>
@@ -175,7 +96,62 @@
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng
+												data-dismiss="modal">Đóng</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- Update modal -->
+					<div class="modal fade" id="update-modal" style="display: none;" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content card card-warning">
+								<div class="modal-header card-header">
+									<h5 class="modal-title font-weight-bolder">Cập nhật</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								<form id="update" novalidate="novalidate">
+									<input type="hidden" name="id"/>
+									<div class="modal-body card-body">
+										<div class="row">
+											<div class="col">
+												<div class="form-group">
+													<label>Tên sản phẩm</label>
+													<input type="text" name="name" class="form-control"
+														   placeholder="VD: Ghế sofa cao cấp"/>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col">
+												<div class="form-group">
+													<label>Thương hiệu</label>
+													<select class="select2bs4" name="trademark" style="width: 100%;"></select>
+												</div>
+											</div>
+											<div class="col">
+												<div class="form-group">
+													<label>Loại sản phẩm</label>
+													<select class="select2bs4" name="category" style="width: 100%;"></select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col">
+												<div class="form-group">
+													<label>Mô tả chi tiết</label>
+													<textarea name="description"></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer justify-content-between">
+										<button type="button" class="btn btn-danger font-weight-bolder"
+												data-dismiss="modal">Đóng
 										</button>
 										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
@@ -183,6 +159,69 @@
 							</div>
 						</div>
 					</div>
+
+					<!-- Update status modal -->
+					<div class="modal fade" id="update-status-modal" style="display: none;" aria-hidden="true">
+						<div class="modal-dialog modal-sm">
+							<div class="modal-content card card-warning">
+								<div class="modal-header card-header">
+									<h5 class="modal-title font-weight-bolder">Cập nhật trạng thái</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								<form id="update-status" novalidate="novalidate">
+									<input type="hidden" name="id">
+									<input type="hidden" name="name">
+									<input type="hidden" name="website">
+									<div class="modal-body card-body">
+										<div class="form-group">
+											<label>Trạng thái</label>
+											<select name="active" class="form-control">
+												<option value="1">Kích hoạt</option>
+												<option value="0">Khóa</option>
+											</select>
+										</div>
+									</div>
+									<div class="modal-footer justify-content-between">
+										<button type="button" class="btn btn-danger font-weight-bolder"
+												data-dismiss="modal">Đóng</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- Delete modal -->
+					<div class="modal fade" id="delete-modal" style="display: none;" aria-hidden="true">
+						<div class="modal-dialog modal-sm">
+							<div class="modal-content card card-danger">
+								<div class="modal-header card-header">
+									<h5 class="modal-title font-weight-bolder">Cảnh báo</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								<form id="delete">
+									<div class="modal-body card-body">
+										<div class="form-group">
+											<span>Xác nhận xoá các sản phẩm đã chọn?</span>
+											<br>
+											<span><i class="text-danger"><b>Chú ý:</b></i> Việc xoá các sản phẩm sẽ dẫn đến xoá các sản phẩm chi tiết.</span>
+										</div>
+									</div>
+									<div class="modal-footer justify-content-between">
+										<button type="button" class="btn btn-danger font-weight-bolder"
+												data-dismiss="modal">Hủy
+										</button>
+										<button type="submit" class="btn btn-primary font-weight-bolder">Đồng ý</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
 					<!-- Create detail modal -->
 					<div class="modal fade" id="create-detail-modal" style="display: none;" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
@@ -220,109 +259,14 @@
 									</div>
 									<div class="modal-footer justify-content-between">
 										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng
-										</button>
+												data-dismiss="modal">Đóng</button>
 										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
-					<!-- Update modal -->
-					<div class="modal fade" id="update-modal" style="display: none;" aria-hidden="true">
-						<div class="modal-dialog modal-lg">
-							<div class="modal-content card card-warning">
-								<div class="modal-header card-header">
-									<h5 class="modal-title font-weight-bolder">Cập nhật</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">×</span>
-									</button>
-								</div>
-								<form action="${pageContext.request.contextPath}/admin/product?action=update"
-								      method="POST" id="update" novalidate="novalidate">
-									<input type="hidden" name="id"/>
-									<div class="modal-body card-body">
-										<div class="row">
-											<div class="col">
-												<div class="form-group">
-													<label>Tên sản phẩm</label>
-													<input type="text" name="name" class="form-control"
-													       placeholder="VD: Ghế sofa cao cấp"/>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col">
-												<div class="form-group">
-													<label>Thương hiệu</label>
-													<select class="select2bs4" name="trademark" style="width: 100%;">
-														<option value="">-- Chọn thương hiệu --</option>
-														<c:forEach items="${trademarks}" var="trademark">
-															<option value="${trademark.id}">${trademark.name}</option>
-														</c:forEach>
-													</select>
-												</div>
-											</div>
-											<div class="col">
-												<div class="form-group">
-													<label>Loại sản phẩm</label>
-													<select class="select2bs4" name="category" style="width: 100%;">
-														<option value="">-- Chọn loại sản phẩm --</option>
-														<c:forEach items="${categories}" var="category">
-															<option value="${category.id}">${category.name}</option>
-														</c:forEach>
-													</select>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col">
-												<div class="form-group">
-													<label>Mô tả chi tiết</label>
-													<textarea name="description-content" class="d-none"></textarea>
-													<textarea name="description" id="description-update"></textarea>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="modal-footer justify-content-between">
-										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Đóng
-										</button>
-										<button type="submit" class="btn btn-primary font-weight-bolder">Lưu</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-					<%-- Delete modal --%>
-					<div class="modal fade" id="delete-modal" style="display: none;" aria-hidden="true">
-						<div class="modal-dialog modal-sm">
-							<div class="modal-content card card-danger">
-								<div class="modal-header card-header">
-									<h5 class="modal-title font-weight-bolder">Cảnh báo</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">×</span>
-									</button>
-								</div>
-								<form action="${pageContext.request.contextPath}/admin/product?action=delete"
-								      method="POST" id="delete">
-									<input type="hidden" name="id"/>
-									<div class="modal-body card-body">
-										<div class="form-group">
-											<span>Bạn có chắc muốn xóa sản phẩm này?</span>
-										</div>
-									</div>
-									<div class="modal-footer justify-content-between">
-										<button type="button" class="btn btn-danger font-weight-bolder"
-										        data-dismiss="modal">Hủy
-										</button>
-										<button type="submit" class="btn btn-primary font-weight-bolder">Đồng ý</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
+
 					<!-- Description modal -->
 					<div class="modal fade" id="description-modal" style="top: 15%; display: none;" aria-hidden="true">
 						<div class="modal-dialog modal-md">
@@ -350,277 +294,374 @@
 		</div>
 		<c:import url="import/management/script.jsp"/>
 		<script>
-            jQuery(function () {
-                const create$ = jQuery('#create');
-                const update$ = jQuery('#update');
+			/* Get product */
+			function getProductForUpdate(id) {
+				$.ajax({
+					type: "GET",
+					url: '${pageContext.request.contextPath}/api/product/' + id,
+					success: function (result) {
+						let data = result.data;
+						$('#update input[name="id"]').val(id);
+						$('#update input[name="name"]').val(data.name);
+						$('#update input[name="website"]').val(data.website);
+						$('#update input[name="active"]').val(data.active ? 1 : 0).trigger('change');
+					}
+				})
+			}
 
-                // Switch
-                // jQuery("input[data-bootstrap-switch]").each(function(){
-                //    jQuery(this).bootstrapSwitch('state', jQuery(this).prop('checked'));
-                // })
+			/* Show description */
+			function showDescription(e) {
+				let description = $(e).parent().find('input[name="description"]').val();
+				$('.description-content').html(description);
+			}
 
-                // Summernote
-                jQuery('textarea[name="description"]').summernote({
-                    height: 200,
-                    placeholder: 'Mô tả chi tiết về sản phẩm...',
-                })
+			function refreshTrademarkList(modal) {
+				$.ajax({
+					type: 'GET',
+					url: '${pageContext.request.contextPath}/admin/trademark?action=getAll',
+					dataType: 'json',
+					contentType: 'application/json',
+					success: function (data) {
+						let select$ = $(modal);
+						select$.html('<option value="">-- Chọn thương hiệu --</option>');
+						for (let object of data) {
+							select$.append('<option value="' + object.id + '">' + object.name + '</option>')
+						}
+					}
+				})
+			}
 
-                // Select2
-                jQuery('.select2bs4').select2({
-                    theme: 'bootstrap4'
-                })
+			function refreshCategoryList(modal) {
+				$.ajax({
+					type: 'GET',
+					url: '${pageContext.request.contextPath}/admin/category?action=getAll',
+					dataType: 'json',
+					contentType: 'application/json',
+					success: function (data) {
+						let select$ = $(modal);
+						select$.html('<option value="">-- Chọn thể loại --</option>');
+						for (let object of data) {
+							select$.append('<option value="' + object.id + '">' + object.name + '</option>')
+						}
+					}
+				})
+			}
 
-                // Toast
-                let Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
+			$(function () {
+				/* Create toast */
+				const Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000
+				});
 
-                // Datatables
-                jQuery("#product").DataTable({
-                    "responsive": true, "lengthChange": false, "autoWidth": false, "pageLength": 8,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-                    "columnDefs": [
-                        {
-                            "targets": 7,
-                            "width": "11%"
-                        },
-                        {
-                            "targets": 8,
-                            "orderable": false,
-                            "width": "10%"
-                        }
-                    ],
-                    "drawCallback": function () {
-                        jQuery('.delete').click(function () {
-                            let id = jQuery(this).parent().find('input[name="id"]').val();
-                            jQuery('#delete-modal input[name = "id"]').val(id);
-                        });
-                        jQuery('.update').click(function () {
-                            let id = jQuery(this).parent().find('input[name="id"]').val();
-                            console.log(id);
-                            $.ajax({
-                                type: "GET",
-                                url: '${pageContext.request.contextPath}/admin/product?action=get',
-                                data: {id: id},
-                                dataType: "json",
-                                contentType: "application/json",
-                                success: function (data) {
-                                    jQuery('#update-modal input[name="id"]').val(data.id);
-                                    jQuery('#update-modal input[name="name"]').val(data.name);
-                                    jQuery('#update-modal select[name="trademark"]').val(data.trademark.id).trigger('change');
-                                    jQuery('#update-modal select[name="category"]').val(data.category.id).trigger('change');
-                                    jQuery('#update-modal textarea[name="description"]').summernote('code', data.description);
-                                }
-                            })
-                        });
-                        jQuery('.create-detail').click(function () {
+				/* Create select2bs4 */
+				$('.select2bs4').select2({
+					theme: 'bootstrap4'
+				})
 
-                        })
-                    }
-                }).buttons().container().appendTo('#product_wrapper .col-md-6:eq(0)');
+				/* Create summernote */
+				$('textarea[name="description"]').summernote({
+					height: 200,
+					placeholder: 'Mô tả chi tiết về sản phẩm...',
+				})
 
-                // Validator
-                jQuery.validator.setDefaults({
-                    ignore: ":hidden, [contenteditable='true']:not([name])"
-                });
-                create$.validate({
-                    rules: {
-                        name: {
-                            required: true
-                        },
-                        trademark: {
-                            required: true,
-                        },
-                        category: {
-                            required: true,
-                        }
-                    },
-                    messages: {
-                        name: "Vui lòng nhập tên sản phẩm",
-                        trademark: "Vui lòng chọn thương hiệu",
-                        category: "Vui lòng chọn loại sản phẩm"
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function (error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function (element, errorClass, validClass) {
-                        jQuery(element).addClass('is-invalid');
-                    },
-                    unhighlight: function (element, errorClass, validClass) {
-                        jQuery(element).removeClass('is-invalid');
-                    }
-                });
-                update$.validate({
-                    rules: {
-                        name: {
-                            required: true
-                        },
-                        trademark: {
-                            required: true,
-                        },
-                        category: {
-                            required: true,
-                        }
-                    },
-                    messages: {
-                        name: "Vui lòng nhập tên sản phẩm",
-                        trademark: "Vui lòng chọn thương hiệu",
-                        category: "Vui lòng chọn loại sản phẩm"
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function (error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function (element, errorClass, validClass) {
-                        jQuery(element).addClass('is-invalid');
-                    },
-                    unhighlight: function (element, errorClass, validClass) {
-                        jQuery(element).removeClass('is-invalid');
-                    }
-                });
+				/* Action on change handle */
+				$("select[name=categoryId]").change(function () {
+					$(this).valid();
+				});
 
-                function refreshTrademarkList(modal) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '${pageContext.request.contextPath}/admin/trademark?action=getAll',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        success: function (data) {
-                            let select$ = jQuery(modal);
-                            select$.html('<option value="">-- Chọn thương hiệu --</option>');
-                            for (let object of data) {
-                                select$.append('<option value="' + object.id + '">' + object.name + '</option>')
-                            }
-                        }
-                    })
-                }
+				$("select[name=trademarkId]").change(function () {
+					$(this).valid();
+				});
 
-                function refreshCategoryList(modal) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '${pageContext.request.contextPath}/admin/category?action=getAll',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        success: function (data) {
-                            let select$ = jQuery(modal);
-                            select$.html('<option value="">-- Chọn thể loại --</option>');
-                            for (let object of data) {
-                                select$.append('<option value="' + object.id + '">' + object.name + '</option>')
-                            }
-                        }
-                    })
-                }
+				/* Checkbox handle */
+				$('#checkBoxAll').click(function () {
+					if ($(this).is(':checked')) {
+						$('.checkBoxId').prop('checked', true);
+					} else {
+						$('.checkBoxId').prop('checked', false);
+					}
+				});
 
-                function setNewRow(result) {
-                    let numberOfRecord = jQuery('table#product tbody tr').length;
+				/* Create product */
+				$("#create").submit(function () {
+					if ($(this).valid()) {
+						let formData = new FormData(this);
+						/*$.ajax({
+							type: 'POST',
+							url: '${pageContext.request.contextPath}/api/product',
+							data: formData,
+							success: function (response) {
+								if (response.success) {
+									$(this).find('textarea[name="description"]').summernote("reset");
+									Toast.fire({
+										icon: 'success',
+										title: response.message
+									})
+									reloadData();
+								} else {
+									Toast.fire({
+										icon: 'error',
+										title: response.message
+									})
+								}
+								$('#create-modal').modal('hide');
+							},
+							error: function (error) {
+								Toast.fire({
+									icon: 'error',
+									title: error.message
+								})
+							}
+						});*/
+					}
+					return false;
+				})
 
-                    let active = result.active ? '<td class="text-center text-success">Đang mở bán</td>' : '<td class="text-center text-danger">Không mở bán</td>';
-                    return '<tr>' +
-                        '<td class="text-center">' + ++numberOfRecord + '</td>' +
-                        '<td>' + result.name + '</td>' +
-                        '<td class="text-center">' +
-                        '<input type="hidden" name="description" value="' + result.description + '"/>' +
-                        '<a href="#" class="btn btn-info" data-toggle="modal" data-target="#description-modal" onclick="showDescription(this)">Xem mô tả</a>' +
-                        '</td>' +
-                        '<td class="text-center">' + result.trademark.name + '</td>' +
-                        '<td class="text-center">' + result.category.name + '</td>' +
-                        '<td class="text-center">' + $.format.date(result.dateCreated, 'HH:mm:ss dd-MM-yyyy') + '</td>' +
-                        '<td class="text-center">' + $.format.date(result.lastUpdated, 'HH:mm:ss dd-MM-yyyy') + '</td>' +
-                        active +
-                        '<td class="d-flex justify-content-center">' +
-                        '<input type="hidden" name="id" value="' + result.id + '"/>' +
-                        '<button class="btn btn-warning d-block w-100 mr-1 update" ' +
-                        'data-toggle="modal" data-target="#update-modal" title="Cập nhật"><i class="fas fa-edit"></i></button>' +
-                        '<button class="btn btn-danger d-block w-100 ml-1 delete" data-toggle="modal" ' +
-                        'data-target="#delete-modal" title="Xóa"><i class="fas fa-trash-alt"></i></button>' +
-                        '</td>' +
-                        '</tr>';
-                }
+				/* Update product */
+				$("#update").submit(function () {
+					console.log($(this).find('textarea[name="description"]').summernote('code'));
+					return false;
+					//$(this).find('textarea[name="description-content"]').val();
+				})
 
-                jQuery('input').keyup(function () {
-                    jQuery(this).valid();
-                })
+				/* Update status product */
 
-                jQuery('select').change(function () {
-                    jQuery(this).valid();
-                })
+				/* Delete product */
 
-                // Submit form
-                create$.submit(function () {
-                    if (create$.valid()) {
-                        // Get data
-                        let data;
-                        let name = jQuery(this).find('input[name="name"]').val();
-                        let trademark = jQuery(this).find('select[name="trademark"]').val();
-                        let category = jQuery(this).find('select[name="category"]').val();
-                        let description = jQuery(this).find('textarea[name="description"]').val();
-                        if (description === "") data = {
-                            'name': name,
-                            'trademark': trademark,
-                            'category': category,
-                            'description': '<p></p>'
-                        }
-                        else data = {
-                            'name': name,
-                            'trademark': trademark,
-                            'category': category,
-                            'description': description
-                        }
+				/* Validate form */
+				$.validator.setDefaults({
+					ignore: ":hidden, [contenteditable='true']:not([name])"
+				});
 
-                        // Send data
-                        $.ajax({
-                            type: 'POST',
-                            url: '${pageContext.request.contextPath}/admin/product?action=create',
-                            data: data,
-                            success: function (result) {
-                                jQuery('#create-modal .close').click();
-                                jQuery(this).find('input[name="name"]').val("");
-                                refreshTrademarkList('#create select[name="trademark"]');
-                                refreshCategoryList('#create select[name="category"]');
-                                jQuery('textarea[name="description"]').summernote("reset");
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'Hoàn tất. Tạo sản phẩm thành công'
-                                })
-                                jQuery('table#product tbody').append(setNewRow(result));
-                            },
-                            error: function () {
-                                Toast.fire({
-                                    icon: 'error',
-                                    title: 'Lỗi. Tạo sản phẩm không thành công.'
-                                })
-                            }
-                        })
-                    }
-                    return false;
-                })
-                update$.submit(function () {
-                    console.log(jQuery(this).find('textarea[name="description"]').summernote('code'));
-                    return false;
-                    //jQuery(this).find('textarea[name="description-content"]').val();
-                })
-            });
-		</script>
-		<script>
-            // Show description
-            function showDescription(e) {
-                let description = jQuery(e).parent().find('input[name="description"]').val();
-                jQuery('.description-content').html(description);
-            }
+				$("#create").validate({
+					rules: {
+						name: {
+							required: true
+						},
+						trademark: {
+							required: true,
+						},
+						category: {
+							required: true,
+						}
+					},
+					messages: {
+						name: "Vui lòng nhập tên sản phẩm",
+						trademark: "Vui lòng chọn thương hiệu",
+						category: "Vui lòng chọn loại sản phẩm"
+					},
+					errorElement: 'span',
+					errorPlacement: function (error, element) {
+						error.addClass('invalid-feedback');
+						element.closest('.form-group').append(error);
+					},
+					highlight: function (element, errorClass, validClass) {
+						$(element).addClass('is-invalid');
+					},
+					unhighlight: function (element, errorClass, validClass) {
+						$(element).removeClass('is-invalid');
+					}
+				});
 
-            // Choose color
-            jQuery('#btnChoose').click(function () {
-                let color = jQuery('input[name="color"]').val();
-                if (color.trim().length > 0) {
-                    jQuery('#choosedColor').append(color);
-                }
-            })
+				$("#update").validate({
+					rules: {
+						name: {
+							required: true
+						},
+						trademark: {
+							required: true,
+						},
+						category: {
+							required: true,
+						}
+					},
+					messages: {
+						name: "Vui lòng nhập tên sản phẩm",
+						trademark: "Vui lòng chọn thương hiệu",
+						category: "Vui lòng chọn loại sản phẩm"
+					},
+					errorElement: 'span',
+					errorPlacement: function (error, element) {
+						error.addClass('invalid-feedback');
+						element.closest('.form-group').append(error);
+					},
+					highlight: function (element, errorClass, validClass) {
+						$(element).addClass('is-invalid');
+					},
+					unhighlight: function (element, errorClass, validClass) {
+						$(element).removeClass('is-invalid');
+					}
+				});
+
+				/* Reset form */
+				$(".modal").on('hide.bs.modal', function () {
+					$(':input', 'form')
+							.not(':button, :submit, :reset, :hidden')
+							.val('')
+							.prop('checked', false)
+							.prop('selected', false);
+					$("#create").validate().resetForm();
+					$("#create .form-control").removeClass("is-invalid");
+					$("#update").validate().resetForm();
+					$("#update .form-control").removeClass("is-invalid");
+					$("#create-detail").validate().resetForm();
+					$("#create-detail .form-control").removeClass("is-invalid");
+				});
+
+				// Datatables
+				let table = $("#product").DataTable({
+					"responsive": true,
+					"lengthChange": false,
+					"autoWidth": false,
+					"pageLength": 5,
+					"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+					"order": [[0, "asc"]],
+					"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+					"initComplete": function () {
+						table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
+					},
+					"ajax": {
+						"url": "${pageContext.request.contextPath}/api/product",
+						"dataSrc": "data"
+					},
+					"columnDefs": [
+						{
+							"targets": [1, 5, 6, 7, 8, 9, 10],
+							"className": "text-center",
+						},
+						{
+							"targets": [7, 8],
+							"width": "12%",
+							"render": function (data, type, row) {
+								return $.format.date(new Date(data), 'dd/MM/yyyy HH:mm:ss');
+							}
+						},
+						{
+							"targets": 0,
+							"visible": false,
+						},
+						{
+							"targets": 1,
+							"sortable": false,
+							"width": "3%",
+							"render": function (data, type, row) {
+								return '<input type="checkbox" class="checkBoxId" value="' + data + '">';
+							}
+						},
+						{
+							"targets": 2,
+							"width": "10%",
+						},
+						{
+							"targets": 3,
+							"width": "10%",
+						},
+						{
+							"targets": 4,
+							"sortable": false,
+							"width": "20%",
+							// "render": function (data, type, row) {
+							// 	return '<button class="btn btn-primary btn-sm" data-toggle="modal" ' +
+							// 			'data-target="#description-modal" data-id="' + data + '">Hiển thị mô tả</button>';
+							// }
+						},
+						{
+							"targets": 5,
+							"render": function (data, type, row) {
+								return data.name;
+							}
+						},
+						{
+							"targets": 6,
+							"render": function (data, type, row) {
+								return data.name;
+							}
+						},
+						{
+							"targets": 9,
+							"width": "10%",
+							"render": function (data, type, row) {
+								return '<button onclick="getTrademarkForUpdateStatus(' + data.id + ')" class="btn ' +
+										(data.active ? 'btn-success' : 'btn-danger') +
+										' btn-sm" title="Nhấn để đổi trạng thái" data-toggle="modal" data-target="#update-status-modal">' +
+										(data.active ? 'Đã kích hoạt' : 'Đã khoá') + '</button>';
+							}
+						},
+						{
+							"targets": 10,
+							"orderable": false,
+							"width": "5%",
+							"render": function (data, type, row) {
+								return '<button onclick="getTrademarkForUpdate(' + data + ')" class="btn btn-primary btn-block" title="Nhấn để chỉnh sửa" data-toggle="modal" data-target="#update-modal">' +
+										'<i class="fas fa-pencil-alt"></i>' +
+										'</button>';
+							}
+						}
+					],
+					"columns": [
+						{ "data": "id" },
+						{
+							"name": "ID",
+							"data": "id"
+						},
+						{"data": "name"},
+						{"data": "size"},
+						{"data": "description"},
+						{"data": "trademark"},
+						{"data": "category"},
+						{"data": "dateCreated"},
+						{"data": "lastUpdated"},
+						{"data": {
+								id: "id",
+								active: "active"
+							}
+						},
+						{"data": "id"}
+					],
+				});
+
+				/* Reload datatables */
+				function reloadData() {
+					table.ajax.reload(null, false);
+				}
+
+				$.ajax({
+					type: "GET",
+					url: '${pageContext.request.contextPath}/api/category',
+					dataType: "json",
+					contentType: "application/json",
+					success: function (result) {
+						$('select[name="categoryId"]').each(function () {
+							let category = $(this);
+							category.empty();
+							category.append($('<option>', {value: '', text: 'Chọn loại sản phẩm'}));
+							$.each(result.data, function (index, item) {
+								category.append($('<option>', {value: item.id, text: item.name}));
+							});
+						});
+					}
+				});
+
+				$.ajax({
+					type: "GET",
+					url: '${pageContext.request.contextPath}/api/trademark',
+					dataType: "json",
+					contentType: "application/json",
+					success: function (result) {
+						$('select[name="trademarkId"]').each(function () {
+							let trademark = $(this);
+							trademark.empty();
+							trademark.append($('<option>', {value: '', text: 'Chọn thương hiệu'}));
+							$.each(result.data, function (index, item) {
+								trademark.append($('<option>', {value: item.id, text: item.name}));
+							});
+						});
+					}
+				});
+			});
 		</script>
 	</body>
 </html>

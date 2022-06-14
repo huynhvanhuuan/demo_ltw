@@ -31,8 +31,6 @@ public class ProductServiceImpl implements ProductService {
 
 			products.forEach(product -> result.add(ProductDto.createFromEntity(product)));
 
-			System.out.println(result.size());
-
 			return new AppServiceResult<>(true, 0, "Succeed!", result);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -60,7 +60,6 @@ public class TrademarkAPI extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		try {
-			System.out.println(request.getParameter("website"));
 			String name = request.getParameter("name");
 			String website = request.getParameter("website");
 
@@ -102,7 +101,6 @@ public class TrademarkAPI extends HttpServlet {
 			}
 		} catch (NumberFormatException e) {
 			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
-			System.out.println(e.getMessage());
 		}
 	}
 	

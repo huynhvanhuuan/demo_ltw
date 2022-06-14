@@ -50,13 +50,12 @@
 						<div class="modal-dialog modal-lg">
 							<div class="modal-content card card-success">
 								<div class="modal-header card-header">
-									<h5 class="modal-title font-weight-bolder">Tạo mới</h5>
+									<h5 class="modal-title font-weight-bolder">Thêm thương hiệu</h5>
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/api/trademark"
-									  method="POST" id="create" novalidate="novalidate">
+								<form id="create" novalidate="novalidate">
 									<div class="modal-body card-body">
 										<div class="form-group">
 											<label>Tên thương hiệu</label>
@@ -111,6 +110,7 @@
 							</div>
 						</div>
 					</div>
+
 					<!-- Update status modal -->
 					<div class="modal fade" id="update-status-modal" style="display: none;" aria-hidden="true">
 						<div class="modal-dialog modal-sm">
@@ -121,8 +121,7 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/api/trademark"
-									  id="update-status" novalidate="novalidate">
+								<form id="update-status" novalidate="novalidate">
 									<input type="hidden" name="id">
 									<input type="hidden" name="name">
 									<input type="hidden" name="website">
@@ -144,6 +143,7 @@
 							</div>
 						</div>
 					</div>
+
 					<!-- Delete modal -->
 					<div class="modal fade" id="delete-modal" style="display: none;" aria-hidden="true">
 						<div class="modal-dialog modal-sm">
@@ -658,7 +658,6 @@
 					$("#create-address .form-control").removeClass("is-invalid");
 					$("#update-address").validate().resetForm();
 					$("#update-address .form-control").removeClass("is-invalid");
-
 				});
 
 				/* Create datatables */
