@@ -57,18 +57,24 @@ public class TrademarkAPI extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		
-		String name = request.getParameter("name");
-		String website = request.getParameter("website");
-		
-		TrademarkCreate newTrademark = new TrademarkCreate(name, website);
-		
-		AppServiceResult<TrademarkDto> result = trademarkService.createTrademark(newTrademark);
-		if (result.isSuccess()) {
-			response.setStatus(200);
-			response.getWriter().println(GSON.toJson(result));
-		} else {
-			response.sendError(result.getErrorCode(), result.getMessage());
+		request.setCharacterEncoding("UTF-8");
+
+		try {
+			System.out.println(request.getParameter("website"));
+			String name = request.getParameter("name");
+			String website = request.getParameter("website");
+
+			TrademarkCreate newTrademark = new TrademarkCreate(name, website);
+
+			AppServiceResult<TrademarkDto> result = trademarkService.createTrademark(newTrademark);
+			if (result.isSuccess()) {
+				response.setStatus(200);
+				response.getWriter().println(GSON.toJson(result));
+			} else {
+				response.sendError(result.getErrorCode(), result.getMessage());
+			}
+		} catch (Exception e) {
+			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
 		}
 	}
 

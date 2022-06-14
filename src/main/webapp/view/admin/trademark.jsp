@@ -44,6 +44,7 @@
 							</div>
 						</div>
 					</div>
+
 					<!-- Create modal -->
 					<div class="modal fade" id="create-modal" style="display: none;" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
@@ -76,6 +77,7 @@
 							</div>
 						</div>
 					</div>
+
 					<!-- Update modal -->
 					<div class="modal fade" id="update-modal" style="display: none;" aria-hidden="true">
 						<div class="modal-dialog modal-lg">
@@ -233,41 +235,6 @@
 				})
 			}
 
-            function deleteTrademark() {
-                let ids = [];
-                $('.checkBoxId').each(function () {
-                    if ($(this).is(":checked")) {
-                        ids.push($(this).val());
-                    }
-                })
-                $.ajax({
-                    type: "POST",
-                    url: '${pageContext.request.contextPath}/admin/trademark?action=delete',
-                    data: {ids: JSON.stringify(ids)},
-                    success: function (response) {
-                        if (response.statusCode === 200) {
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message,
-                            })
-                            setTimeout(function () {
-                                document.location.href = "${pageContext.request.contextPath}/admin/trademark";
-                            }, 1000);
-                        } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.message,
-                            })
-                        }
-                    }
-                })
-            }
-
-            /* Reload datatables */
-            function reloadData() {
-	            $('#trademark').DataTable().ajax.reload();
-            }
-
             $(function () {
 				/* Create toast */
 	            const Toast = Swal.mixin({
@@ -347,6 +314,37 @@
 	            /* Create trademark */
 	            $("#create").submit(function (e) {
 		            e.preventDefault();
+					if ($(this).valid()) {
+						let formData = new FormData($(this)[0]);
+						$.ajax({
+							type: "POST",
+							url: '${pageContext.request.contextPath}/api/trademark',
+							data: formData,
+							processData: false,
+							contentType: false,
+							success: function (response) {
+								if (response.success) {
+									Toast.fire({
+										icon: 'success',
+										title: response.message,
+									})
+									reloadData();
+								} else {
+									Toast.fire({
+										icon: 'error',
+										title: response.message,
+									})
+								}
+								$('#create-modal').modal('hide');
+							},
+							error: function (error) {
+								Toast.fire({
+									icon: 'error',
+									title: error.message,
+								})
+							}
+						});
+					}
 	            });
 
 	            /* Update trademark */
@@ -396,7 +394,38 @@
 	            /* Delete trademark */
 	            $("#delete").submit(function (e) {
 		            e.preventDefault();
-		            deleteTrademark();
+					let ids = [];
+					$('.checkBoxId').each(function () {
+						if ($(this).is(":checked")) {
+							ids.push($(this).val());
+						}
+					})
+					let formData = new FormData();
+					formData.append('ids', JSON.stringify(ids));
+					$.ajax({
+						type: "DELETE",
+						url: '${pageContext.request.contextPath}/api/trademark',
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (response) {
+							let result = JSON.parse(response);
+							console.log(result);
+							if (result.success) {
+								Toast.fire({
+									icon: 'success',
+									title: result.message,
+								})
+								reloadData();
+							} else {
+								Toast.fire({
+									icon: 'error',
+									title: result.message,
+								})
+							}
+							$('#delete-modal').modal('hide');
+						}
+					});
 	            });
 
 	            /* Create address */
@@ -704,6 +733,11 @@
 		                {"data": "id"}
 	                ],
                 });
+
+				/* Reload datatables */
+				function reloadData() {
+					table.ajax.reload(null, false);
+				}
 
 				$.ajax({
 					type: "GET",

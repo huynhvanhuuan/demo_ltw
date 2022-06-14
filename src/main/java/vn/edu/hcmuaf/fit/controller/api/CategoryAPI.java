@@ -105,15 +105,17 @@ public class CategoryAPI extends HttpServlet {
 			String string = request.getParameter("ids");
 			Type type = new TypeToken<List<Long>>(){}.getType();
 			List<Long> ids = GSON.fromJson(string, type);
+			AppBaseResult result = AppBaseResult.GenarateIsSucceed();
 			for (long id : ids) {
-				AppBaseResult result = categoryService.deleteCategory(id);
+				result = categoryService.deleteCategory(id);
 				if (result.isSuccess()) {
 					response.setStatus(200);
-					response.getWriter().println(GSON.toJson(result));
 				} else {
 					response.sendError(result.getErrorCode(), result.getMessage());
+					return;
 				}
 			}
+			response.getWriter().println(GSON.toJson(result));
 		} catch (NumberFormatException e) {
 			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
 		}

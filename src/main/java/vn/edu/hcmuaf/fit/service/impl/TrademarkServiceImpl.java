@@ -78,10 +78,12 @@ public class TrademarkServiceImpl implements TrademarkService {
 					return new AppServiceResult<>(false, AppError.Validation.errorCode(), "Name is exist!", null);
 				}
 
-				if (t.getWebsite().equals(trademark.getWebsite())) {
+				if (t.getWebsite() != null && t.getWebsite().equals(trademark.getWebsite())) {
 					return new AppServiceResult<>(false, AppError.Validation.errorCode(), "Website is exist!", null);
 				}
 			}
+
+			System.out.println(trademark.getWebsite());
 
 			newTrademark.setId(0L);
 			newTrademark.setName(trademark.getName());

@@ -41,7 +41,7 @@ public class DbConnection implements IConnectionPool {
                     throw new RuntimeException("Maximum pool size reached, no available connections!");
                 }
             }
-            Connection connection = connectionPool.remove(connectionPool.size() - 1);
+            Connection connection = connectionPool.remove(0);
             if (connection == null || !connection.isValid(MAX_TIMEOUT)) {
                 connection = createConnection(uid, pwd, database);
             }
