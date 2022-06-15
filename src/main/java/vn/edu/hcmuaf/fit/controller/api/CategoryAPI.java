@@ -116,7 +116,6 @@ public class CategoryAPI extends HttpServlet {
 					response.sendError(result.getErrorCode(), result.getMessage());
 					return;
 				}
-				System.out.println(result);
 			}
 			response.getWriter().println(GSON.toJson(result));
 		} catch (NumberFormatException e) {
