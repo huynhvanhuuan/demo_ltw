@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!doctype html>
 <html lang="en">
     <head>
         <c:import url="import/head.jsp"/>
@@ -162,43 +162,43 @@
                     </div>
                     <div class="filter-group order-price">
                         <h3 class="filter-select-title">Giá: Mặc định</h3>
-                        <select name="sort" class="filter-select">
-                            <option value="default">Giá: Mặc định</option>
+                        <select name="sort" class="filter-select" title="Sắp xếp theo giá">
+                            <option value="">Giá: Mặc định</option>
                             <option value="asc">Giá: Tăng dần</option>
                             <option value="desc">Giá: Giảm dần</option>
                         </select>
                     </div>
                 </section>
                 <section class="cards">
-                    <%--<jsp:useBean id="products" scope="request" type="java.util.List"/>
-                    <c:forEach items="${products}" var="item">
+                    <jsp:useBean id="products" scope="request" type="java.util.List"/>
+                    <c:forEach items="${products}" var="product">
                         <div class="card">
-                            <a href="${pageContext.request.contextPath}/product?id=${item.product.id}" class="card-link"></a>
-                            <c:if test="${item.discount > 0}">
+                            <a href="${pageContext.request.contextPath}/product?id=${product.id}" class="card-link"></a>
+                            <%--<c:if test="${product.discount > 0}">
                                 <div class="card-discount">35% giảm</div>
-                            </c:if>
+                            </c:if>--%>
                             <div class="card-img">
                                 <img class="card-img-item" src="${pageContext.request.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png" alt="card image"/>
                             </div>
                             <div class="card-content">
                                 <div class="card-title">
-                                    <a href="product-detail.jsp">${item.product.name}</a>
+                                    <a href="${pageContext.request.contextPath}/product?id=${product.id}">${product.name}</a>
                                 </div>
-                                <div class="card-price">
+                                <%--<div class="card-price">
                                     <fmt:setLocale value="vi_VN"/>
                                     <c:choose>
-                                        <c:when test="${item.discount > 0}">
-                                            <c:set var="discountPrice" value="${item.unitPrice - item.unitPrice * item.discount / 100}"/>
+                                        <c:when test="${product.discount > 0}">
+                                            <c:set var="discountPrice" value="${product.unitPrice - product.unitPrice * product.discount / 100}"/>
                                             <span class="card-promotion-price"><fmt:formatNumber value="${discountPrice}" type="currency"/></span>
-                                            <span class="card-original-price"><fmt:formatNumber value="${item.unitPrice}" type="currency"/></span>
+                                            <span class="card-original-price"><fmt:formatNumber value="${product.unitPrice}" type="currency"/></span>
                                         </c:when>
                                         <c:otherwise>
                                             <span class="card-promotion-price">
-                                                <fmt:formatNumber value="${item.unitPrice}" type="currency"/>
+                                                <fmt:formatNumber value="${product.unitPrice}" type="currency"/>
                                             </span>
                                         </c:otherwise>
                                     </c:choose>
-                                </div>
+                                </div>--%>
                                 <div class="card-detail">
                                     <div class="card-rate">
                                         <ion-icon name="star-outline"></ion-icon>
@@ -209,22 +209,52 @@
                                         <ion-icon name="heart-outline"></ion-icon>
                                     </div>
                                 </div>
-                                <a href="#" role="button" class="btn-add-card" onclick="return addToCart(${item.sku});">Thêm vào giỏ hàng</a>
+                                <%--<a href="#" role="button" class="btn-add-card" onclick="return addToCart(${product.sku});">Thêm vào giỏ hàng</a>--%>
                             </div>
                         </div>
-                    </c:forEach>--%>
+                    </c:forEach>
                 </section>
                 <section class="pagination">
                     <ul class="pagination-list">
-                        <!-- <li class="pagination-item">&larr;</li> -->
-                        <li class="pagination-item current">1</li>
+                        <jsp:useBean id="pageParam" scope="request" type="vn.edu.hcmuaf.fit.dto.pagination.PageParam"/>
+                        <c:if test="${pageParam.currentPage > 1}">
+                            <li class="pagination-item">
+                                <a href="${pageContext.request.contextPath}/product?page=${pageParam.currentPage - 1}" class="pagination-link">
+                                    <ion-icon name="arrow-back-outline"></ion-icon>
+                                </a>
+                            </li>
+                        </c:if>
+                        <li class="pagination-item">&larr;</li>
+                        <%
+                            for (int i = 1; i <= pageParam.getTotalPage(); i++) {
+                                if (i == pageParam.getCurrentPage()) {
+                                    %>
+                                    <li class="pagination-item current">
+                                        <a href="${pageContext.request.contextPath}/product?page=<%=i%>" class="pagination-link"><%=i%></a>
+                                    </li>
+                                    <%
+                                } else {
+                                    %>
+                                    <li class="pagination-item">
+                                        <a href="${pageContext.request.contextPath}/product?page=<%=i%>" class="pagination-link"><%=i%></a>
+                                    </li>
+                                    <%
+                                }
+                            }
+                        %>
+                            <%--<li class="pagination-item <c:if test="${loop.index + 1 == pageParam.currentPage}"><c:out value="current"/></c:if>">
+                                <a href="${pageContext.request.contextPath}/product?page=${loop.index + 1}" class="pagination-link">
+                                    ${loop.index + 1}
+                                </a>
+                            </li>--%>
+                        <%--<li class="pagination-item current">1</li>
                         <li class="pagination-item">2</li>
                         <li class="pagination-item">3</li>
                         <li class="pagination-item">4</li>
                         <li class="pagination-item has-more">
                             <i class="fas fa-ellipsis-h"></i>
                         </li>
-                        <li class="pagination-item">12</li>
+                        <li class="pagination-item">12</li>--%>
                         <li class="pagination-item">&rarr;</li>
                     </ul>
                 </section>
@@ -247,7 +277,7 @@
             function addToCart(sku) {
                 $.ajax({
                     type: "POST",
-                    url: '${pageContext.request.contextPath}/product?action=addToCart',
+                    url: '${pageContext.request.contextPath}/api/cart/add',
                     data: {sku: sku, quantity: 1},
                     success: function (response) {
                         if (response.statusCode === 1) {

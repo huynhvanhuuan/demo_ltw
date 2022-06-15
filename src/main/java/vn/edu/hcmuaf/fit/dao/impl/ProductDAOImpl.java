@@ -22,9 +22,6 @@ public class ProductDAOImpl implements ProductDAO {
         trademarkDAO = TrademarkDAOImpl.getInstance();
         categoryDAO = CategoryDAOImpl.getInstance();
         productDetailDAO = ProductDetailDAOImpl.getInstance();
-
-        ((ProductDetailDAOImpl) productDetailDAO).setColorDAO(ColorDAOImpl.getInstance());
-        ((ProductDetailDAOImpl) productDetailDAO).setMaterialDAO(MaterialDAOImpl.getInstance());
     }
 
     public static ProductDAOImpl getInstance() {
@@ -121,6 +118,7 @@ public class ProductDAOImpl implements ProductDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        DbManager.connectionPool.releaseConnection(connection);
     }
 
     @Override

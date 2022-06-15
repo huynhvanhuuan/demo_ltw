@@ -16,8 +16,7 @@ public class ProvinceDAOImpl implements ProvinceDAO {
 
     private DistrictDAO districtDAO;
 
-    private ProvinceDAOImpl() {
-    }
+    private ProvinceDAOImpl() {}
 
     public static ProvinceDAO getInstance() {
         if (instance == null) {

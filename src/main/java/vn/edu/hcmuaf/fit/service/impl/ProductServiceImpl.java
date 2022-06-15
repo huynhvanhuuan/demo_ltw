@@ -1,6 +1,7 @@
 package vn.edu.hcmuaf.fit.service.impl;
 
 import vn.edu.hcmuaf.fit.constant.AppError;
+import vn.edu.hcmuaf.fit.constant.PaginationConstant;
 import vn.edu.hcmuaf.fit.dao.ProductDAO;
 import vn.edu.hcmuaf.fit.dao.impl.*;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
@@ -13,9 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
+	private static ProductServiceImpl instance;
 	private final ProductDAO productDAO;
+	private int totalPage = 1;
 	
-	public ProductServiceImpl() {
+	private ProductServiceImpl() {
 		this.productDAO = ProductDAOImpl.getInstance();
 
 		((ProductDAOImpl) productDAO).setTrademarkDAO(TrademarkDAOImpl.getInstance());
@@ -23,11 +26,31 @@ public class ProductServiceImpl implements ProductService {
 		((ProductDAOImpl) productDAO).setProductDetailDAO(ProductDetailDAOImpl.getInstance());
 	}
 
+	public static ProductServiceImpl getInstance() {
+		if (instance == null) {
+			instance = new ProductServiceImpl();
+		}
+		return instance;
+	}
+
 	@Override
-	public AppServiceResult<List<ProductDto>> getProducts() {
+	public int getTotalPage() {
+		return totalPage;
+	}
+
+	@Override
+	public AppServiceResult<List<ProductDto>> getProducts(int currentPage) {
 		try {
 			List<Product> products = productDAO.findAll();
 			List<ProductDto> result = new ArrayList<>();
+
+			if (currentPage > 0) {
+				totalPage = (int) Math.ceil(products.size() / (double) PaginationConstant.DEFAULT_PAGE_SIZE);
+				int start = (currentPage - 1) * PaginationConstant.DEFAULT_PAGE_SIZE;
+				int end = start + PaginationConstant.DEFAULT_PAGE_SIZE;
+				if (end > products.size()) end = products.size();
+				products = products.subList(start, end);
+			}
 
 			products.forEach(product -> result.add(ProductDto.createFromEntity(product)));
 
@@ -97,17 +120,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public AppServiceResult<ProductDto> createProduct(ProductCreate item) {
+	public AppServiceResult<ProductDto> createProduct(ProductCreate product) {
 		return null;
 	}
 
 	@Override
-	public AppServiceResult<ProductDto> updateProduct(ProductUpdate item) {
-		return null;
-	}
-
-	@Override
-	public AppServiceResult<ProductDto> updateStatus(ProductUpdate product) {
+	public AppServiceResult<ProductDto> updateProduct(ProductUpdate product) {
 		return null;
 	}
 
