@@ -17,50 +17,43 @@ import java.util.List;
 @WebServlet(name = "api-product-detail", urlPatterns = "/api/product-detail/*")
 public class ProductDetailAPI extends HttpServlet {
     private final Gson GSON = new GsonBuilder().serializeNulls().create();
-    private ProductDetailService productDetailService;
-
-    @Override
-    public void init() throws ServletException {
-        productDetailService = new ProductDetailServiceImpl();
-    }
+    private final ProductDetailService productDetailService = ProductDetailServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         String pathInfo = request.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("/")) {
-            AppServiceResult<List<ProductDetailDto>> result = productDetailService.getProductDetails(null);
-            if (result.isSuccess()) {
-                response.setStatus(200);
-                response.getWriter().println(GSON.toJson(result));
-            } else {
-                response.sendError(result.getErrorCode(), result.getMessage());
-            }
-        } else {
-            try {
-                if (pathInfo.contains("/p")) {
-                    Long id = Long.parseLong(pathInfo.substring(3));
-                    AppServiceResult<ProductDetailDto> result = productDetailService.getProductDetail(id);
-                    if (result.isSuccess()) {
-                        response.setStatus(200);
-                        response.getWriter().println(GSON.toJson(result));
-                    } else {
-                        response.sendError(result.getErrorCode(), result.getMessage());
-                    }
+        try {
+            if (pathInfo == null || pathInfo.equals("/")) {
+                AppServiceResult<List<ProductDetailDto>> result = productDetailService.getProductDetails(0L);
+                if (result.isSuccess()) {
+                    response.setStatus(200);
+                    response.getWriter().println(GSON.toJson(result));
                 } else {
-                    Long id = Long.parseLong(pathInfo.substring(1));
-                    AppServiceResult<ProductDetailDto> result = productDetailService.getProductDetail(id);
-                    if (result.isSuccess()) {
-                        response.setStatus(200);
-                        response.getWriter().println(GSON.toJson(result));
-                    } else {
-                        response.sendError(result.getErrorCode(), result.getMessage());
-                    }
+                    response.sendError(result.getErrorCode(), result.getMessage());
                 }
-            } catch (NumberFormatException e) {
-                response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
+            } else if (pathInfo.contains("/p")) {
+                Long id = Long.parseLong(pathInfo.substring(3));
+                AppServiceResult<List<ProductDetailDto>> result = productDetailService.getProductDetails(id);
+                if (result.isSuccess()) {
+                    response.setStatus(200);
+                    response.getWriter().println(GSON.toJson(result));
+                } else {
+                    response.sendError(result.getErrorCode(), result.getMessage());
+                }
+            } else {
+                Long id = Long.parseLong(pathInfo.substring(1));
+                AppServiceResult<ProductDetailDto> result = productDetailService.getProductDetail(id);
+                if (result.isSuccess()) {
+                    response.setStatus(200);
+                    response.getWriter().println(GSON.toJson(result));
+                } else {
+                    response.sendError(result.getErrorCode(), result.getMessage());
+                }
             }
+        } catch (NumberFormatException e) {
+            response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
         }
     }
 

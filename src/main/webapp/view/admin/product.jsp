@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<!doctype html>
 <html>
 	<head>
 		<c:import url="import/general/head.jsp"/>
@@ -309,42 +309,19 @@
 				})
 			}
 
-			/* Show description */
-			function showDescription(e) {
-				let description = $(e).parent().find('input[name="description"]').val();
-				$('.description-content').html(description);
-			}
-
-			function refreshTrademarkList(modal) {
-				$.ajax({
-					type: 'GET',
-					url: '${pageContext.request.contextPath}/admin/trademark?action=getAll',
-					dataType: 'json',
-					contentType: 'application/json',
-					success: function (data) {
-						let select$ = $(modal);
-						select$.html('<option value="">-- Chọn thương hiệu --</option>');
-						for (let object of data) {
-							select$.append('<option value="' + object.id + '">' + object.name + '</option>')
-						}
-					}
-				})
-			}
-
-			function refreshCategoryList(modal) {
-				$.ajax({
-					type: 'GET',
-					url: '${pageContext.request.contextPath}/admin/category?action=getAll',
-					dataType: 'json',
-					contentType: 'application/json',
-					success: function (data) {
-						let select$ = $(modal);
-						select$.html('<option value="">-- Chọn thể loại --</option>');
-						for (let object of data) {
-							select$.append('<option value="' + object.id + '">' + object.name + '</option>')
-						}
-					}
-				})
+			/* Toggle description */
+			function toggleDescription(e) {
+				if ($(e).hasClass('show-more')) {
+					$(e).removeClass('show-more');
+					$(e).addClass('show-less');
+					$(e).text('Thu gọn');
+				} else {
+					$(e).addClass('show-more');
+					$(e).removeClass('show-less');
+					$(e).text('Xem thêm');
+				}
+				$(e).parent().find('.description-short').toggle();
+				$(e).parent().find('.description-full').toggle();
 			}
 
 			$(function () {
@@ -424,10 +401,38 @@
 				$("#update").submit(function () {
 					console.log($(this).find('textarea[name="description"]').summernote('code'));
 					return false;
-					//$(this).find('textarea[name="description-content"]').val();
 				})
 
 				/* Update status product */
+				$("#update-status").submit(function () {
+					let formData = new FormData(this);
+					$.ajax({
+						type: 'PUT',
+						url: '${pageContext.request.contextPath}/api/product',
+						data: formData,
+						success: function (response) {
+							if (response.success) {
+								Toast.fire({
+									icon: 'success',
+									title: response.message
+								})
+								reloadData();
+							} else {
+								Toast.fire({
+									icon: 'error',
+									title: response.message
+								})
+							}
+							$('#update-status-modal').modal('hide');
+						},
+						error: function (error) {
+							Toast.fire({
+								icon: 'error',
+								title: error.message
+							})
+						}
+					});
+				});
 
 				/* Delete product */
 
@@ -562,11 +567,18 @@
 						{
 							"targets": 4,
 							"sortable": false,
-							"width": "20%",
-							// "render": function (data, type, row) {
-							// 	return '<button class="btn btn-primary btn-sm" data-toggle="modal" ' +
-							// 			'data-target="#description-modal" data-id="' + data + '">Hiển thị mô tả</button>';
-							// }
+							"width": "15%",
+							"render": function (data, type, row) {
+								let firstStr = data.slice(0, 100);
+								let secondStr = data.slice(100, data.length)
+
+								if (firstStr.charAt(firstStr.length - 1) !== ' ') {
+									firstStr += secondStr.substring(0, secondStr.indexOf(' '));
+								}
+								return '<span class="description-full" style="display: none">' + data + '</span>' +
+										'<span class="description-short">' + firstStr + ' ... </span>' +
+										'<a href="javascript:void(0)" onclick="toggleDescription(this)" class="show-more">Xem thêm</a>';
+							}
 						},
 						{
 							"targets": 5,

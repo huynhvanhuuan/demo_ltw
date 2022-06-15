@@ -327,13 +327,13 @@
 										title: response.message,
 									})
 									reloadData();
+									$('#create-modal').modal('hide');
 								} else {
 									Toast.fire({
 										icon: 'error',
 										title: response.message,
 									})
 								}
-								$('#create-modal').modal('hide');
 							},
 							error: function (error) {
 								Toast.fire({
@@ -363,13 +363,13 @@
 										title: response.message,
 									})
 									reloadData();
+									$('#update-modal').modal('hide');
 								} else {
 									Toast.fire({
 										icon: 'error',
 										title: response.message,
 									})
 								}
-								$('#update-modal').modal('hide');
 							},
 							error: function (error) {
 								Toast.fire({
@@ -392,8 +392,7 @@
 							processData: false,
 							contentType: false,
 							data: formData,
-							success: function (result) {
-								let response = JSON.parse(result);
+							success: function (response) {
 								if (response.success) {
 									Toast.fire({
 										icon: 'success',
@@ -408,13 +407,11 @@
 									})
 								}
 							},
-							error: function (result) {
-								let response = JSON.parse(result);
+							error: function (error) {
 								Toast.fire({
 									icon: 'error',
-									title: response.message
+									title: error.message
 								});
-								$('#update-status-modal').modal('hide');
 							}
 						})
 					}
@@ -438,21 +435,25 @@
 						processData: false,
 						contentType: false,
 						success: function (response) {
-							let result = JSON.parse(response);
-							console.log(result);
-							if (result.success) {
+							if (response.success) {
 								Toast.fire({
 									icon: 'success',
-									title: result.message,
+									title: response.message,
 								})
 								reloadData();
+								$('#delete-modal').modal('hide');
 							} else {
 								Toast.fire({
 									icon: 'error',
-									title: result.message,
+									title: response.message,
 								})
 							}
-							$('#delete-modal').modal('hide');
+						},
+						error: function (error) {
+							Toast.fire({
+								icon: 'error',
+								title: error.message,
+							})
 						}
 					});
 				});
@@ -471,29 +472,26 @@
 							processData: false,
 							contentType: false,
 							data: formData,
-							success: function (result) {
-								console.log(result);
-								if (result.success) {
+							success: function (response) {
+								if (response.success) {
 									Toast.fire({
 										icon: 'success',
-										title: result.message
+										title: response.message
 									});
 									reloadData();
 									$('#create-address-modal').modal('hide');
 								} else {
 									Toast.fire({
 										icon: 'error',
-										title: result.message
+										title: response.message
 									})
 								}
 							},
-							error: function (result) {
-								console.log(result);
+							error: function (error) {
 								Toast.fire({
 									icon: 'error',
-									title: result.message
+									title: error.message
 								});
-								$('#create-address-modal').modal('hide');
 							}
 						});
 					}
@@ -645,19 +643,11 @@
 
 				/* Reset form */
 				$(".modal").on('hide.bs.modal', function () {
-					$(':input', 'form')
-							.not(':button, :submit, :reset, :hidden')
-							.val('')
-							.prop('checked', false)
-							.prop('selected', false);
-					$("#create").validate().resetForm();
-					$("#create .form-control").removeClass("is-invalid");
-					$("#update").validate().resetForm();
-					$("#update .form-control").removeClass("is-invalid");
-					$("#create-address").validate().resetForm();
-					$("#create-address .form-control").removeClass("is-invalid");
-					$("#update-address").validate().resetForm();
-					$("#update-address .form-control").removeClass("is-invalid");
+					$(':input', 'form').not(':button, :submit, :reset, :hidden')
+							.val('').prop('checked', false).prop('selected', false);
+					$(this).find("form")[0].reset();
+					$(this).validate().resetForm();
+					$(this).find(".form-control").removeClass("is-invalid");
 				});
 
 				/* Create datatables */

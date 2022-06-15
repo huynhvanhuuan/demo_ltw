@@ -109,6 +109,7 @@ public class ProductDto {
         dest.description = src.getDescription();
         dest.dateCreated = src.getDateCreated();
         dest.lastUpdated = src.getLastUpdated();
+        dest.active = src.isActive();
 
         if (src.getTrademark() != null) {
             dest.trademark = TrademarkDto.createFromEntity(src.getTrademark());

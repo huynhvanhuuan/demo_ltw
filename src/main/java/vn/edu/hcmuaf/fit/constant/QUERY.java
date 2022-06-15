@@ -7,7 +7,6 @@ public class QUERY {
         public static final String FIND_BY_ID = "select * from product where id = ?";
         public static final String CREATE = "insert into product(name, description, trademark_id, category_id) values(?,?,?,?)";
         public static final String UPDATE = "update product set name = ?, description = ?, trademark_id = ?, category_sku = ?, active = ? where id = ?";
-        public static final String UPDATE_STATUS = "update product set active = (case active when 1 then 0 when 0 then 1 end) where id = ?";
         public static final String DELETE = "delete from product where id = ?";
         public static final String FIND_WITH_LIMIT = "select * from product limit ?";
         public static final String FIND_BY_STATUS = "select * from product where active = ?";
@@ -22,7 +21,6 @@ public class QUERY {
         public static final String CREATE = "insert into product_detail(sku, product_id, image, color_id, material_sku, unit_price, unit_in_stock, discount) values(?,?,?,?,?,?,?,?)";
         public static final String UPDATE = "update product_detail set sku = ?, product_id = ?, image = ?, color_id = ?, material_sku = ?, unit_price = ?, unit_in_stock = ?, discount = ? where sku = ? and date_created = ?";
         public static final String DELETE = "delete from product_detail where sku = ? and date_created = ?";
-        public static final String UPDATE_STATUS = "update product_detail set active = (case active when 1 then 0 when 0 then 1 end) where sku = ?";
     }
 
     /* COLOR */
@@ -90,7 +88,6 @@ public class QUERY {
         public static final String CREATE = "insert into address(number, street, ward_id, district_id, path) values(?,?,?,?,?)";
         public static final String UPDATE = "update address set number = ?, street = ?, ward_id = ?, district_id = ?, path = ? where id = ?";
         public static final String DELETE = "delete from address where id = ?";
-        public static final String FIND_LAST = "select * from address order by id desc limit 1";
     }
 
     /* PROVINCE */
