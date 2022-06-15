@@ -109,7 +109,6 @@ public class CategoryAPI extends HttpServlet {
 			List<Long> ids = GSON.fromJson(string, type);
 			AppBaseResult result = AppBaseResult.GenarateIsSucceed();
 			for (long id : ids) {
-				System.out.println(id);
 				result = categoryService.deleteCategory(id);
 				if (result.isSuccess()) {
 					response.setStatus(200);
