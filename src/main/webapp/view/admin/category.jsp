@@ -184,11 +184,19 @@
 				$.ajax({
 					type: "GET",
 					url: '${pageContext.request.contextPath}/api/category/' + id,
-					success: function (result) {
-						$('#update input[name="id"]').val(result.data.id);
-						$('#update input[name="sku"]').val(result.data.sku);
-						$('#update input[name="name"]').val(result.data.name);
-						$('#update input[name="active"]').val(result.data.active ? 1 : 0).trigger('change');
+					success: function (response) {
+						if (response.success) {
+							let data = response.data;
+							$('#update input[name="id"]').val(data.id);
+							$('#update input[name="sku"]').val(data.sku);
+							$('#update input[name="name"]').val(data.name);
+							$('#update input[name="active"]').val(data.active ? 1 : 0).trigger('change');
+						} else {
+							Toast.fire({
+								icon: 'error',
+								title: response.message
+							});
+						}
 					}
 				})
 			}
@@ -197,11 +205,19 @@
 				$.ajax({
 					type: "GET",
 					url: '${pageContext.request.contextPath}/api/category/' + id,
-					success: function (result) {
-						$('#update-status input[name="id"]').val(result.data.id);
-						$('#update-status input[name="sku"]').val(result.data.sku);
-						$('#update-status input[name="name"]').val(result.data.name);
-						$('#update-status select[name="active"]').val(result.data.active ? 1 : 0).trigger('change');
+					success: function (response) {
+						if (response.success) {
+							let data = response.data;
+							$('#update-status input[name="id"]').val(data.id);
+							$('#update-status input[name="sku"]').val(data.sku);
+							$('#update-status input[name="name"]').val(data.name);
+							$('#update-status select[name="active"]').val(data.active ? 1 : 0).trigger('change');
+						} else {
+							Toast.fire({
+								icon: 'error',
+								title: response.message
+							});
+						}
 					}
 				})
 			}
@@ -209,16 +225,11 @@
 			function getListSkuHasProduct() {
 				return $.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/admin/category?action=getListSkuHasProduct',
+					url: '${pageContext.request.contextPath}/api/category/p',
 					success: function (data) {
 						console.log(data)
 					}
 				})
-			}
-			
-			/* Reload datatables */
-			function reloadData() {
-				$('#category').DataTable().ajax.reload();
 			}
 			
             $(function () {
@@ -247,15 +258,13 @@
 				            type: "POST",
 				            url: '${pageContext.request.contextPath}/api/category',
 				            data: $("#create").serialize(),
-				            success: function (result) {
-					            let response = JSON.parse(result);
+				            success: function (response) {
 					            if (response.success) {
 						            Toast.fire({
 							            icon: 'success',
 							            title: response.message
 						            });
 						            reloadData();
-						            $("#create").trigger("reset");
 						            $('#create-modal').modal('hide');
 					            } else {
 						            Toast.fire({
@@ -264,13 +273,11 @@
 						            })
 					            }
 				            },
-				            error: function (result) {
-					            let response = JSON.parse(result);
+				            error: function (error) {
 					            Toast.fire({
 						            icon: 'error',
-						            title: response.message
+						            title: error.message
 					            });
-					            $('#create-modal').modal('hide');
 				            }
 			            })
 		            }
@@ -287,15 +294,13 @@
 				            data: formData,
 				            processData: false,
 				            contentType: false,
-				            success: function (result) {
-					            let response = JSON.parse(result);
+				            success: function (response) {
 					            if (response.success) {
 						            Toast.fire({
 							            icon: 'success',
 							            title: response.message
 						            });
 						            reloadData();
-						            $("#update").trigger("reset");
 						            $('#update-modal').modal('hide');
 					            } else {
 						            Toast.fire({
@@ -303,15 +308,12 @@
 							            title: response.message
 						            })
 					            }
-								console.log(result)
 				            },
-				            error: function (result) {
-					            let response = JSON.parse(result);
+				            error: function (error) {
 					            Toast.fire({
 						            icon: 'error',
-						            title: response.message
+						            title: error.message
 					            });
-					            $('#update-modal').modal('hide');
 				            }
 			            })
 		            }
@@ -328,15 +330,14 @@
 				            processData: false,
 				            contentType: false,
 				            data: formData,
-				            success: function (result) {
-					            let response = JSON.parse(result);
+				            success: function (response) {
 					            if (response.success) {
 						            Toast.fire({
 							            icon: 'success',
 							            title: response.message
 						            });
 						            reloadData();
-						            $('#update-status-modal').modal('hide');
+									$('#update-status-modal').modal('hide');
 					            } else {
 						            Toast.fire({
 							            icon: 'error',
@@ -344,13 +345,11 @@
 						            })
 					            }
 				            },
-				            error: function (result) {
-					            let response = JSON.parse(result);
+				            error: function (error) {
 					            Toast.fire({
 						            icon: 'error',
-						            title: response.message
+						            title: error.message
 					            });
-					            $('#update-status-modal').modal('hide');
 				            }
 			            })
 		            }
@@ -365,25 +364,35 @@
 				            ids.push($(this).val());
 			            }
 		            });
+					let formData = new FormData();
+					formData.append('ids', JSON.stringify(ids));
 		            $.ajax({
 			            type: "DELETE",
-			            url: '${pageContext.request.contextPath}/api/category?ids=' + encodeURIComponent(JSON.stringify(ids)),
+			            url: '${pageContext.request.contextPath}/api/category',
+						data: formData,
+						processData: false,
+						contentType: false,
 			            success: function (response) {
-				            let result = JSON.parse(response);
-				            if (result.success) {
+				            if (response.success) {
 					            Toast.fire({
 						            icon: 'success',
-						            title: result.message,
+						            title: response.message,
 					            })
-					            $('#category').DataTable().ajax.reload();
+								reloadData();
+								$('#delete-modal').modal('hide');
 				            } else {
 					            Toast.fire({
 						            icon: 'error',
-						            title: result.message,
+						            title: response.message,
 					            })
 				            }
-				            $('#delete-modal').modal('hide');
-			            }
+			            },
+						error: function (response) {
+							Toast.fire({
+								icon: 'error',
+								title: response.message,
+							})
+						}
 		            })
 	            });
 	
@@ -459,11 +468,10 @@
 	            });
 
 	            /* Reset form */
-	            $('.modal').on('hidden.bs.modal', function () {
-		            $("#create").validate().resetForm();
-		            $("#create .form-control").removeClass("is-invalid");
-		            $("#update").validate().resetForm();
-		            $("#update .form-control").removeClass("is-invalid");
+	            $('.modal').on('hide.bs.modal', function () {
+		            $(this).find("form")[0].reset();
+		            $(this).validate().resetForm();
+		            $(this).find(".form-control").removeClass("is-invalid");
 	            });
 				
 				/* Create datatables */
@@ -536,6 +544,11 @@
                         {"data": "id"}
                     ],
                 });
+
+				/* Reload datatables */
+				function reloadData() {
+					table.ajax.reload(null, false);
+				}
             });
 		</script>
 	</body>

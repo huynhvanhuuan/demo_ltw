@@ -57,6 +57,7 @@ public class CategoryAPI extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8");
 		
 		String name = request.getParameter("name");
 		String sku = request.getParameter("sku");
@@ -74,6 +75,7 @@ public class CategoryAPI extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		try {
@@ -100,12 +102,14 @@ public class CategoryAPI extends HttpServlet {
 	
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("application/json");
 		try {
 			String string = request.getParameter("ids");
 			Type type = new TypeToken<List<Long>>(){}.getType();
 			List<Long> ids = GSON.fromJson(string, type);
 			AppBaseResult result = AppBaseResult.GenarateIsSucceed();
 			for (long id : ids) {
+				System.out.println(id);
 				result = categoryService.deleteCategory(id);
 				if (result.isSuccess()) {
 					response.setStatus(200);
@@ -113,6 +117,7 @@ public class CategoryAPI extends HttpServlet {
 					response.sendError(result.getErrorCode(), result.getMessage());
 					return;
 				}
+				System.out.println(result);
 			}
 			response.getWriter().println(GSON.toJson(result));
 		} catch (NumberFormatException e) {
