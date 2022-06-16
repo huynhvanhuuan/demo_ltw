@@ -17,9 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "product", value = "/product")
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 50, // 50MB
-        maxRequestSize = 1024 * 1024 * 50) // 50MB
+@MultipartConfig
 public class ProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final ProductDetailService productDetailService = ProductDetailServiceImpl.getInstance();
@@ -27,6 +25,7 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.addHeader("Set-Cookie", "promo_shown=1; SameSite=Strict");
         int currentPage = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
         String categoryId = request.getParameter("categoryId");
         String minPrice = request.getParameter("minPrice");

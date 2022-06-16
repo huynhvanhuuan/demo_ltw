@@ -286,7 +286,7 @@
     color: var(--primary-color);
 }
 
-.pagination-item.has-more {
-    border: none;
+.pagination-item.disabled {
     pointer-events: none;
+    opacity: 0;
 }

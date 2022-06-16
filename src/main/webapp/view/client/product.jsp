@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<jsp:useBean id="pageParam" scope="request" type="vn.edu.hcmuaf.fit.dto.pagination.PageParam"/>
 <!doctype html>
 <html lang="en">
     <head>
@@ -173,32 +175,57 @@
                     <jsp:useBean id="products" scope="request" type="java.util.List"/>
                     <c:forEach items="${products}" var="product">
                         <div class="card">
-                            <a href="${pageContext.request.contextPath}/product?id=${product.id}" class="card-link"></a>
-                            <%--<c:if test="${product.discount > 0}">
-                                <div class="card-discount">35% giảm</div>
-                            </c:if>--%>
+                            <a href="${pageContext.request.contextPath}/product-detail?id=${product.id}" class="card-link"></a>
+                            <c:set var="discount" value="${0}"/>
+                            <c:forEach items="${product.products}" var="detail">
+                                <c:if test="${detail.discount > discount}">
+                                    <c:set var="discount" value="${detail.discount}"/>
+                                </c:if>
+                            </c:forEach>
+                            <c:if test="${discount > 0}">
+                                <div class="card-discount">Giảm <fmt:formatNumber value="${discount / 100}" type="percent"/></div>
+                            </c:if>
                             <div class="card-img">
-                                <img class="card-img-item" src="${pageContext.request.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png" alt="card image"/>
+                                <c:forEach items="${product.products}" var="detail" end="0">
+                                    <c:forTokens items="${detail.imageUrl}" delims="," var="image" end="0">
+                                        <img src="${pageContext.request.contextPath}/image/${image}" alt="${product.name}" height="256"/>
+                                    </c:forTokens>
+                                </c:forEach>
                             </div>
                             <div class="card-content">
                                 <div class="card-title">
                                     <a href="${pageContext.request.contextPath}/product?id=${product.id}">${product.name}</a>
                                 </div>
-                                <%--<div class="card-price">
+                                <div class="card-price">
+                                    <c:forEach items="${product.products}" var="detail" end="0">
+                                        <c:set var="defaultPrice" value="${detail.unitPrice}"/>
+                                        <c:set var="totalPrice" value="${detail.unitPrice - detail.unitPrice * detail.discount / 100}"/>
+                                        <c:set var="minPrice" value="${totalPrice}"/>
+                                    </c:forEach>
+                                    <c:forEach items="${product.products}" var="detail" begin="1">
+                                        <c:set var="defaultPrice" value="${detail.unitPrice}"/>
+                                        <c:set var="totalPrice" value="${detail.unitPrice - detail.unitPrice * detail.discount / 100}"/>
+                                        <c:if test="${totalPrice < minPrice}">
+                                            <c:set var="minPrice" value="${totalPrice}"/>
+                                        </c:if>
+                                    </c:forEach>
                                     <fmt:setLocale value="vi_VN"/>
                                     <c:choose>
-                                        <c:when test="${product.discount > 0}">
-                                            <c:set var="discountPrice" value="${product.unitPrice - product.unitPrice * product.discount / 100}"/>
-                                            <span class="card-promotion-price"><fmt:formatNumber value="${discountPrice}" type="currency"/></span>
-                                            <span class="card-original-price"><fmt:formatNumber value="${product.unitPrice}" type="currency"/></span>
+                                        <c:when test="${discount > 0}">
+                                            <span class="card-promotion-price">
+                                                <fmt:formatNumber value="${minPrice}" type="currency"/>
+                                            </span>
+                                            <span class="card-original-price">
+                                                <fmt:formatNumber value="${defaultPrice}" type="currency"/>
+                                            </span>
                                         </c:when>
                                         <c:otherwise>
                                             <span class="card-promotion-price">
-                                                <fmt:formatNumber value="${product.unitPrice}" type="currency"/>
+                                                <fmt:formatNumber value="${defaultPrice}" type="currency"/>
                                             </span>
                                         </c:otherwise>
                                     </c:choose>
-                                </div>--%>
+                                </div>
                                 <div class="card-detail">
                                     <div class="card-rate">
                                         <ion-icon name="star-outline"></ion-icon>
@@ -216,46 +243,40 @@
                 </section>
                 <section class="pagination">
                     <ul class="pagination-list">
-                        <jsp:useBean id="pageParam" scope="request" type="vn.edu.hcmuaf.fit.dto.pagination.PageParam"/>
-                        <c:if test="${pageParam.currentPage > 1}">
-                            <li class="pagination-item">
-                                <a href="${pageContext.request.contextPath}/product?page=${pageParam.currentPage - 1}" class="pagination-link">
-                                    <ion-icon name="arrow-back-outline"></ion-icon>
-                                </a>
-                            </li>
-                        </c:if>
-                        <li class="pagination-item">&larr;</li>
+                        <li class="pagination-item <% if (pageParam.getCurrentPage() == 1) { %>disabled<% } %>">
+                            <a href="${pageContext.request.contextPath}/product?page=1"
+                               class="pagination-link"><i class="fas fa-angle-double-left"></i></a>
+                        </li>
+                        <li class="pagination-item <% if (pageParam.getCurrentPage() == 1) { %>disabled<% } %>">
+                            <a href="${pageContext.request.contextPath}/product?page=${pageParam.currentPage - 5 < 1 ? 1 : pageParam.currentPage - 5}"
+                               class="pagination-link"><i class="fas fa-angle-left"></i></a>
+                        </li>
                         <%
-                            for (int i = 1; i <= pageParam.getTotalPage(); i++) {
-                                if (i == pageParam.getCurrentPage()) {
-                                    %>
-                                    <li class="pagination-item current">
-                                        <a href="${pageContext.request.contextPath}/product?page=<%=i%>" class="pagination-link"><%=i%></a>
-                                    </li>
-                                    <%
-                                } else {
-                                    %>
-                                    <li class="pagination-item">
-                                        <a href="${pageContext.request.contextPath}/product?page=<%=i%>" class="pagination-link"><%=i%></a>
-                                    </li>
-                                    <%
-                                }
+                            int start = 1, end = pageParam.getTotalPage();
+                            if (pageParam.getCurrentPage() - 2 <= 1) {
+                                end = Math.min(pageParam.getTotalPage(), 5);
+                            } else if (pageParam.getCurrentPage() + 2 >= pageParam.getTotalPage()) {
+                                start = Math.max(1, pageParam.getTotalPage() - 4);
+                            } else {
+                                start = pageParam.getCurrentPage() - 2;
+                                end = pageParam.getCurrentPage() + 2;
+                            }
+                            for (int i = start; i <= end; i++) {
+                                %>
+                                <li class="pagination-item <% if (pageParam.getCurrentPage() == i) { %>current<% } %>">
+                                    <a href="${pageContext.request.contextPath}/product?page=<%=i%>" class="pagination-link"><%=i%></a>
+                                </li>
+                                <%
                             }
                         %>
-                            <%--<li class="pagination-item <c:if test="${loop.index + 1 == pageParam.currentPage}"><c:out value="current"/></c:if>">
-                                <a href="${pageContext.request.contextPath}/product?page=${loop.index + 1}" class="pagination-link">
-                                    ${loop.index + 1}
-                                </a>
-                            </li>--%>
-                        <%--<li class="pagination-item current">1</li>
-                        <li class="pagination-item">2</li>
-                        <li class="pagination-item">3</li>
-                        <li class="pagination-item">4</li>
-                        <li class="pagination-item has-more">
-                            <i class="fas fa-ellipsis-h"></i>
+                        <li class="pagination-item <% if (pageParam.getCurrentPage() == pageParam.getTotalPage()) { %>disabled<% } %>">
+                            <a href="${pageContext.request.contextPath}/product?page=${pageParam.currentPage + 5 > pageParam.totalPage ? pageParam.totalPage : pageParam.currentPage + 5}"
+                               class="pagination-link"><i class="fas fa-angle-right"></i></a>
                         </li>
-                        <li class="pagination-item">12</li>--%>
-                        <li class="pagination-item">&rarr;</li>
+                        <li class="pagination-item <% if (pageParam.getCurrentPage() == pageParam.getTotalPage()) { %>disabled<% } %>">
+                            <a href="${pageContext.request.contextPath}/product?page=${pageParam.totalPage}"
+                               class="pagination-link"><i class="fas fa-angle-double-right"></i></a>
+                        </li>
                     </ul>
                 </section>
             </div>
