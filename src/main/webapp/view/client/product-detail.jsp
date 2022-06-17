@@ -1,17 +1,16 @@
+<jsp:useBean id="product" scope="request" type="vn.edu.hcmuaf.fit.dto.product.ProductDto"/>
+<jsp:useBean id="images" scope="request" type="java.util.Map"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!doctype html>
 <html lang="en">
     <head>
         <c:import url="import/head.jsp"/>
-        <link
-                rel="stylesheet"
-                type="text/css"
-                href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
-        />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/card.css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/product-detail.css"/>
-        <title>Chi tiết sản phẩm</title>
+        <title>Amanda - Chi tiết sản phẩm</title>
     </head>
     <body>
         <c:import url="import/header.jsp"/>
@@ -21,80 +20,55 @@
                     <div class="product">
                         <section class="product-img">
                             <div class="product-img-main">
-                                <img
-                                        src="${pageContext.request.contextPath}/assets/images/bo-ban-an-4-ghe-go-milan-901/bo-ban-an-4-ghe-go-milan-901-1.jpg"
-                                        alt="image product"
-                                />
+                                <c:forEach items="${images}" var="imagesPerDetail" begin="0" end="0">
+                                    <c:forEach items="${imagesPerDetail.value}" var="image" begin="0" end="0">
+                                        <img src="${pageContext.request.contextPath}/image/${image}" alt="${product.name}">
+                                    </c:forEach>
+                                </c:forEach>
                             </div>
                             <div class="product-img-list">
-                                <img
-                                        class="product-img-item active mx-3"
-                                        src="${pageContext.request.contextPath}/assets/images/bo-ban-an-4-ghe-go-milan-901/bo-ban-an-4-ghe-go-milan-901-1.jpg"
-                                        alt="image product"
-                                />
-                                <img
-                                        class="product-img-item mx-3"
-                                        src="${pageContext.request.contextPath}/assets/images/bo-ban-an-4-ghe-go-milan-901/bo-ban-an-4-ghe-go-milan-901-2.jpg"
-                                        alt="image product"
-                                />
-                                <img
-                                        class="product-img-item mx-3"
-                                        src="${pageContext.request.contextPath}/assets/images/bo-ban-an-4-ghe-go-milan-901/bo-ban-an-4-ghe-go-milan-901-3.jpg"
-                                        alt="image product"
-                                />
-                                <img
-                                        class="product-img-item mx-3"
-                                        src="${pageContext.request.contextPath}/assets/images/bo-ban-an-4-ghe-go-milan-901/bo-ban-an-4-ghe-go-milan-901-4.jpg"
-                                        alt="image product"
-                                />
-                                <img
-                                        class="product-img-item mx-3"
-                                        src="${pageContext.request.contextPath}/assets/images/bo-ban-an-4-ghe-go-milan-901/bo-ban-an-4-ghe-go-milan-901-5.jpg"
-                                        alt="image product"
-                                />
+                                <c:forEach items="${images}" var="imagesPerDetail">
+                                    <c:forEach items="${imagesPerDetail.value}" var="image">
+                                        <img class="product-img-item mx-3" style="cursor: pointer;"
+                                             src="${pageContext.request.contextPath}/image/${image}" alt="${product.name}">
+                                    </c:forEach>
+                                </c:forEach>
                             </div>
                         </section>
                         <section class="product-detail">
-                            <h1 class="product-title">Sofa vải Poppy màu hồng</h1>
-                            <!-- <p class="product-description">
-                                Warm and welcoming, neat and stylish. The supporting seat
-                                cushions, the cover's soft finish and the tight fit gives this
-                                sofa a perfect balance between its comport, functions and look.
-                            </p> -->
-                            <p class="product-text">
-                                <span class="p-title">Kích thước:</span>
-                                <span class="product-size">
-                                    Bàn ăn Dài 120cm x Rộng 75cm x Cao 74cm, Ghế ăn Dài 52cm x
-                                    Rộng 49cm x Cao 74cm
-                                </span>
-                            </p>
-                            <p class="product-text">
-                                <span class="p-title">Vật liệu:</span>
-                                <span class="product-material"
-                                >Mặt bàn: Gỗ công nghiệp PB chuẩn CARB-P2 (*), Veneer gỗ sồi
-                                    tự nhiên - Chân bàn: Gỗ cao su tự nhiên - Ghế ăn: Gỗ cao su
-                                    tự nhiên/Gỗ tần bì tự nhiên, Vải bọc polyester chống nhăn,
-                                    kháng bụi bẩn và nấm mốc
-                                </span>
-                            </p>
-                            <form class="form" action="checkout.jsp" method="get">
+                            <h1 class="product-title">${product.name}</h1>
+                            <div class="product-size">
+                                <p class="product-text">
+                                    <span class="p-title">Kích thước:</span>
+                                    <span class="size">${product.size}</span>
+                                </p>
+                            </div>
+                            <form class="form" id="product-form" novalidate="novalidate">
+                                <div class="product-material">
+                                    <p class="p-title">Vật liệu:</p>
+                                    <div class="row">
+                                        <jsp:useBean id="materials" scope="request" type="java.util.Map"/>
+                                        <c:forEach items="${materials}" var="material">
+                                            <div class="col">
+                                                <input type="radio" name="material" id="material-${material.key}">
+                                                <label for="material-${material.key}" class="option">
+                                                    <i class="dot"></i>
+                                                    <span>${material.value.name}</span>
+                                                </label>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
                                 <div class="product-color">
                                     <span class="p-title">Màu sắc:</span>
                                     <ul class="color">
-                                        <li class="color-item">
-                                            <input
-                                                    class="input-radio"
-                                                    id="color-1"
-                                                    type="radio"
-                                                    name="color"
-                                                    checked
-                                            />
-                                            <label
-                                                    class="color-title"
-                                                    for="color-1"
-                                                    style="background-color: #d2af84"
-                                            ></label>
-                                        </li>
+                                        <jsp:useBean id="colors" scope="request" type="java.util.Map"/>
+                                        <c:forEach items="${colors}" var="color">
+                                            <li class="color-item">
+                                                <input class="input-radio" id="color-${color.key}" type="radio" name="color"/>
+                                                <label class="color-title" for="color-${color.key}" style="background-color: ${color.value.hex}; cursor: pointer;"></label>
+                                            </li>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                                 <div class="quantity">
@@ -116,9 +90,13 @@
                                     <span class="rate-count">(3 khách hàng đã review)</span>
                                 </div>
                                 <div class="product-price">
-                                    <span class="promotion-price">25.415.000</span>
-                                    <span class="original-price">29.900.000</span>
-                                    <span class="reduce-percent">15% GIẢM</span>
+                                    <fmt:setLocale value="vi_VN"/>
+                                    <span class="promotion-price"><fmt:formatNumber value="${product.minPrice}" type="currency"/></span>
+                                    <span class="original-price"><fmt:formatNumber value="${product.defaultMinPrice}" type="currency"/></span>
+                                    <c:set var="discount" value="${product.maxDiscount}"/>
+                                    <c:if test="${discount > 0}">
+                                        <span class="reduce-percent">Giảm <fmt:formatNumber value="${discount / 100}" type="percent"/></span>
+                                    </c:if>
                                 </div>
                                 <div class="product-add-cart">
                                     <button class="btn-purchase">Mua ngay</button>
@@ -136,21 +114,10 @@
                             </div>
                         </section>
                     </div>
-
                     <div class="description">
                         <h2 class="product-info-text">MÔ TẢ SẢN PHẨM</h2>
-                        <p class="paragraph">
-                            Kích thước: -Bàn ăn: Dài 120cm x Rộng 75cm x Cao 74cm - Ghế ăn
-                            ODESSA: Dài 43cm x Rộng 51cm x Cao 92cm - Ghế ăn MILAN: Dài 52cm x
-                            Rộng 49cm x Cao 74cm Chất liệu: - Mặt bàn: Gỗ công nghiệp PB chuẩn
-                            CARB-P2 (*), Veneer gỗ sồi tự nhiên - Chân bàn: Gỗ cao su tự nhiên -
-                            Ghế ăn: Gỗ cao su tự nhiên/Gỗ tần bì tự nhiên, Vải bọc polyester
-                            chống nhăn, kháng bụi bẩn và nấm mốc (*) Tiêu chuẩn California Air
-                            Resources Board xuất khẩu Mỹ, đảm bảo gỗ không độc hại, an toàn cho
-                            sức khỏe Chống thấm, cong vênh, trầy xước, mối mọt
-                        </p>
+                        <p class="paragraph">${product.description}</p>
                     </div>
-
                     <div class="review">
                         <h2 class="product-info-text">ĐÁNH GIÁ SẢN PHẨM</h2>
                         <div class="user-review">
@@ -391,5 +358,33 @@
         <c:import url="import/signin-signup.jsp"/>
         <script src="${pageContext.request.contextPath}/assets/js/product-detail.js"></script>
         <c:import url="import/script.jsp"/>
+        <script>
+            function getProductDetail(materialId, colorId) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/api/product-detail",
+                    type: "GET",
+                    data: {
+                        materialId: materialId,
+                        colorId: colorId
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+
+            $(function () {
+                $("input[name='material']").change(function () {
+                    let materialId = $(this).val();
+                    if ($("input[name='color']").val() === "") {
+                        let colorId = $("input[name='color']").val();
+                        getProductDetail(materialId, colorId);
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

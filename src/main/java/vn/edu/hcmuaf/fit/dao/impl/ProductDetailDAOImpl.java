@@ -18,7 +18,10 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 	private ColorDAO colorDAO;
 	private MaterialDAO materialDAO;
 	
-	private ProductDetailDAOImpl() {}
+	private ProductDetailDAOImpl() {
+		colorDAO = ColorDAOImpl.getInstance();
+		materialDAO = MaterialDAOImpl.getInstance();
+	}
 
 	public static ProductDetailDAOImpl getInstance() {
 		if (instance == null) {

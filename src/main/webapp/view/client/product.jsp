@@ -176,12 +176,7 @@
                     <c:forEach items="${products}" var="product">
                         <div class="card">
                             <a href="${pageContext.request.contextPath}/product-detail?id=${product.id}" class="card-link"></a>
-                            <c:set var="discount" value="${0}"/>
-                            <c:forEach items="${product.products}" var="detail">
-                                <c:if test="${detail.discount > discount}">
-                                    <c:set var="discount" value="${detail.discount}"/>
-                                </c:if>
-                            </c:forEach>
+                            <c:set var="discount" value="${product.maxDiscount}"/>
                             <c:if test="${discount > 0}">
                                 <div class="card-discount">Giảm <fmt:formatNumber value="${discount / 100}" type="percent"/></div>
                             </c:if>
@@ -197,31 +192,19 @@
                                     <a href="${pageContext.request.contextPath}/product?id=${product.id}">${product.name}</a>
                                 </div>
                                 <div class="card-price">
-                                    <c:forEach items="${product.products}" var="detail" end="0">
-                                        <c:set var="defaultPrice" value="${detail.unitPrice}"/>
-                                        <c:set var="totalPrice" value="${detail.unitPrice - detail.unitPrice * detail.discount / 100}"/>
-                                        <c:set var="minPrice" value="${totalPrice}"/>
-                                    </c:forEach>
-                                    <c:forEach items="${product.products}" var="detail" begin="1">
-                                        <c:set var="defaultPrice" value="${detail.unitPrice}"/>
-                                        <c:set var="totalPrice" value="${detail.unitPrice - detail.unitPrice * detail.discount / 100}"/>
-                                        <c:if test="${totalPrice < minPrice}">
-                                            <c:set var="minPrice" value="${totalPrice}"/>
-                                        </c:if>
-                                    </c:forEach>
                                     <fmt:setLocale value="vi_VN"/>
                                     <c:choose>
-                                        <c:when test="${discount > 0}">
+                                        <c:when test="${product.maxDiscount > 0}">
                                             <span class="card-promotion-price">
-                                                <fmt:formatNumber value="${minPrice}" type="currency"/>
+                                                <fmt:formatNumber value="${product.minPrice}" type="currency"/>
                                             </span>
                                             <span class="card-original-price">
-                                                <fmt:formatNumber value="${defaultPrice}" type="currency"/>
+                                                <fmt:formatNumber value="${product.defaultMinPrice}" type="currency"/>
                                             </span>
                                         </c:when>
                                         <c:otherwise>
                                             <span class="card-promotion-price">
-                                                <fmt:formatNumber value="${defaultPrice}" type="currency"/>
+                                                <fmt:formatNumber value="${product.defaultMinPrice}" type="currency"/>
                                             </span>
                                         </c:otherwise>
                                     </c:choose>
@@ -243,38 +226,32 @@
                 </section>
                 <section class="pagination">
                     <ul class="pagination-list">
-                        <li class="pagination-item <% if (pageParam.getCurrentPage() == 1) { %>disabled<% } %>">
+                        <c:set var="current" value="${pageParam.currentPage}"/>
+                        <c:set var="total" value="${pageParam.totalPage}"/>
+                        <li class="pagination-item <c:if test="${current < 4}">disabled</c:if>" title="Back to the first page">
                             <a href="${pageContext.request.contextPath}/product?page=1"
                                class="pagination-link"><i class="fas fa-angle-double-left"></i></a>
                         </li>
-                        <li class="pagination-item <% if (pageParam.getCurrentPage() == 1) { %>disabled<% } %>">
-                            <a href="${pageContext.request.contextPath}/product?page=${pageParam.currentPage - 5 < 1 ? 1 : pageParam.currentPage - 5}"
+                        <li class="pagination-item <c:if test="${current < 4}">disabled</c:if>" title="5 previous pages">
+                            <a href="${pageContext.request.contextPath}/product?page=${current - 5 < 1 ? 1 : current - 5}"
                                class="pagination-link"><i class="fas fa-angle-left"></i></a>
                         </li>
-                        <%
-                            int start = 1, end = pageParam.getTotalPage();
-                            if (pageParam.getCurrentPage() - 2 <= 1) {
-                                end = Math.min(pageParam.getTotalPage(), 5);
-                            } else if (pageParam.getCurrentPage() + 2 >= pageParam.getTotalPage()) {
-                                start = Math.max(1, pageParam.getTotalPage() - 4);
-                            } else {
-                                start = pageParam.getCurrentPage() - 2;
-                                end = pageParam.getCurrentPage() + 2;
-                            }
-                            for (int i = start; i <= end; i++) {
-                                %>
-                                <li class="pagination-item <% if (pageParam.getCurrentPage() == i) { %>current<% } %>">
-                                    <a href="${pageContext.request.contextPath}/product?page=<%=i%>" class="pagination-link"><%=i%></a>
-                                </li>
-                                <%
-                            }
-                        %>
-                        <li class="pagination-item <% if (pageParam.getCurrentPage() == pageParam.getTotalPage()) { %>disabled<% } %>">
-                            <a href="${pageContext.request.contextPath}/product?page=${pageParam.currentPage + 5 > pageParam.totalPage ? pageParam.totalPage : pageParam.currentPage + 5}"
+                        <c:choose>
+                            <c:when test="${current == 1}"><c:set var="start" value="1"/><c:set var="end" value="5"/></c:when>
+                            <c:when test="${current == total}"><c:set var="start" value="${total - 4}"/><c:set var="end" value="${total}"/></c:when>
+                            <c:otherwise><c:set var="start" value="${current - 2}"/><c:set var="end" value="${current + 2}"/></c:otherwise>
+                        </c:choose>
+                        <c:forEach begin="${start}" end="${end}" varStatus="loop">
+                            <li class="pagination-item <c:if test="${loop.index == current}">current</c:if>">
+                                <a href="${pageContext.request.contextPath}/product?page=${loop.index}" class="pagination-link">${loop.index}</a>
+                            </li>
+                        </c:forEach>
+                        <li class="pagination-item <c:if test="${current + 3 > total}">disabled</c:if>" title="5 next pages">
+                            <a href="${pageContext.request.contextPath}/product?page=${current + 5 > total ? total : current + 5}"
                                class="pagination-link"><i class="fas fa-angle-right"></i></a>
                         </li>
-                        <li class="pagination-item <% if (pageParam.getCurrentPage() == pageParam.getTotalPage()) { %>disabled<% } %>">
-                            <a href="${pageContext.request.contextPath}/product?page=${pageParam.totalPage}"
+                        <li class="pagination-item <c:if test="${current + 3 > total}">disabled</c:if>" title="Go to the last page">
+                            <a href="${pageContext.request.contextPath}/product?page=${total}"
                                class="pagination-link"><i class="fas fa-angle-double-right"></i></a>
                         </li>
                     </ul>

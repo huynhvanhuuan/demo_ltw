@@ -100,6 +100,46 @@ public class ProductDto {
         this.products = products;
     }
 
+    public int getMaxDiscount() {
+        int maxDiscount = 0;
+        for (ProductDetailDto productDetailDto : products) {
+            if (productDetailDto.getDiscount() > maxDiscount) {
+                maxDiscount = productDetailDto.getDiscount();
+            }
+        }
+        return maxDiscount;
+    }
+
+    public long getDefaultMinPrice() {
+        long defaultMinPrice = Long.MAX_VALUE;
+        for (ProductDetailDto productDetailDto : products) {
+            if (productDetailDto.getUnitPrice() < defaultMinPrice) {
+                defaultMinPrice = productDetailDto.getUnitPrice();
+            }
+        }
+        return defaultMinPrice;
+    }
+
+    public long getMaxPrice() {
+        long maxPrice = Long.MIN_VALUE;
+        for (ProductDetailDto productDetailDto : products) {
+            if (productDetailDto.getUnitPrice() > maxPrice) {
+                maxPrice = productDetailDto.getUnitPrice();
+            }
+        }
+        return maxPrice;
+    }
+
+    public long getMinPrice() {
+        long minPrice = Long.MAX_VALUE;
+        for (ProductDetailDto productDetailDto : products) {
+            if (productDetailDto.getTotalPrice() < minPrice) {
+                minPrice = productDetailDto.getTotalPrice();
+            }
+        }
+        return minPrice;
+    }
+
     public static ProductDto createFromEntity(Product src) {
         ProductDto dest = new ProductDto();
 

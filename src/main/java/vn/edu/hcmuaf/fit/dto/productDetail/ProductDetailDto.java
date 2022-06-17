@@ -115,6 +115,10 @@ public class ProductDetailDto {
         this.active = active;
     }
 
+    public long getTotalPrice() {
+        return unitPrice - (unitPrice * discount / 100);
+    }
+
     public static ProductDetailDto createFromEntity(ProductDetail src) {
         ProductDetailDto dest = new ProductDetailDto();
 
