@@ -5,13 +5,15 @@ import java.io.Serializable;
 public class Role implements Serializable {
     private long id;
     private String name;
+    private String suffix;
 
     public Role() {
     }
 
-    public Role(long id, String name) {
+    public Role(long id, String name, String suffix) {
         this.id = id;
         this.name = name;
+        this.suffix = suffix;
     }
 
     public long getId() {
@@ -28,5 +30,13 @@ public class Role implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 }

@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <div class="box-signup-signin">
     <div class="signup-signin">
         <span class="popup-close">&times;</span>
@@ -56,17 +56,17 @@
                 <form action="" method="post" class="popup-form">
                     <div class="form-group box-flex">
                         <div class="box-left">
-                            <input type="text" name="lastname" class="form-input" placeholder=""/>
+                            <input type="text" name="lastname" class="form-input" placeholder=" "/>
                             <label class="form-label-fluid">Họ của bạn</label>
                         </div>
                         <div class="box-right">
-                            <input type="text" name="firstname" class="form-input" placeholder=""/>
+                            <input type="text" name="firstname" class="form-input" placeholder=" "/>
                             <label class="form-label-fluid">Tên của bạn</label>
                         </div>
                     </div>
                     <div class="form-group box-flex">
                         <div class="box-left">
-                            <input type="text" name="phone-number" class="form-input" placeholder=""/>
+                            <input type="text" name="phone-number" class="form-input" placeholder=" "/>
                             <label class="form-label-fluid">Số điện thoại của bạn</label>
                         </div>
                         <div class="box-right">
@@ -82,12 +82,13 @@
                         <label class="form-label-fluid">Email của bạn</label>
                     </div>
                     <div class="form-group">
+                        <input type="password" name="password" class="form-input signup-password" placeholder=" "/>
                         <label class="form-label-fluid">Nhập mật khẩu của bạn</label>
-                        <input type="password" name="password" class="form-input signup-password" placeholder=""/>
                         <i class="hide-password fas fa-eye-slash"></i>
                     </div>
                     <div class="form-group">
-                        <input type="password" name="password" class="form-input comfirm-password" placeholder=""/>
+                        <input type="password" name="password" class="form-input comfirm-password" placeholder=" "
+                        />
                         <label class="form-label-fluid">Nhập lại mật khẩu của bạn</label>
                         <i class="hide-password fas fa-eye-slash"></i>
                     </div>

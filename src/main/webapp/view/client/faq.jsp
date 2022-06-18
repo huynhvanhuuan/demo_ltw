@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!doctype html>
 <html lang="en">
     <head>
@@ -9,8 +9,6 @@
     </head>
     <body>
         <c:import url="import/header.jsp"/>
-        <c:import url="import/footer.jsp"/>
-        <c:import url="import/signin-signup.jsp"/>
         <div class="page">
             <div class="container">
                 <div class="start">
@@ -151,6 +149,8 @@
                 </div>
             </div>
         </div>
+        <c:import url="import/footer.jsp"/>
+        <c:import url="import/signin-signup.jsp"/>
         <c:import url="import/script.jsp"/>
     </body>
 </html>

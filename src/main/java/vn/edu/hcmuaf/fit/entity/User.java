@@ -5,13 +5,15 @@ import java.util.*;
 
 public class User implements Serializable {
     private Long id;
+    private String lastName;
+    private String firstName;
     private String fullName;
     private String password;
     private String email;
     private String phone;
     private Date dateOfBirth;
-    private boolean isFemale;
-    private String profileImageUrl;
+    private boolean isMale;
+    private String imageUrl;
     private Date dateCreated;
     private Date lastUpdated;
     private boolean isVerified;
@@ -25,17 +27,19 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Long id, String fullName, String password, String email, String phone, Date dateOfBirth,
-                boolean isFemale, String profileImageUrl, Date dateCreated, Date lastUpdated, boolean isVerified,
+    public User(Long id, String lastName, String firstName, String fullName, String password, String email, String phone, Date dateOfBirth,
+                boolean isMale, String imageUrl, Date dateCreated, Date lastUpdated, boolean isVerified,
                 Role role, boolean isNotLocked, boolean active, Set<Wishlist> wishlists, Set<Address> addresses, Set<Order> orders) {
         this.id = id;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.fullName = fullName;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
-        this.isFemale = isFemale;
-        this.profileImageUrl = profileImageUrl;
+        this.isMale = isMale;
+        this.imageUrl = imageUrl;
         this.dateCreated = dateCreated;
         this.lastUpdated = lastUpdated;
         this.isVerified = isVerified;
@@ -53,6 +57,22 @@ public class User implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getFullName() {
@@ -95,20 +115,20 @@ public class User implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public boolean isFemale() {
-        return isFemale;
+    public boolean isMale() {
+        return isMale;
     }
 
-    public void setFemale(boolean female) {
-        isFemale = female;
+    public void setMale(boolean isMale) {
+        this.isMale = isMale;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Date getDateCreated() {

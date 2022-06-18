@@ -64,6 +64,7 @@ public class QUERY {
         public static final String FIND_ALL = "select * from user";
         public static final String FIND_BY_ID = "select * from user where id = ?";
         public static final String FIND_BY_EMAIL = "select * from user where email = ?";
+        public static final String FIND_BY_PHONE = "select * from user where phone = ?";
         public static final String CREATE = "insert into user(id, first_name, last_name, username, password, email, phone, female, profile_image_url, date_created, role) value(?,?,?,?,?,?,?,?,?,?,?)";
         public static final String UPDATE = "update user set first_name = ?, last_name = ?, password = ?, email = ?, phone = ? where id = ?";
         public static final String DELETE = "delete from user where id = ?";

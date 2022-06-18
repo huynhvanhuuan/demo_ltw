@@ -9,7 +9,6 @@
 		<title>Trang chủ</title>
 	</head>
 	<body>
-		<c:import url="import/signin-signup.jsp"/>
 		<c:import url="import/header.jsp"/>
 		<main class="page">
 			<div class="landing">
@@ -695,6 +694,7 @@
 			</div>
 		</main>
 		<c:import url="import/footer.jsp"/>
+		<c:import url="import/signin-signup.jsp"/>
 		<c:import url="import/script.jsp"/>
 	</body>
 </html>
