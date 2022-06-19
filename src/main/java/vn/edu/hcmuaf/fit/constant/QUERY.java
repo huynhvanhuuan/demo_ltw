@@ -59,24 +59,48 @@ public class QUERY {
         public static final String CREATE_ADDRESS = "insert into trademark_address(trademark_id, address_id) values(?,?)";
     }
 
-    /* USER */
-    public static class USER {
-        public static final String FIND_ALL = "select * from user";
+    /* APP USER */
+    public static class APP_USER {
+        public static final String FIND_ALL = "select * from app_user";
+        public static final String FIND_BY_ROLE_ID = "select u.* from app_user u inner join app_user_role ur on u.id = ur.user_id where role_id = ?";
         public static final String FIND_BY_ID = "select * from user where id = ?";
-        public static final String FIND_BY_EMAIL = "select * from user where email = ?";
-        public static final String FIND_BY_PHONE = "select * from user where phone = ?";
-        public static final String CREATE = "insert into user(id, first_name, last_name, username, password, email, phone, female, profile_image_url, date_created, role) value(?,?,?,?,?,?,?,?,?,?,?)";
-        public static final String UPDATE = "update user set first_name = ?, last_name = ?, password = ?, email = ?, phone = ? where id = ?";
-        public static final String DELETE = "delete from user where id = ?";
-        public static final String CHANGE_PASSWORD = "update user set password = ? where id = ?";
-        public static final String UPDATE_LOCK_STATUS = "update user set locked = ? where id = ?";
+        public static final String FIND_BY_USERNAME = "select * from app_user where username = ?";
+        public static final String FIND_BY_EMAIL = "select * from app_user where email = ?";
+        public static final String FIND_BY_PHONE = "select * from app_user where phone = ?";
+        public static final String CREATE = "insert into app_user(id, first_name, last_name, username, password, email, phone, female, profile_image_url, date_created, role) value(?,?,?,?,?,?,?,?,?,?,?)";
+        public static final String UPDATE = "update app_user set first_name = ?, last_name = ?, password = ?, email = ?, phone = ? where id = ?";
+        public static final String DELETE = "delete from app_user where id = ?";
+        public static final String CHANGE_PASSWORD = "update app_user set password = ? where id = ?";
+        public static final String UPDATE_LOCK_STATUS = "update app_user set locked = ? where id = ?";
         public static final String CREATE_ADDRESS = "insert into user_address(user_id, address_id) values(?,?)";
     }
 
+    /* USER_INFO */
+    public static class USER_INFO {
+        public static final String FIND_ALL = "select * from user_info";
+        public static final String FIND_BY_ID = "select * from user_info where id = ?";
+        public static final String CREATE = "insert into user_info(last_name, first_name, full_name, date_of_birth, is_male, image_url) value(?,?,?,?,?,?)";
+        public static final String UPDATE = "update user_info set last_name = ?, first_name = ?, full_name = ?, date_of_birth = ?, is_male, image_url = ? where id = ?";
+        public static final String DELETE = "delete from user_info where id = ?";
+    }
+
     /* ROLE */
-    public static class ROLE {
-        public static final String FIND_ALL = "select * from role";
-        public static final String FIND_BY_ID = "select * from role where id = ?";
+    public static class APP_ROLE {
+        public static final String FIND_ALL = "select * from app_role";
+        public static final String FIND_BY_USER_ID = "select r.* from app_role r inner join app_user_role ur on r.id = ur.role_id where user_id = ?";
+        public static final String FIND_BY_ID = "select * from app_role where id = ?";
+        public static final String FIND_BY_NAME = "select * from app_role where name = ?";
+    }
+
+    /* VERIFICATION TOKEN */
+    public static class VERIFICATION_TOKEN {
+        public static final String FIND_ALL = "select * from verification_token";
+        public static final String FIND_BY_ID = "select * from verification_token where id = ?";
+        public static final String FIND_BY_USER_ID = "select * from verification_token where user_id = ?";
+        public static final String FIND_BY_TOKEN = "select * from verification_token where token = ?";
+        public static final String CREATE = "insert into verification_token(id, user_id, token) value(?,?,?)";
+        public static final String UPDATE_TOKEN = "update verification_token set token = ? where id = ?";
+        public static final String UPDATE_VERIFIED = "delete from verification_token set verified_at = ? where id = ?";
     }
 
     /* ADDRESS */

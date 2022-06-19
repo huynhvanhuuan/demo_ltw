@@ -1,4 +1,4 @@
-package vn.edu.hcmuaf.fit.dto.user;
+package vn.edu.hcmuaf.fit.dto.appuser;
 
 public class UserRegister {
     private String lastName; // Họ
@@ -6,8 +6,21 @@ public class UserRegister {
     private String phone;
     private boolean isMale;
     private String email;
+    private String username;
     private String password;
-    private String confirmPassword;
+
+    public UserRegister() {
+    }
+
+    public UserRegister(String lastName, String firstName, String phone, boolean isMale, String email, String username, String password) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.phone = phone;
+        this.isMale = isMale;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
 
     public String getLastName() {
         return lastName;
@@ -49,19 +62,19 @@ public class UserRegister {
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 }

@@ -1,55 +1,57 @@
 package vn.edu.hcmuaf.fit.controller.client;
 
-import vn.edu.hcmuaf.fit.service.UserService;
-import vn.edu.hcmuaf.fit.service.impl.UserServiceImpl;
+import vn.edu.hcmuaf.fit.service.AppUserService;
+import vn.edu.hcmuaf.fit.service.impl.AppUserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet(name = "client-user", urlPatterns = "/user/*")
 public class UserController extends HttpServlet {
-    private final UserService userService = UserServiceImpl.getInstance();
+    private final AppUserService userService = AppUserServiceImpl.getInstance();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/views/client/user/dashboard.jsp").forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         switch (request.getPathInfo()) {
-            case "/register":
-                register(request, response);
+            case "/account/profile":
+                doGetProfile(request, response);
                 break;
-            case "/login":
-                login(request, response);
+            case "/account/payment":
+                doGetPayment(request, response);
                 break;
-            case "/logout":
-                logout(request, response);
+            case "/account/address":
+                doGetAddress(request, response);
+                break;
+            case "/account/password":
+                doGetPassword(request, response);
+                break;
+            case "/purchase":
+                doGetPurchase(request, response);
                 break;
             default:
-                doGet(request, response);
+                request.getRequestDispatcher("/views/client/user/profile.jsp").forward(request, response);
                 break;
         }
     }
 
-    public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    private void doGetProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/views/client/user/account/profile.jsp").forward(request, response);
     }
 
-    public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    private void doGetPayment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/views/client/user/account/payment.jsp").forward(request, response);
     }
 
-    public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    private void doGetAddress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/views/client/user/account/address.jsp").forward(request, response);
     }
 
-    @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void doGetPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/views/client/user/account/password.jsp").forward(request, response);
+    }
 
+    private void doGetPurchase(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/views/client/user/purchase.jsp").forward(request, response);
     }
 }

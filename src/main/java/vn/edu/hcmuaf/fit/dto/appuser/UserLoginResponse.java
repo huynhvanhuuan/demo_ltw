@@ -1,6 +1,6 @@
-package vn.edu.hcmuaf.fit.dto.user;
+package vn.edu.hcmuaf.fit.dto.appuser;
 
-public class UserLoginRes {
+public class UserLoginResponse {
     private Long userId;
     private String username;
     private String token;

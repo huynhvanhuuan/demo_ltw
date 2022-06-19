@@ -238,7 +238,7 @@ public class AddressDAOImpl implements AddressDAO {
                     address.setId(rs.getLong(1));
                 }
 
-                statement = connection.prepareStatement(QUERY.USER.CREATE_ADDRESS);
+                statement = connection.prepareStatement(QUERY.APP_USER.CREATE_ADDRESS);
                 statement.setLong(1, userId);
                 statement.setLong(2, address.getId());
 

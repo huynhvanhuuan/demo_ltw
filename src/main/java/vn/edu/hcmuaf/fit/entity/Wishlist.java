@@ -3,22 +3,22 @@ package vn.edu.hcmuaf.fit.entity;
 import java.io.Serializable;
 
 public class Wishlist implements Serializable {
-	private User user;
+	private UserInfo user;
 	private ProductDetail productList;
 	
 	public Wishlist() {
 	}
 	
-	public Wishlist(User user, ProductDetail productList) {
+	public Wishlist(UserInfo user, ProductDetail productList) {
 		this.user = user;
 		this.productList = productList;
 	}
 	
-	public User getUser() {
+	public UserInfo getUser() {
 		return user;
 	}
 	
-	public void setUser(User user) {
+	public void setUser(UserInfo user) {
 		this.user = user;
 	}
 	
