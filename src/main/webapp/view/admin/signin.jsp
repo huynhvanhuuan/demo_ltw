@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <c:import url="import/head.jsp"/>
+        <c:import url="import/general/head.jsp"/>
         <title>Quản lý | Đăng nhập</title>
     </head>
     <body class="hold-transition login-page">
@@ -102,6 +102,6 @@
             </div>
         </div>
         <!-- /.login-box -->
-        <c:import url="import/script.jsp"/>
+        <c:import url="import/general/script.jsp"/>
     </body>
 </html>

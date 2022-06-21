@@ -4,7 +4,7 @@ public class UserRegister {
     private String lastName; // Họ
     private String firstName; // Tên
     private String phone;
-    private boolean isMale;
+    private Boolean isMale;
     private String email;
     private String username;
     private String password;
@@ -12,7 +12,7 @@ public class UserRegister {
     public UserRegister() {
     }
 
-    public UserRegister(String lastName, String firstName, String phone, boolean isMale, String email, String username, String password) {
+    public UserRegister(String lastName, String firstName, String phone, Boolean isMale, String email, String username, String password) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.phone = phone;
@@ -46,11 +46,11 @@ public class UserRegister {
         this.phone = phone;
     }
 
-    public boolean isMale() {
+    public Boolean isMale() {
         return isMale;
     }
 
-    public void setMale(boolean male) {
+    public void setMale(Boolean male) {
         isMale = male;
     }
 

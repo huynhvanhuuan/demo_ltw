@@ -7,11 +7,14 @@ import vn.edu.hcmuaf.fit.dao.impl.AppRoleDAOImpl;
 import vn.edu.hcmuaf.fit.dao.impl.AppUserDAOImpl;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
-import vn.edu.hcmuaf.fit.dto.appuser.AppUserForAdminDto;
-import vn.edu.hcmuaf.fit.dto.appuser.UserRegister;
+import vn.edu.hcmuaf.fit.dto.appuser.*;
+import vn.edu.hcmuaf.fit.dto.userinfo.UserInfoDtoRequest;
+import vn.edu.hcmuaf.fit.dto.userinfo.UserInfoDtoResponse;
 import vn.edu.hcmuaf.fit.entity.*;
+import vn.edu.hcmuaf.fit.service.AppMailService;
 import vn.edu.hcmuaf.fit.service.AppUserService;
 import vn.edu.hcmuaf.fit.util.AppUtils;
+import vn.edu.hcmuaf.fit.util.StringUtil;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -22,10 +25,12 @@ public class AppUserServiceImpl implements AppUserService {
     private static AppUserServiceImpl instance;
     private final AppUserDAO appUserDAO;
     private final AppRoleDAO appRoleDAO;
+    private final AppMailService appMailService;
 
     private AppUserServiceImpl() {
         appUserDAO = AppUserDAOImpl.getInstance();
         appRoleDAO = AppRoleDAOImpl.getInstance();
+        appMailService = AppMailServiceImpl.getInstance();
     }
 
     public static AppUserServiceImpl getInstance() {
@@ -41,25 +46,25 @@ public class AppUserServiceImpl implements AppUserService {
             AppUser userByUsername = appUserDAO.findByUsername(userRegister.getUsername());
             if (userByUsername != null) {
                 return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(),
-                        "Username is exist: " + userRegister.getUsername());
+                        "Tên đăng nhập đã tồn tại: " + userRegister.getUsername());
             }
 
             AppUser userByEmail = appUserDAO.findByEmail(userRegister.getEmail());
             if (userByEmail != null) {
                 // logger.warn("Email is exist: " + userRegister.getEmail() + ", Cannot further process!");
                 return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(),
-                        "Email is exist: " + userRegister.getEmail());
+                        "Email đã tồn tại: " + userRegister.getEmail());
             }
 
             AppUser userByPhone = appUserDAO.findByPhone(userRegister.getPhone());
             if (userByPhone != null) {
                 // logger.warn("Phone is exist: " + userRegister.getPhone() + ", Cannot further process!");
                 return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(),
-                        "Phone is exist: " + userRegister.getPhone());
+                        "Số điện thoại đã tồn tại: " + userRegister.getPhone());
             }
 
             AppUser userNew = new AppUser();
-
+            userNew.setId(0L);
             userNew.setUsername(userRegister.getUsername());
             userNew.setEmail(userRegister.getEmail());
             userNew.setPhone(userRegister.getPhone());
@@ -67,6 +72,7 @@ public class AppUserServiceImpl implements AppUserService {
 
             // Set new userinfo
             userNew.setUserInfo(new UserInfo());
+            userNew.getUserInfo().setId(0L);
             userNew.getUserInfo().setFirstName(userRegister.getFirstName());
             userNew.getUserInfo().setLastName(userRegister.getLastName());
             userNew.getUserInfo().setFullName(AppUtils.getFullName(userRegister.getLastName(), userRegister.getFirstName()));
@@ -81,8 +87,9 @@ public class AppUserServiceImpl implements AppUserService {
             appUserDAO.save(userNew);
 
             // Send mail verify
+            appMailService.sendMailVerify(userNew);
 
-            return AppBaseResult.GenarateIsSucceed();
+            return new AppBaseResult(true, 200, "Đăng ký thành công!");
         } catch (Exception e) {
             e.printStackTrace();
             return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
@@ -95,12 +102,42 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppBaseResult login() {
+    public AppServiceResult<UserInfoDtoResponse> getProfile(Long userId) {
         return null;
     }
 
     @Override
-    public AppBaseResult logout() {
+    public AppServiceResult<UserInfoDtoResponse> saveProfile(UserInfoDtoRequest userInfo) {
+        return null;
+    }
+
+    @Override
+    public AppBaseResult changePassword(ChangePassword changePassword) {
+        return null;
+    }
+
+    @Override
+    public AppBaseResult resetPassword(String email) {
+        try {
+            AppUser appUser = appUserDAO.findByEmail(email);
+
+            if (appUser == null) {
+                return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(),"Email không tồn tại: " + email);
+            }
+
+            String newPassword = StringUtil.RandomString(6);
+            appUser.setPassword(hashPassword(newPassword));
+
+            appUserDAO.save(appUser);
+
+            return appMailService.sendMailResetPassword(email, appUser.getUserInfo().getFullName(), newPassword);
+        } catch (Exception e) {
+            return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(), "Email is not exist: " + email);
+        }
+    }
+
+    @Override
+    public AppBaseResult updateActive(UserStatus userStatus) {
         return null;
     }
 

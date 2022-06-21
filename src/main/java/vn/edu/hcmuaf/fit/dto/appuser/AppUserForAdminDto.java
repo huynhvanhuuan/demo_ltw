@@ -17,6 +17,86 @@ public class AppUserForAdminDto {
     private Date dateCreated;
     private Date lastUpdated;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Boolean getNotLocked() {
+        return notLocked;
+    }
+
+    public void setNotLocked(Boolean notLocked) {
+        this.notLocked = notLocked;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public List<AppRoleDto> getAppRoles() {
+        return appRoles;
+    }
+
+    public void setAppRoles(List<AppRoleDto> appRoles) {
+        this.appRoles = appRoles;
+    }
+
+    public UserInfoForAdminDtoResponse getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfoForAdminDtoResponse userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
     public static AppUserForAdminDto createFromEntity(AppUser src) {
         AppUserForAdminDto dest = new AppUserForAdminDto();
 

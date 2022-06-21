@@ -1,3 +1,20 @@
+.is-invalid {
+    border: 1px solid var(--error-color-border) !important;
+}
+
+.error {
+    color: var(--error-color);
+    position: absolute;
+    left: 1rem;
+    top: 4.5rem;
+    font-size: 12px;
+}
+
+.error::after {
+    content: "*";
+    margin-left: 5px;
+}
+
 .box-signup-signin {
     position: fixed;
     top: 0;
@@ -86,6 +103,10 @@
     flex-direction: column;
 }
 
+#signin {
+    margin-top: 10px;
+}
+
 .popup-header {
     display: flex;
     align-items: center;
@@ -107,18 +128,15 @@
 /* css for sign up box */
 .signup {
     width: 90rem;
-    height: 100%;
+    height: auto;
     display: flex;
     margin-right: 0;
 }
 
 .signup .left {
     flex: 0 0 60%;
-    height: 100%;
-    padding: 3rem;
+    padding: 1.5rem 3rem 3rem;
     background-color: #fff;
-    display: flex;
-    flex-direction: column;
 }
 
 .signup .right {
@@ -128,28 +146,31 @@
     background-repeat: no-repeat;
 }
 
+#signup {
+     margin-top: 10px;
+ }
+
 /* css for form */
 .popup-form {
     display: flex;
     flex-direction: column;
-    padding: 2rem 0 0;
 }
 
 .form-group {
-    margin-bottom: 1.6rem;
     position: relative;
+    margin-bottom: 3rem;
 }
 
-.form-group:last-of-type {
-    margin-bottom: 1rem;
+.signin .form-group:last-child, .signup .form-group:last-child {
+    margin-bottom: 5px;
 }
 
 .form-label-fluid {
     font-size: 1.5rem;
     color: var(--text-grey);
     position: absolute;
-    top: 50%;
-    left: 1.5rem;
+    top: 2.3rem;
+    left: 1rem;
     transform: translateY(-45%);
     background-color: #fff;
     padding: 0 0.5rem;
@@ -175,17 +196,12 @@
     font-size: 1.2rem;
 }
 
-.form-input[name='password'] {
-    padding-right: 4.2rem;
-}
-
-.form-input.focus {
-    border: 2px solid var(--fourth-color);
-    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05);
+.form-input:not(:placeholder-shown) ~ .hide-password {
+    top: 1.7rem;
 }
 
 .form-input:focus {
-    border: 2px solid var(--fourth-color);
+    border: 1px solid var(--fourth-color);
     box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05);
 }
 
@@ -196,19 +212,21 @@
     color: var(--fourth-color);
 }
 
-.form-input.focus + .form-label-fluid {
+.form-input.is-invalid:focus + .form-label-fluid {
     top: 0;
     left: 1rem;
     font-size: 1.2rem;
-    color: var(--fourth-color);
+    color: var(--error-color-border);
+}
+
+.form-input.is-invalid:focus ~ .hide-password {
+    color: var(--error-color-border);
+    top: 1.7rem;
 }
 
 .form-input:focus ~ .hide-password {
     color: var(--fourth-color);
-}
-
-.form-input.focus ~ .hide-password {
-    color: var(--fourth-color);
+    top: 1.7rem;
 }
 
 .form-group .hide-password {
@@ -216,8 +234,7 @@
     font-size: 1.5rem;
     position: absolute;
     right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 1.7rem;
     cursor: pointer;
 }
 
@@ -251,15 +268,10 @@
 
 /* other way signin */
 .text-way {
-    margin: 5rem 0 0;
     text-align: center;
     color: var(--text-grey);
     font-size: 1.4rem;
     position: relative;
-}
-
-.signup .text-way {
-    margin-top: 1rem;
 }
 
 .text-way::before {
@@ -355,29 +367,30 @@
     color: var(--primary-color);
 }
 
-.form-group.box-flex {
+.box-flex {
     display: flex;
     justify-content: space-between;
 }
 
-.form-group .box-left,
-.form-group .box-right {
+.box-flex .box-left {
     width: 49%;
+    float: left;
+}
+
+.box-flex .box-left::after {
+    clear: both;
+}
+
+.box-flex .box-right {
+    width: 49%;
+}
+
+.box-flex .gender {
     display: flex;
-    align-items: center;
 }
 
-.form-group .box-right label {
-    left: calc(50% + 2rem);
-}
-
-.form-group .box-right .form-input:focus + label {
-    left: calc(50% + 1.5rem) !important;
-}
-
-.box-right span {
-    font-size: 1.6rem;
-    font-weight: 400;
+.box-flex .gender span {
+    font-size: 1.5rem;
     color: var(--text-grey);
 }
 

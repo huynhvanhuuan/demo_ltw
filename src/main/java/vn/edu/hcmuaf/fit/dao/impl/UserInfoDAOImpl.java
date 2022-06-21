@@ -86,18 +86,26 @@ public class UserInfoDAOImpl implements UserInfoDAO {
     public void save(UserInfo userInfo) {
         connection = DbManager.connectionPool.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement(userInfo.getId() != null ? QUERY.USER_INFO.CREATE : QUERY.USER_INFO.UPDATE);
+            PreparedStatement statement = connection.prepareStatement(userInfo.getId() == 0 ? QUERY.USER_INFO.CREATE : QUERY.USER_INFO.UPDATE, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, userInfo.getLastName());
             statement.setString(2, userInfo.getFirstName());
             statement.setString(3, userInfo.getFullName());
-            statement.setString(4, DateUtil.toStringDate(userInfo.getDateOfBirth()));
-            statement.setBoolean(5, userInfo.isMale());
-            statement.setString(6, userInfo.getImageUrl());
+            statement.setBoolean(4, userInfo.isMale());
+            statement.setString(5, userInfo.getImageUrl());
 
-            if (userInfo.getId() != null) {
+            if (userInfo.getId() != 0) {
+                statement.setString(6, DateUtil.toStringDate(userInfo.getDateOfBirth()));
                 statement.setLong(7, userInfo.getId());
             }
             statement.executeUpdate();
+
+            // set id after insert
+            if (userInfo.getId() == 0) {
+                ResultSet rs = statement.getGeneratedKeys();
+                if (rs.next()) {
+                    userInfo.setId(rs.getLong(1));
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

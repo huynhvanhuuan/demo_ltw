@@ -31,7 +31,7 @@ public class AppRoleDAOImpl implements AppRoleDAO {
 
     @Override
     public List<AppRole> findAll() {
-        List<AppRole> roles = new ArrayList<>();
+        List<AppRole> appRoles = new ArrayList<>();
         connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.APP_ROLE.FIND_ALL);
@@ -41,15 +41,15 @@ public class AppRoleDAOImpl implements AppRoleDAO {
                 String name = rs.getString("name");
                 Set<AppUser> appUsers = new LinkedHashSet<>(appUserDAO.findByRoleId(id));
 
-                AppRole role = new AppRole(id, name, appUsers);
-                roles.add(role);
+                AppRole appRole = new AppRole(id, name, appUsers);
+                appRoles.add(appRole);
             }
         } catch (Exception e) {
             DbManager.connectionPool.releaseConnection(connection);
-            return roles;
+            return appRoles;
         }
         DbManager.connectionPool.releaseConnection(connection);
-        return roles;
+        return appRoles;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class AppRoleDAOImpl implements AppRoleDAO {
 
     @Override
     public List<AppRole> findByUserId(Long userId) {
-        List<AppRole> roles = new ArrayList<>();
+        List<AppRole> appRoles = new ArrayList<>();
         connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.APP_ROLE.FIND_BY_USER_ID);
@@ -98,14 +98,14 @@ public class AppRoleDAOImpl implements AppRoleDAO {
                 String name = rs.getString("name");
 
                 AppRole role = new AppRole(id, name, null);
-                roles.add(role);
+                appRoles.add(role);
             }
         } catch (Exception e) {
             DbManager.connectionPool.releaseConnection(connection);
-            return roles;
+            return appRoles;
         }
         DbManager.connectionPool.releaseConnection(connection);
-        return roles;
+        return appRoles;
     }
 
     @Override
@@ -119,9 +119,8 @@ public class AppRoleDAOImpl implements AppRoleDAO {
             if (!rs.isBeforeFirst() && rs.getRow() == 0) return null;
             if (rs.next()) {
                 long id = rs.getLong("id");
-                Set<AppUser> appUsers = new LinkedHashSet<>(appUserDAO.findByRoleId(id));
 
-                appRole = new AppRole(id, name, appUsers);
+                appRole = new AppRole(id, name, null);
             }
         } catch (Exception e) {
             DbManager.connectionPool.releaseConnection(connection);

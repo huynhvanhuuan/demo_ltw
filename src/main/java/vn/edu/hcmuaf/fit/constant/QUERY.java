@@ -67,11 +67,11 @@ public class QUERY {
         public static final String FIND_BY_USERNAME = "select * from app_user where username = ?";
         public static final String FIND_BY_EMAIL = "select * from app_user where email = ?";
         public static final String FIND_BY_PHONE = "select * from app_user where phone = ?";
-        public static final String CREATE = "insert into app_user(id, first_name, last_name, username, password, email, phone, female, profile_image_url, date_created, role) value(?,?,?,?,?,?,?,?,?,?,?)";
+        public static final String CREATE = "insert into app_user(username, email, phone, password, userinfo_id) value(?,?,?,?,?)";
         public static final String UPDATE = "update app_user set first_name = ?, last_name = ?, password = ?, email = ?, phone = ? where id = ?";
         public static final String DELETE = "delete from app_user where id = ?";
         public static final String CHANGE_PASSWORD = "update app_user set password = ? where id = ?";
-        public static final String UPDATE_LOCK_STATUS = "update app_user set locked = ? where id = ?";
+        public static final String CHANGE_LOCK_STATUS = "update app_user set not_locked = ? where id = ?";
         public static final String CREATE_ADDRESS = "insert into user_address(user_id, address_id) values(?,?)";
     }
 
@@ -79,8 +79,8 @@ public class QUERY {
     public static class USER_INFO {
         public static final String FIND_ALL = "select * from user_info";
         public static final String FIND_BY_ID = "select * from user_info where id = ?";
-        public static final String CREATE = "insert into user_info(last_name, first_name, full_name, date_of_birth, is_male, image_url) value(?,?,?,?,?,?)";
-        public static final String UPDATE = "update user_info set last_name = ?, first_name = ?, full_name = ?, date_of_birth = ?, is_male, image_url = ? where id = ?";
+        public static final String CREATE = "insert into user_info(last_name, first_name, full_name, is_male, image_url) value(?,?,?,?,?)";
+        public static final String UPDATE = "update user_info set last_name = ?, first_name = ?, full_name = ?, is_male = ?, image_url = ?, date_of_birth = ? where id = ?";
         public static final String DELETE = "delete from user_info where id = ?";
     }
 
@@ -90,6 +90,14 @@ public class QUERY {
         public static final String FIND_BY_USER_ID = "select r.* from app_role r inner join app_user_role ur on r.id = ur.role_id where user_id = ?";
         public static final String FIND_BY_ID = "select * from app_role where id = ?";
         public static final String FIND_BY_NAME = "select * from app_role where name = ?";
+    }
+
+    /* APP_USER_ROLE */
+    public static class APP_USER_ROLE {
+        public static final String FIND_ALL = "select * from app_user_role";
+        public static final String CREATE = "insert into app_user_role(user_id, role_id) values(?,?)";
+        public static final String DELETE = "delete from app_user_role where user_id = ? and role_id = ?";
+        public static final String DELETE_BY_USER_ID = "delete from app_user_role where user_id = ?";
     }
 
     /* VERIFICATION TOKEN */

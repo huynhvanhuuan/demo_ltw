@@ -3,8 +3,10 @@ package vn.edu.hcmuaf.fit.controller.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import vn.edu.hcmuaf.fit.constant.AppError;
+import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.appuser.AppUserForAdminDto;
+import vn.edu.hcmuaf.fit.dto.appuser.UserRegister;
 import vn.edu.hcmuaf.fit.service.AppUserService;
 import vn.edu.hcmuaf.fit.service.impl.AppUserServiceImpl;
 
@@ -69,7 +71,21 @@ public class AppUserAPI extends HttpServlet {
 	}
 
 	public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		String lastName = request.getParameter("lastName");
+		String firstName = request.getParameter("firstName");
+		String phone = request.getParameter("phone");
+		Boolean isMale = request.getParameter("gender").equals("1");
+		String email = request.getParameter("email");
+		String username = request.getParameter("usernameSignup");
+		String password = request.getParameter("passwordSignup");
 
+		UserRegister userRegister = new UserRegister(lastName, firstName, phone, isMale, email, username, password);
+
+		AppBaseResult result = userService.register(userRegister);
+
+		response.getWriter().println(GSON.toJson(result));
 	}
 
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

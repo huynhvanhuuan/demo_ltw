@@ -12,6 +12,8 @@
     --text-white: #fff;
     --text-grey: #999;
     --grey-color: #eee;
+    --error-color: #ff5b5b;
+    --error-color-border: #ff3333;
 }
 
 ::-webkit-scrollbar {
@@ -42,7 +44,7 @@ body {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    overflow: overlay;
+    overflow: hidden;
 }
 
 p {

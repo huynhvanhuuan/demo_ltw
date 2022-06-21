@@ -15,10 +15,14 @@ public class AppUserDAOImpl implements AppUserDAO {
     private Connection connection;
     private UserInfoDAO userInfoDAO;
     private AppRoleDAO appRoleDAO;
+    private AppUserRoleDAO appUserRoleDAO;
 
     private AppUserDAOImpl() {
         userInfoDAO = UserInfoDAOImpl.getInstance();
         appRoleDAO = AppRoleDAOImpl.getInstance();
+        appUserRoleDAO = AppUserRoleDAOImpl.getInstance();
+
+        ((AppRoleDAOImpl) appRoleDAO).setAppUserDAO(this);
     }
 
     public static AppUserDAOImpl getInstance() {
@@ -34,6 +38,10 @@ public class AppUserDAOImpl implements AppUserDAO {
 
     public void setRoleDAO(AppRoleDAO roleDAO) {
         this.appRoleDAO = roleDAO;
+    }
+
+    public void setUserRoleDAO(AppUserRoleDAO userRoleDAO) {
+        this.appUserRoleDAO = userRoleDAO;
     }
 
     @Override
@@ -102,21 +110,41 @@ public class AppUserDAOImpl implements AppUserDAO {
     public void save(AppUser appUser) {
         connection = DbManager.connectionPool.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement(appUser.getId() == 0 ? QUERY.APP_USER.CREATE : QUERY.APP_USER.UPDATE);
+            PreparedStatement statement;
+            if (appUser.getId() == 0) {
+                userInfoDAO.save(appUser.getUserInfo()); // save new user info and get id
+                statement = connection.prepareStatement(QUERY.APP_USER.CREATE, Statement.RETURN_GENERATED_KEYS);
+                statement.setLong(5, appUser.getUserInfo().getId());
+            } else {
+                statement = connection.prepareStatement(QUERY.APP_USER.UPDATE);
+                statement.setLong(5, appUser.getId());
+            }
+
             statement.setString(1, appUser.getUsername());
             statement.setString(2, appUser.getEmail());
             statement.setString(3, appUser.getPhone());
             statement.setString(4, appUser.getPassword());
-            statement.setBoolean(5, appUser.getNotLocked());
-            statement.setBoolean(5, appUser.getEnabled());
-            statement.setLong(6, appUser.getUserInfo().getId());
-            statement.setString(7, DateUtil.toStringDatetime(appUser.getDateCreated()));
-            statement.setString(8, DateUtil.toStringDatetime(appUser.getLastUpdated()));
-
-            if (appUser.getId() != 0) {
-                statement.setLong(16, appUser.getId());
-            }
             statement.executeUpdate();
+
+            if (appUser.getId() == 0) {
+                ResultSet rs = statement.getGeneratedKeys();
+                if (rs.next()) {
+                    appUser.setId(rs.getLong(1));
+                }
+            }
+
+            // update role
+            List<AppRole> appRoles = appRoleDAO.findByUserId(appUser.getId()); // if user has role admin, customer
+            // save new role if user has new role
+            for (AppRole appRole : appUser.getAppRoles()) { // get new roles list: admin, shipper
+                if (appRoles.contains(appRole)) continue; // contain admin => continue
+                appUserRoleDAO.save(appUser.getId(), appRole.getId()); // save shipper
+            }
+            // remove role if user role not exist
+            for (AppRole appRole : appRoles) { // get current roles list: admin, customer (not count shipper)
+                if (appUser.getAppRoles().contains(appRole)) continue; // contain admin => continue
+                appUserRoleDAO.remove(appUser.getId(), appRole.getId()); // remove customer
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
