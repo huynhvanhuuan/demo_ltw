@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
 			
 			categories.forEach(category -> result.add(CategoryDto.createFromEntity(category)));
 			
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
+			return new AppServiceResult<>(true, 0, "Success", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
 				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
 						"Category id is not exist: " + id, null);
 			
-			return new AppServiceResult<>(true, 0, "Succeed!", CategoryDto.createFromEntity(category));
+			return new AppServiceResult<>(true, 0, "Success", CategoryDto.createFromEntity(category));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -69,7 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
 				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
 						"Category sku is not exist: " + sku, null);
 			
-			return new AppServiceResult<>(true, 0, "Succeed!", CategoryDto.createFromEntity(category));
+			return new AppServiceResult<>(true, 0, "Success", CategoryDto.createFromEntity(category));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -86,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
 				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
 						"Category name is not exist: " + name, null);
 			
-			return new AppServiceResult<>(true, 0, "Succeed!", CategoryDto.createFromEntity(category));
+			return new AppServiceResult<>(true, 0, "Success", CategoryDto.createFromEntity(category));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -117,7 +117,7 @@ public class CategoryServiceImpl implements CategoryService {
 			
 			categoryDAO.save(newCategory);
 			
-			return new AppServiceResult<>(true, 0, "Succeed!", CategoryDto.createFromEntity(newCategory));
+			return new AppServiceResult<>(true, 0, "Success", CategoryDto.createFromEntity(newCategory));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),

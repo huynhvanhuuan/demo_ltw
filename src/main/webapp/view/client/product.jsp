@@ -6,13 +6,13 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <c:import url="import/head.jsp"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/product.css"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/card.css"/>
+        <c:import url="import/with-header/head.jsp"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/product.css"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/card.css"/>
         <link rel="stylesheet"
-              href="${pageContext.request.contextPath}/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/plugins/toastr/toastr.min.css">
-        <title>Amanda - Sản phẩm</title>
+              href="${requestScope.contextPath}/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/plugins/toastr/toastr.min.css">
+        <title>Sản phẩm | Amanda</title>
     </head>
     <body>
         <c:import url="import/header.jsp"/>
@@ -22,7 +22,7 @@
                     <h2>Nội thất xanh</h2>
                     <h3>Cho không gian trong lành</h3>
                 </div>
-                <img class="banner-img" src="${pageContext.request.contextPath}/assets/images/banner.png" alt="banner"/>
+                <img class="banner-img" src="${requestScope.contextPath}/assets/images/banner.png" alt="banner"/>
             </div>
             <div class="container">
                 <h1>Tất cả sản phẩm</h1>
@@ -175,7 +175,7 @@
                     <jsp:useBean id="products" scope="request" type="java.util.List"/>
                     <c:forEach items="${products}" var="product">
                         <div class="card">
-                            <a href="${pageContext.request.contextPath}/product-detail?id=${product.id}" class="card-link"></a>
+                            <a href="${requestScope.contextPath}/product-detail?id=${product.id}" class="card-link"></a>
                             <c:set var="discount" value="${product.maxDiscount}"/>
                             <c:if test="${discount > 0}">
                                 <div class="card-discount">Giảm <fmt:formatNumber value="${discount / 100}" type="percent"/></div>
@@ -183,13 +183,13 @@
                             <div class="card-img">
                                 <c:forEach items="${product.products}" var="detail" end="0">
                                     <c:forTokens items="${detail.imageUrl}" delims="," var="image" end="0">
-                                        <img src="${pageContext.request.contextPath}/image/${image}" alt="${product.name}" height="256"/>
+                                        <img src="${requestScope.contextPath}/image/${image}" alt="${product.name}" height="256"/>
                                     </c:forTokens>
                                 </c:forEach>
                             </div>
                             <div class="card-content">
                                 <div class="card-title">
-                                    <a href="${pageContext.request.contextPath}/product?id=${product.id}">${product.name}</a>
+                                    <a href="${requestScope.contextPath}/product?id=${product.id}">${product.name}</a>
                                 </div>
                                 <div class="card-price">
                                     <fmt:setLocale value="vi_VN"/>
@@ -229,11 +229,11 @@
                         <c:set var="current" value="${pageParam.currentPage}"/>
                         <c:set var="total" value="${pageParam.totalPage}"/>
                         <li class="pagination-item <c:if test="${current < 4}">disabled</c:if>" title="Back to the first page">
-                            <a href="${pageContext.request.contextPath}/product?page=1"
+                            <a href="${requestScope.contextPath}/product?page=1"
                                class="pagination-link"><i class="fas fa-angle-double-left"></i></a>
                         </li>
                         <li class="pagination-item <c:if test="${current < 4}">disabled</c:if>" title="5 previous pages">
-                            <a href="${pageContext.request.contextPath}/product?page=${current - 5 < 1 ? 1 : current - 5}"
+                            <a href="${requestScope.contextPath}/product?page=${current - 5 < 1 ? 1 : current - 5}"
                                class="pagination-link"><i class="fas fa-angle-left"></i></a>
                         </li>
                         <c:choose>
@@ -243,15 +243,15 @@
                         </c:choose>
                         <c:forEach begin="${start}" end="${end}" varStatus="loop">
                             <li class="pagination-item <c:if test="${loop.index == current}">current</c:if>">
-                                <a href="${pageContext.request.contextPath}/product?page=${loop.index}" class="pagination-link">${loop.index}</a>
+                                <a href="${requestScope.contextPath}/product?page=${loop.index}" class="pagination-link">${loop.index}</a>
                             </li>
                         </c:forEach>
                         <li class="pagination-item <c:if test="${current + 3 > total}">disabled</c:if>" title="5 next pages">
-                            <a href="${pageContext.request.contextPath}/product?page=${current + 5 > total ? total : current + 5}"
+                            <a href="${requestScope.contextPath}/product?page=${current + 5 > total ? total : current + 5}"
                                class="pagination-link"><i class="fas fa-angle-right"></i></a>
                         </li>
                         <li class="pagination-item <c:if test="${current + 3 > total}">disabled</c:if>" title="Go to the last page">
-                            <a href="${pageContext.request.contextPath}/product?page=${total}"
+                            <a href="${requestScope.contextPath}/product?page=${total}"
                                class="pagination-link"><i class="fas fa-angle-double-right"></i></a>
                         </li>
                     </ul>
@@ -260,11 +260,12 @@
         </main>
         <c:import url="import/footer.jsp"/>
         <c:import url="import/signin-signup.jsp"/>
-        <c:import url="import/script.jsp"/>
-        <script src="${pageContext.request.contextPath}/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/plugins/toastr/toastr.min.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/product.js"></script>
+        <c:import url="import/with-header/script.jsp"/>
+        <script src="${requestScope.contextPath}/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script src="${requestScope.contextPath}/assets/plugins/toastr/toastr.min.js"></script>
+        <script src="${requestScope.contextPath}/assets/js/product.js"></script>
         <script>
+            /* Toast */
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -275,7 +276,7 @@
             function addToCart(sku) {
                 $.ajax({
                     type: "POST",
-                    url: '${pageContext.request.contextPath}/api/cart/add',
+                    url: '${requestScope.contextPath}/api/cart/add',
                     data: {sku: sku, quantity: 1},
                     success: function (response) {
                         if (response.statusCode === 1) {

@@ -49,7 +49,7 @@ public class CommonServiceImpl implements CommonService {
 
             colors.forEach(color -> result.add(ColorDto.createFromEntity(color)));
 
-            return new AppServiceResult<>(true, 0, "Succeed!", result);
+            return new AppServiceResult<>(true, 0, "Success", result);
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -66,7 +66,7 @@ public class CommonServiceImpl implements CommonService {
                 return new AppServiceResult<>(false, AppError.Validation.errorCode(),
                         "Color id is not exist: " + id, null);
 
-            return new AppServiceResult<>(true, 0, "Succeed!", ColorDto.createFromEntity(color));
+            return new AppServiceResult<>(true, 0, "Success", ColorDto.createFromEntity(color));
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -82,7 +82,7 @@ public class CommonServiceImpl implements CommonService {
 
             materials.forEach(material -> result.add(MaterialDto.createFromEntity(material)));
 
-            return new AppServiceResult<>(true, 0, "Succeed!", result);
+            return new AppServiceResult<>(true, 0, "Success", result);
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -99,7 +99,7 @@ public class CommonServiceImpl implements CommonService {
                 return new AppServiceResult<>(false, AppError.Validation.errorCode(),
                         "Material id is not exist: " + id, null);
 
-            return new AppServiceResult<>(true, 0, "Succeed!", MaterialDto.createFromEntity(material));
+            return new AppServiceResult<>(true, 0, "Success", MaterialDto.createFromEntity(material));
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -115,7 +115,7 @@ public class CommonServiceImpl implements CommonService {
 
             provinces.forEach(province -> result.add(ProvinceDto.createFromEntity(province)));
 
-            return new AppServiceResult<>(true, 0, "Succeed!", result);
+            return new AppServiceResult<>(true, 0, "Success", result);
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -132,7 +132,7 @@ public class CommonServiceImpl implements CommonService {
                 return new AppServiceResult<>(false, AppError.Validation.errorCode(),
                         "Province id is not exist: " + id, null);
 
-            return new AppServiceResult<>(true, 0, "Succeed!", ProvinceDto.createFromEntity(province));
+            return new AppServiceResult<>(true, 0, "Success", ProvinceDto.createFromEntity(province));
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -148,7 +148,7 @@ public class CommonServiceImpl implements CommonService {
 
             districts.forEach(district -> result.add(DistrictDto.createFromEntity(district)));
 
-            return new AppServiceResult<>(true, 0, "Succeed!", result);
+            return new AppServiceResult<>(true, 0, "Success", result);
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -165,7 +165,7 @@ public class CommonServiceImpl implements CommonService {
                 return new AppServiceResult<>(false, AppError.Validation.errorCode(),
                         "District id is not exist: " + id, null);
 
-            return new AppServiceResult<>(true, 0, "Succeed!", DistrictDto.createFromEntity(district));
+            return new AppServiceResult<>(true, 0, "Success", DistrictDto.createFromEntity(district));
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -181,7 +181,7 @@ public class CommonServiceImpl implements CommonService {
 
             wards.forEach(ward -> result.add(WardDto.createFromEntity(ward)));
 
-            return new AppServiceResult<>(true, 0, "Succeed!", result);
+            return new AppServiceResult<>(true, 0, "Success", result);
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -198,7 +198,7 @@ public class CommonServiceImpl implements CommonService {
                 return new AppServiceResult<>(false, AppError.Validation.errorCode(),
                         "Ward id is not exist: " + id, null);
 
-            return new AppServiceResult<>(true, 0, "Succeed!", WardDto.createFromEntity(ward));
+            return new AppServiceResult<>(true, 0, "Success", WardDto.createFromEntity(ward));
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),

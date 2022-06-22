@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
 
 			products.forEach(product -> result.add(ProductDto.createFromEntity(product)));
 
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
+			return new AppServiceResult<>(true, 0, "Success", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
 			products.forEach(product -> result.add(ProductDto.createFromEntity(product)));
 
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
+			return new AppServiceResult<>(true, 0, "Success", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -111,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
 				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
 						AppError.Validation.errorMessage(), null);
 			}
-			return new AppServiceResult<>(true, 0, "Succeed!", ProductDto.createFromEntity(product));
+			return new AppServiceResult<>(true, 0, "Success", ProductDto.createFromEntity(product));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),

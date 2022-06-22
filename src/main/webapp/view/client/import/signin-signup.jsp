@@ -7,7 +7,7 @@
             <div class="left"></div>
             <div class="right">
                 <div class="popup-header">
-                    <img src="<%=path%>/assets/images/logo.jpg" alt="popup logo"
+                    <img src="${requestScope.contextPath}/assets/images/logo.jpg" alt="popup logo"
                          class="popup-header__img"/>
                     <span class="popup-header__title">Đăng Nhập</span>
                 </div>
@@ -31,12 +31,12 @@
                 <p class="text-way">Hoặc</p>
                 <div class="other-way-signin">
                     <a href="?fb" class="btn-signin signin-fb">
-                        <img src="<%=path%>/assets/images/fb.png" alt="facebook sign in"
+                        <img src="${requestScope.contextPath}/assets/images/fb.png" alt="facebook sign in"
                              class="signin-img"/>
                         <span class="signin-title">Facebook</span>
                     </a>
                     <a href="?gg" class="btn-signin signin-gg">
-                        <img src="<%=path%>/assets/images/gg.png" alt="facebook sign in"
+                        <img src="${requestScope.contextPath}/assets/images/gg.png" alt="facebook sign in"
                              class="signin-img img-gg"/>
                         <span class="signin-title">Google</span>
                     </a>
@@ -50,7 +50,7 @@
         <div class="signup">
             <div class="left">
                 <div class="popup-header">
-                    <img src="<%=path%>/assets/images/logo.jpg" alt="popup logo"
+                    <img src="${requestScope.contextPath}/assets/images/logo.jpg" alt="popup logo"
                          class="popup-header__img"/>
                     <span class="popup-header__title">Đăng Ký Ngay</span>
                 </div>
@@ -105,12 +105,12 @@
                 <p class="text-way">Hoặc</p>
                 <div class="other-way-signin">
                     <a href="?fb" class="btn-signin signin-fb">
-                        <img src="<%=path%>/assets/images/fb.png" alt="facebook sign in"
+                        <img src="${requestScope.contextPath}/assets/images/fb.png" alt="facebook sign in"
                              class="signin-img"/>
                         <span class="signin-title">Facebook</span>
                     </a>
                     <a href="?gg" class="btn-signin signin-gg">
-                        <img src="<%=path%>/assets/images/gg.png" alt="facebook sign in"
+                        <img src="${requestScope.contextPath}/assets/images/gg.png" alt="facebook sign in"
                              class="signin-img img-gg"/>
                         <span class="signin-title">Google</span>
                     </a>

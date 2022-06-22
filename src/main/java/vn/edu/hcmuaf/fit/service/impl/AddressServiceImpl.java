@@ -48,7 +48,7 @@ public class AddressServiceImpl implements AddressService {
 
 			entities.forEach(entity -> result.add(AddressDto.createFromEntity(entity)));
 
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
+			return new AppServiceResult<>(true, 0, "Success", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -65,7 +65,7 @@ public class AddressServiceImpl implements AddressService {
 
 			entities.forEach(entity -> result.add(AddressDto.createFromEntity(entity)));
 
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
+			return new AppServiceResult<>(true, 0, "Success", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -82,7 +82,7 @@ public class AddressServiceImpl implements AddressService {
 
 			entities.forEach(entity -> result.add(AddressDto.createFromEntity(entity)));
 
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
+			return new AppServiceResult<>(true, 0, "Success", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -99,7 +99,7 @@ public class AddressServiceImpl implements AddressService {
 				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
 						"Address id is not exist: " + id, null);
 
-			return new AppServiceResult<>(true, 0, "Succeed!", AddressDto.createFromEntity(address));
+			return new AppServiceResult<>(true, 0, "Success", AddressDto.createFromEntity(address));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -116,7 +116,7 @@ public class AddressServiceImpl implements AddressService {
 				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
 						"Address path is not exist: " + path, null);
 
-			return new AppServiceResult<>(true, 0, "Succeed!", AddressDto.createFromEntity(address));
+			return new AppServiceResult<>(true, 0, "Success", AddressDto.createFromEntity(address));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -181,7 +181,7 @@ public class AddressServiceImpl implements AddressService {
 				addressDAO.saveForUser(newAddress, address.getId());
 			}
 
-			return new AppServiceResult<>(true, 0, "Succeed!", AddressDto.createFromEntity(newAddress));
+			return new AppServiceResult<>(true, 0, "Success", AddressDto.createFromEntity(newAddress));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -241,7 +241,7 @@ public class AddressServiceImpl implements AddressService {
 
 			addressDAO.save(updateAddress);
 
-			return new AppServiceResult<>(true, 0, "Succeed!", AddressDto.createFromEntity(updateAddress));
+			return new AppServiceResult<>(true, 0, "Success", AddressDto.createFromEntity(updateAddress));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<AddressDto>(false, AppError.Unknown.errorCode(),

@@ -76,7 +76,7 @@ public class UserInfoDAOImpl implements UserInfoDAO {
             }
         } catch (Exception e) {
             DbManager.connectionPool.releaseConnection(connection);
-            return user;
+            return null;
         }
         DbManager.connectionPool.releaseConnection(connection);
         return user;

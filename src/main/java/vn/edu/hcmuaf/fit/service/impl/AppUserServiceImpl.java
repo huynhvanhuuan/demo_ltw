@@ -1,10 +1,8 @@
 package vn.edu.hcmuaf.fit.service.impl;
 
 import vn.edu.hcmuaf.fit.constant.*;
-import vn.edu.hcmuaf.fit.dao.AppRoleDAO;
-import vn.edu.hcmuaf.fit.dao.AppUserDAO;
-import vn.edu.hcmuaf.fit.dao.impl.AppRoleDAOImpl;
-import vn.edu.hcmuaf.fit.dao.impl.AppUserDAOImpl;
+import vn.edu.hcmuaf.fit.dao.*;
+import vn.edu.hcmuaf.fit.dao.impl.*;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.appuser.*;
@@ -13,8 +11,7 @@ import vn.edu.hcmuaf.fit.dto.userinfo.UserInfoDtoResponse;
 import vn.edu.hcmuaf.fit.entity.*;
 import vn.edu.hcmuaf.fit.service.AppMailService;
 import vn.edu.hcmuaf.fit.service.AppUserService;
-import vn.edu.hcmuaf.fit.util.AppUtils;
-import vn.edu.hcmuaf.fit.util.StringUtil;
+import vn.edu.hcmuaf.fit.util.*;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -24,12 +21,19 @@ import java.util.*;
 public class AppUserServiceImpl implements AppUserService {
     private static AppUserServiceImpl instance;
     private final AppUserDAO appUserDAO;
+    private final UserInfoDAO userInfoDAO;
     private final AppRoleDAO appRoleDAO;
+    private final VerificationTokenDAO verificationTokenDAO;
     private final AppMailService appMailService;
 
     private AppUserServiceImpl() {
         appUserDAO = AppUserDAOImpl.getInstance();
+        userInfoDAO = UserInfoDAOImpl.getInstance();
         appRoleDAO = AppRoleDAOImpl.getInstance();
+        verificationTokenDAO = VerificationTokenDAOImpl.getInstance();
+
+        ((VerificationTokenDAOImpl) verificationTokenDAO).setAppUserDAO(appUserDAO);
+
         appMailService = AppMailServiceImpl.getInstance();
     }
 
@@ -83,13 +87,30 @@ public class AppUserServiceImpl implements AppUserService {
             AppRole defaultRole = appRoleDAO.findByName(RoleConstant.CUSTOMER);
             userNew.addRole(defaultRole);
 
-            // Save new user
+            // Save new user info
+            userInfoDAO.save(userNew.getUserInfo()); // save userinfo and get id back to user
+
+            // Save new app user
             appUserDAO.save(userNew);
 
             // Send mail verify
-            appMailService.sendMailVerify(userNew);
+            return appMailService.sendMailVerify(userNew);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
+        }
+    }
 
-            return new AppBaseResult(true, 200, "Đăng ký thành công!");
+    @Override
+    public AppBaseResult resendVerifyEmail(String email) {
+        try {
+            AppUser appUser = appUserDAO.findByEmail(email);
+            if (appUser == null) {
+                return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(),
+                        "Email không tồn tại: " + email);
+            }
+
+            return appMailService.resendMailVerify(appUser);
         } catch (Exception e) {
             e.printStackTrace();
             return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
@@ -98,12 +119,57 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppBaseResult verifyEmail(UUID token) {
-        return null;
+        VerificationToken verificationToken = verificationTokenDAO.findByToken(token);
+
+        if (verificationToken != null) {
+            if (verificationToken.getVerified())
+                return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(),
+                        "Tài khoản đã được xác thực!");
+
+            verificationToken.setVerified(Boolean.TRUE);
+            verificationToken.setVerifiedAt(DateUtil.getNow());
+            verificationToken.getAppUser().setEnabled(Boolean.TRUE);
+
+            appUserDAO.save(verificationToken.getAppUser()); // active user
+
+            verificationTokenDAO.save(verificationToken); // update verified token
+
+            return AppBaseResult.GenarateIsSucceed();
+        } else {
+            return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(),
+                    "Mã xác nhận không tồn tại!");
+        }
     }
 
     @Override
     public AppServiceResult<UserInfoDtoResponse> getProfile(Long userId) {
-        return null;
+        UserInfoDtoResponse userInfoDto = new UserInfoDtoResponse();
+        try {
+            AppUser appUser = appUserDAO.findById(userId);
+            if (appUser == null) {
+                return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+                        AppError.Validation.errorMessage(), null);
+            }
+
+            userInfoDto.setId(appUser.getId());
+            userInfoDto.setUsername(appUser.getUsername());
+            userInfoDto.setEmail(appUser.getEmail());
+            userInfoDto.setPhone(appUser.getPhone());
+
+            if (appUser.getUserInfo() != null) {
+                userInfoDto.setFirstName(appUser.getUserInfo().getFirstName());
+                userInfoDto.setLastName(appUser.getUserInfo().getLastName());
+                userInfoDto.setFullName(appUser.getUserInfo().getFullName());
+                userInfoDto.setMale(appUser.getUserInfo().isMale());
+                userInfoDto.setImageUrl(appUser.getUserInfo().getImageUrl().contains(FileConstant.TEMP_PROFILE_IMAGE_BASE_URL)
+                        ? FileConstant.TEMP_PROFILE_IMAGE_BASE_URL + appUser.getUsername() : appUser.getUserInfo().getImageUrl());
+            }
+            return new AppServiceResult<>(true, 0, "Success", userInfoDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
+                    AppError.Unknown.errorMessage(), null);
+        }
     }
 
     @Override
@@ -149,7 +215,7 @@ public class AppUserServiceImpl implements AppUserService {
 
             appUsers.forEach(appUser -> result.add(AppUserForAdminDto.createFromEntity(appUser)));
 
-            return new AppServiceResult<>(true, 0, "Succeed!", result);
+            return new AppServiceResult<>(true, 0, "Success", result);
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -165,7 +231,7 @@ public class AppUserServiceImpl implements AppUserService {
                 return new AppServiceResult<>(false, AppError.Validation.errorCode(),
                         AppError.Validation.errorMessage(), null);
             }
-            return new AppServiceResult<>(true, 0, "Succeed!", AppUserForAdminDto.createFromEntity(appUser));
+            return new AppServiceResult<>(true, 0, "Success", AppUserForAdminDto.createFromEntity(appUser));
         } catch (Exception e) {
             e.printStackTrace();
             return new AppServiceResult<>(false, AppError.Unknown.errorCode(),

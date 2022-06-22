@@ -3,11 +3,11 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <c:import url="import/head.jsp"/>
-        <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico"/>
+        <c:import url="import/with-header/head.jsp"/>
+        <link rel="icon" type="image/x-icon" href="${requestScope.contextPath}/assets/images/favicon.ico"/>
         <%--    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>--%>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/checkout.css"/>
-        <title>Thanh Toán</title>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/checkout.css"/>
+        <title>Thanh toán | Amanda</title>
     </head>
     <body>
         <c:import url="import/header.jsp"/>
@@ -173,7 +173,7 @@
                         <div class="list-product-checkout">
                             <div class="product-checkout">
                                 <img
-                                        src="${pageContext.request.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
+                                        src="${requestScope.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
                                         alt="image product 1"
                                         class="product-checkout-img"
                                 />
@@ -189,7 +189,7 @@
                             </div>
                             <div class="product-checkout">
                                 <img
-                                        src="${pageContext.request.contextPath}/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
+                                        src="${requestScope.contextPath}/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
                                         alt="image product 2"
                                         class="product-checkout-img"
                                 />
@@ -205,7 +205,7 @@
                             </div>
                             <div class="product-checkout">
                                 <img
-                                        src="${pageContext.request.contextPath}/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
+                                        src="${requestScope.contextPath}/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
                                         alt="image product 3"
                                         class="product-checkout-img"
                                 />
@@ -254,7 +254,7 @@
             </div>
         </main>
         <c:import url="import/footer.jsp"/>
-        <script src="${pageContext.request.contextPath}/assets/js/checkout.js"></script>
-        <c:import url="import/script.jsp"/>
+        <script src="${requestScope.contextPath}/assets/js/checkout.js"></script>
+        <c:import url="import/with-header/script.jsp"/>
     </body>
 </html>

@@ -2,18 +2,25 @@ body {
     height: 100vh;
 }
 
-.success {
+hr {
+    border: 0;
+    height: 10px;
+    margin: 20px 0;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary-color), rgba(0, 0, 0, 0));
+}
+
+section.success {
     height: 100%;
     display: flex;
     justify-content: center;
 }
 
-.success-content {
+section.success .success-content {
     position: relative;
     margin: auto;
 }
 
-.success-content h3 {
+section.success .success-content h3 {
     font-style: normal;
     font-weight: bold;
     font-size: 36px;
@@ -23,7 +30,7 @@ body {
     color: #999;
 }
 
-.success-content span {
+section.success .success-content span {
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
@@ -32,7 +39,7 @@ body {
     color: #5d5f5f;
 }
 
-.success-content button {
+section.success .success-content button:not([type="submit"]) {
     width: 254px;
     height: 56px;
     margin: 30px auto 0;
@@ -54,7 +61,7 @@ body {
     transition: background 0.5s ease-in-out;
 }
 
-.success-content button:hover {
+section.success .success-content button:hover {
     background: #236e47;
     color: #ffffff;
     -webkit-transition: color 0.2s ease-in-out;
@@ -64,9 +71,56 @@ body {
     transition: color 0.2s ease-in-out;
 }
 
-.flex-center {
+section.success .flex-center {
     margin-top: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#resend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2vh;
+}
+
+#resend input[name="email"] {
+    height: 5vh;
+    width: 40%;
+    border: 5px solid var(--primary-color);
+    text-indent: 10px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.02em;
+}
+
+#resend input[name="email"]::placeholder {
+    opacity: 0.75;
+}
+
+#resend input[name="email"]:focus {
+    outline: none;
+}
+
+#resend input[name="email"]:focus::placeholder {
+    color: transparent;
+}
+
+#resend button {
+    height: 5vh;
+    width: 10%;
+    border: 0;
+    background: var(--primary-color);
+    font-size: 1.4rem;
+    font-weight: bolder;
+    text-transform: uppercase;
+    color: var(--text-black);
+}
+
+#resend button:hover {
+    color: var(--text-black);
+    background: var(--fourth-color);
 }

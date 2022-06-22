@@ -3,17 +3,17 @@
     <div class="container">
         <div class="box">
             <div class="logo">
-                <a href="${pageContext.request.contextPath}/home">
-                    <img src="${pageContext.request.contextPath}/assets/images/logo.jpg" alt="Logo" class="logo-img"/>
+                <a href="${requestScope.contextPath}/home">
+                    <img src="${requestScope.contextPath}/assets/images/logo.jpg" alt="Logo" class="logo-img"/>
                 </a>
             </div>
             <nav class="navigation">
                 <ul class="navigation-list">
-                    <li class="navigation-item"><a href="${pageContext.request.contextPath}/home">Trang chủ</a></li>
-                    <li class="navigation-item"><a href="${pageContext.request.contextPath}/product">Sản phẩm</a></li>
-                    <li class="navigation-item"><a href="${pageContext.request.contextPath}/contact">Liên hệ</a></li>
-                    <li class="navigation-item"><a href="${pageContext.request.contextPath}/about">Về chúng tôi</a></li>
-                    <li class="navigation-item"><a href="${pageContext.request.contextPath}/faq">FAQS</a></li>
+                    <li class="navigation-item"><a href="${requestScope.contextPath}/home">Trang chủ</a></li>
+                    <li class="navigation-item"><a href="${requestScope.contextPath}/product">Sản phẩm</a></li>
+                    <li class="navigation-item"><a href="${requestScope.contextPath}/contact">Liên hệ</a></li>
+                    <li class="navigation-item"><a href="${requestScope.contextPath}/about">Về chúng tôi</a></li>
+                    <li class="navigation-item"><a href="${requestScope.contextPath}/faq">FAQS</a></li>
                 </ul>
             </nav>
             <div class="header-btn">

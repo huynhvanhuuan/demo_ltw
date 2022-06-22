@@ -55,7 +55,7 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/api/category"
+								<form action="${requestScope.contextPath}/api/category"
 								      method="POST" id="create" novalidate="novalidate">
 									<div class="modal-body card-body">
 										<div class="form-group">
@@ -87,7 +87,7 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/api/category" enctype="multipart/form-data"
+								<form action="${requestScope.contextPath}/api/category" enctype="multipart/form-data"
 								      id="update" novalidate="novalidate">
 									<input type="hidden" name="id">
 									<input type="hidden" name="active">
@@ -122,7 +122,7 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${pageContext.request.contextPath}/api/category"
+								<form action="${requestScope.contextPath}/api/category"
 								      id="update-status" novalidate="novalidate">
 									<input type="hidden" name="id">
 									<input type="hidden" name="sku">
@@ -183,7 +183,7 @@
 			function getCategoryForUpdate(id) {
 				$.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/api/category/' + id,
+					url: '${requestScope.contextPath}/api/category/' + id,
 					success: function (response) {
 						if (response.success) {
 							let data = response.data;
@@ -204,7 +204,7 @@
 			function getCategoryForUpdateStatus(id) {
 				$.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/api/category/' + id,
+					url: '${requestScope.contextPath}/api/category/' + id,
 					success: function (response) {
 						if (response.success) {
 							let data = response.data;
@@ -225,7 +225,7 @@
 			function getListSkuHasProduct() {
 				return $.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/api/category/p',
+					url: '${requestScope.contextPath}/api/category/p',
 					success: function (data) {
 						console.log(data)
 					}
@@ -256,7 +256,7 @@
 		            if ($(this).valid()) {
 			            $.ajax({
 				            type: "POST",
-				            url: '${pageContext.request.contextPath}/api/category',
+				            url: '${requestScope.contextPath}/api/category',
 				            data: $("#create").serialize(),
 				            success: function (response) {
 					            if (response.success) {
@@ -289,7 +289,7 @@
 		            let formData = new FormData($(this)[0]);
 		            if ($(this).valid()) {
 			            $.ajax({
-				            url: '${pageContext.request.contextPath}/api/category',
+				            url: '${requestScope.contextPath}/api/category',
 				            type: 'PUT',
 				            data: formData,
 				            processData: false,
@@ -325,7 +325,7 @@
 		            if ($(this).valid()) {
 						let formData = new FormData($(this)[0]);
 			            $.ajax({
-				            url: '${pageContext.request.contextPath}/api/category',
+				            url: '${requestScope.contextPath}/api/category',
 				            type: 'PUT',
 				            processData: false,
 				            contentType: false,
@@ -368,7 +368,7 @@
 					formData.append('ids', JSON.stringify(ids));
 		            $.ajax({
 			            type: "DELETE",
-			            url: '${pageContext.request.contextPath}/api/category',
+			            url: '${requestScope.contextPath}/api/category',
 						data: formData,
 						processData: false,
 						contentType: false,
@@ -487,7 +487,7 @@
 		                table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
 	                },
 	                "ajax": {
-		                "url": "${pageContext.request.contextPath}/api/category",
+		                "url": "${requestScope.contextPath}/api/category",
 		                "dataSrc": "data"
 	                },
                     "columnDefs": [

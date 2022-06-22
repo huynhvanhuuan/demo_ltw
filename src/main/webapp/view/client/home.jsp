@@ -1,20 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<% String path = request.getContextPath();%>
 <!doctype html>
 <html>
 	<head>
-		<c:import url="import/head.jsp"/>
-		<link rel="stylesheet" href="<%=path%>/assets/css/home.css"/>
-		<link rel="stylesheet" href="<%=path%>/assets/css/card.css"/>
-		<title>Trang chủ</title>
+		<c:import url="import/with-header/head.jsp"/>
+		<link rel="stylesheet" href="${requestScope.contextPath}/assets/css/home.css"/>
+		<link rel="stylesheet" href="${requestScope.contextPath}/assets/css/card.css"/>
+		<title>Trang chủ | Amanda</title>
 	</head>
 	<body>
 		<c:import url="import/header.jsp"/>
 		<main class="page">
 			<div class="landing">
 				<div class="img">
-					<img src="<%=path%>/assets/images/main/a.jfif" alt=""/>
+					<img src="${requestScope.contextPath}/assets/images/main/a.jfif" alt=""/>
 					<p>Amanda</p>
 				</div>
 			</div>
@@ -38,16 +37,16 @@
 					</div>
 					<div class="grid-list">
 						<div class="grid-item">
-							<img src="<%=path%>/assets/images/main/img_banner_1.jpg" alt=""/>
+							<img src="${requestScope.contextPath}/assets/images/main/img_banner_1.jpg" alt=""/>
 						</div>
 						<div class="grid-item">
-							<img src="<%=path%>/assets/images/main/img_banner_2.jpg" alt=""/>
+							<img src="${requestScope.contextPath}/assets/images/main/img_banner_2.jpg" alt=""/>
 						</div>
 						<div class="grid-item">
-							<img src="<%=path%>/assets/images/main/img_banner_3.jpg" alt=""/>
+							<img src="${requestScope.contextPath}/assets/images/main/img_banner_3.jpg" alt=""/>
 						</div>
 						<div class="grid-item">
-							<img src="<%=path%>/assets/images/main/img_banner_4.jpg" alt=""/>
+							<img src="${requestScope.contextPath}/assets/images/main/img_banner_4.jpg" alt=""/>
 						</div>
 					</div>
 				</div>
@@ -94,7 +93,7 @@
 								<div class="card-discount">35% giảm</div>
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+									     src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -123,7 +122,7 @@
 								<div class="card-discount">20% giảm</div>
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
+									     src="${requestScope.contextPath}/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -152,7 +151,7 @@
 								<div class="card-discount">20% giảm</div>
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
+									     src="${requestScope.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -181,7 +180,7 @@
 								<!-- <div class="card-discount">0% giảm</div> -->
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
+									     src="${requestScope.contextPath}/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -297,7 +296,7 @@
 								<div class="card-discount">35% giảm</div>
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+									     src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -326,7 +325,7 @@
 								<div class="card-discount">20% giảm</div>
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
+									     src="${requestScope.contextPath}/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -355,7 +354,7 @@
 								<div class="card-discount">20% giảm</div>
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
+									     src="${requestScope.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -384,7 +383,7 @@
 								<!-- <div class="card-discount">0% giảm</div> -->
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
+									     src="${requestScope.contextPath}/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -523,7 +522,7 @@
 								<div class="card-discount">35% giảm</div>
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+									     src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -552,7 +551,7 @@
 								<div class="card-discount">20% giảm</div>
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
+									     src="${requestScope.contextPath}/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -581,7 +580,7 @@
 								<div class="card-discount">20% giảm</div>
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
+									     src="${requestScope.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -610,7 +609,7 @@
 								<!-- <div class="card-discount">0% giảm</div> -->
 								<div class="card-img">
 									<img class="card-img-item"
-									     src="<%=path%>/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
+									     src="${requestScope.contextPath}/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
 									     alt="card image"/>
 								</div>
 								<div class="card-content">
@@ -653,7 +652,7 @@
 						<div class="col-item">
 							<div class="item">
 								<div class="image">
-									<img src="<%=path%>/assets/images/main/col1.jpg" alt=""/>
+									<img src="${requestScope.contextPath}/assets/images/main/col1.jpg" alt=""/>
 								</div>
 								<p></p>
 							</div>
@@ -661,7 +660,7 @@
 						<div class="col-item">
 							<div class="item">
 								<div class="image">
-									<img src="<%=path%>/assets/images/main/col2.jpg" alt=""/>
+									<img src="${requestScope.contextPath}/assets/images/main/col2.jpg" alt=""/>
 								</div>
 								<p></p>
 							</div>
@@ -669,7 +668,7 @@
 						<div class="col-item">
 							<div class="item">
 								<div class="image">
-									<img src="<%=path%>/assets/images/main/col3.jpg" alt=""/>
+									<img src="${requestScope.contextPath}/assets/images/main/col3.jpg" alt=""/>
 								</div>
 								<p></p>
 							</div>
@@ -677,7 +676,7 @@
 						<div class="col-item">
 							<div class="item">
 								<div class="image">
-									<img src="<%=path%>/assets/images/main/col4.jpg" alt=""/>
+									<img src="${requestScope.contextPath}/assets/images/main/col4.jpg" alt=""/>
 								</div>
 								<p></p>
 							</div>
@@ -685,7 +684,7 @@
 						<div class="col-item">
 							<div class="item">
 								<div class="image">
-									<img src="<%=path%>/assets/images/main/col5.jpg" alt=""/>
+									<img src="${requestScope.contextPath}/assets/images/main/col5.jpg" alt=""/>
 								</div>
 								<p></p>
 							</div>
@@ -696,6 +695,6 @@
 		</main>
 		<c:import url="import/footer.jsp"/>
 		<c:import url="import/signin-signup.jsp"/>
-		<c:import url="import/script.jsp"/>
+		<c:import url="import/with-header/script.jsp"/>
 	</body>
 </html>

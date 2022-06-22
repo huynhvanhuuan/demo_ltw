@@ -13,6 +13,7 @@ public interface AppUserService {
     AppServiceResult<List<AppUserForAdminDto>> getUsers();
     AppServiceResult<AppUserForAdminDto> getUser(Long id);
     AppBaseResult register(UserRegister userRegister);
+    AppBaseResult resendVerifyEmail(String email);
     AppBaseResult verifyEmail(UUID token);
     AppServiceResult<UserInfoDtoResponse> getProfile(Long userId);
     AppServiceResult<UserInfoDtoResponse> saveProfile(UserInfoDtoRequest userInfo);

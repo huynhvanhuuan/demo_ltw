@@ -1,8 +1,5 @@
 package vn.edu.hcmuaf.fit.controller.client;
 
-import vn.edu.hcmuaf.fit.service.AppUserService;
-import vn.edu.hcmuaf.fit.service.impl.AppUserServiceImpl;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -10,12 +7,41 @@ import java.io.IOException;
 
 @WebServlet(name = "client-user", urlPatterns = "/user/*")
 public class UserController extends HttpServlet {
-    private final AppUserService userService = AppUserServiceImpl.getInstance();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        switch (request.getPathInfo()) {
-            case "/register/success":
-                getRegisterSuccess(request, response);
+        String path = request.getPathInfo();
+        if (path == null || path.equals("/")) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        String[] pathParts = path.split("/");
+        switch (pathParts[1]) {
+            case "register":
+                switch (pathParts[2]) {
+                    case "success":
+                        getRegisterSuccess(request, response);
+                        break;
+                    case "failure":
+                        getRegisterFailure(request, response);
+                        break;
+                    default:
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        break;
+                }
+                break;
+            case "verify":
+                switch (pathParts[2]) {
+                    case "success":
+                        getVerifySuccess(request, response);
+                        break;
+                    case "failure":
+                        getVerifyFailure(request, response);
+                        break;
+                    default:
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        break;
+                }
                 break;
             case "/account/profile":
                 doGetProfile(request, response);
@@ -39,7 +65,21 @@ public class UserController extends HttpServlet {
     }
 
     private void getRegisterSuccess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/view/client/user/register-success.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/client/user/register/success.jsp").forward(request, response);
+    }
+
+    private void getRegisterFailure(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        request.getRequestDispatcher("/view/client/user/register/failure.jsp").forward(request, response);
+    }
+
+    private void getVerifySuccess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/view/client/user/verify/success.jsp").forward(request, response);
+    }
+
+    private void getVerifyFailure(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        request.getRequestDispatcher("/view/client/user/verify/failure.jsp").forward(request, response);
     }
 
     private void doGetProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

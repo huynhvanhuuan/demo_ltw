@@ -63,15 +63,13 @@ public class QUERY {
     public static class APP_USER {
         public static final String FIND_ALL = "select * from app_user";
         public static final String FIND_BY_ROLE_ID = "select u.* from app_user u inner join app_user_role ur on u.id = ur.user_id where role_id = ?";
-        public static final String FIND_BY_ID = "select * from user where id = ?";
+        public static final String FIND_BY_ID = "select * from app_user where id = ?";
         public static final String FIND_BY_USERNAME = "select * from app_user where username = ?";
         public static final String FIND_BY_EMAIL = "select * from app_user where email = ?";
         public static final String FIND_BY_PHONE = "select * from app_user where phone = ?";
         public static final String CREATE = "insert into app_user(username, email, phone, password, userinfo_id) value(?,?,?,?,?)";
-        public static final String UPDATE = "update app_user set first_name = ?, last_name = ?, password = ?, email = ?, phone = ? where id = ?";
+        public static final String UPDATE = "update app_user set password = ?, not_locked = ?, enabled = ? where id = ?";
         public static final String DELETE = "delete from app_user where id = ?";
-        public static final String CHANGE_PASSWORD = "update app_user set password = ? where id = ?";
-        public static final String CHANGE_LOCK_STATUS = "update app_user set not_locked = ? where id = ?";
         public static final String CREATE_ADDRESS = "insert into user_address(user_id, address_id) values(?,?)";
     }
 
@@ -106,9 +104,9 @@ public class QUERY {
         public static final String FIND_BY_ID = "select * from verification_token where id = ?";
         public static final String FIND_BY_USER_ID = "select * from verification_token where user_id = ?";
         public static final String FIND_BY_TOKEN = "select * from verification_token where token = ?";
-        public static final String CREATE = "insert into verification_token(id, user_id, token) value(?,?,?)";
+        public static final String CREATE = "insert into verification_token(token, user_id) value(?,?)";
         public static final String UPDATE_TOKEN = "update verification_token set token = ? where id = ?";
-        public static final String UPDATE_VERIFIED = "delete from verification_token set verified_at = ? where id = ?";
+        public static final String UPDATE_VERIFIED = "update verification_token set is_verified = ?, verified_at = ? where id = ?";
     }
 
     /* ADDRESS */

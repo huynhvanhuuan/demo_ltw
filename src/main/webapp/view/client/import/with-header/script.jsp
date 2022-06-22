@@ -1,15 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<% String path = request.getContextPath(); %>
 <!-- jQuery -->
-<script src="<%=path%>/assets/plugins/jquery/jquery.min.js"></script>
+<script src="${requestScope.contextPath}/assets/plugins/jquery/jquery.min.js"></script>
 <!-- jquery-validation -->
-<script src="<%=path%>/assets/plugins/jquery-validation/jquery.validate.min.js"></script>
-<script src="<%=path%>/assets/plugins/jquery-validation/additional-methods.min.js"></script>
+<script src="${requestScope.contextPath}/assets/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="${requestScope.contextPath}/assets/plugins/jquery-validation/additional-methods.min.js"></script>
 <!-- Dateformat -->
-<script src="<%=path%>/assets/plugins/jquery-dateformat/jquery-dateformat.min.js"></script>
+<script src="${requestScope.contextPath}/assets/plugins/jquery-dateformat/jquery-dateformat.min.js"></script>
 <!-- SweetAlert2 -->
-<script src="<%=path%>/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
-<script src="<%=path%>/assets/js/signup-signin.js"></script>
+<script src="${requestScope.contextPath}/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="${requestScope.contextPath}/assets/js/signup-signin.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
@@ -23,7 +22,6 @@
         });
 
         /* Validation */
-
         $('#signup').validate({
             rules: {
                 lastName: {
@@ -111,13 +109,14 @@
             if ($(this).valid()) {
                 // let formData = new FormData(this);
                 $.ajax({
-                    url: '<%=path%>/api/user/register',
+                    url: '${requestScope.contextPath}/api/user/register',
                     type: 'POST',
                     data: $(this).serialize(),
                     success: function (response) {
                         if (response.success) {
-                            window.location.href = '<%=path%>/user/register/success';
+                            window.location.href = '${requestScope.contextPath}/user/register/success';
                         } else {
+                            console.log(response);
                             Toast.fire({
                                 icon: 'error',
                                 title: response.message

@@ -13,7 +13,7 @@
                     <a href="#" class="h1" disabled><b>ALC</b>FIT</a>
                 </div>
                 <div class="card-body">
-                    <form action="${pageContext.request.contextPath}/admin/profile" method="post">
+                    <form action="${requestScope.contextPath}/admin/profile" method="post">
                         <div class="input-group mb-3">
                             <input type="password" class="form-control" placeholder="Mật khẩu hiện tại">
                             <div class="input-group-append">

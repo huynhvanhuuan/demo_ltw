@@ -3,9 +3,9 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <c:import url="import/head.jsp"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/faqs.css"/>
-        <title>FAQs</title>
+        <c:import url="import/with-header/head.jsp"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/faqs.css"/>
+        <title>FAQs | Amanda</title>
     </head>
     <body>
         <c:import url="import/header.jsp"/>
@@ -143,14 +143,12 @@
                 </div>
                 <div class="contact">
                     <p class="text">Nếu bạn có những thắc mắc</p>
-                    <a href="contact-us.jsp" class="btn-primary btn"
-                    >Liên hệ với chúng tôi tại đây !</a
-                    >
+                    <a href="contact-us.jsp" class="btn-primary btn">Liên hệ với chúng tôi tại đây !</a>
                 </div>
             </div>
         </div>
         <c:import url="import/footer.jsp"/>
         <c:import url="import/signin-signup.jsp"/>
-        <c:import url="import/script.jsp"/>
+        <c:import url="import/with-header/script.jsp"/>
     </body>
 </html>

@@ -1,20 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!doctype html>
 <html lang="en">
     <head>
-        <c:import url="import/head.jsp"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header_signed_in.css"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/root.css">
-        <title>Thông tin khách hàng</title>
+        <c:import url="import/with-header/head.jsp"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/header_signed_in.css"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/user.css">
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/root.css">
+        <title>Hồ sơ | Amanda</title>
     </head>
     <body>
         <c:import url="import/header.jsp"/>
         <main class="container-body">
             <section class="box-userr">
                 <div class="circle-img-user">
-                    <img src="${pageContext.request.contextPath}/assets/images/user/user-4.jpg" alt="">
+                    <img src="${requestScope.contextPath}/assets/images/user/user-4.jpg" alt="">
                 </div>
                 <div class="big-name-user">
                     <p>Nguyễn Văn A</p>
@@ -167,7 +167,7 @@
                         </div>
                         <div class="right-img">
                             <div class="img-box">
-                                <img src="${pageContext.request.contextPath}/assets/images/user/user-4.jpg"
+                                <img src="${requestScope.contextPath}/assets/images/user/user-4.jpg"
                                      alt="User image">
                             </div>
                             <div class="pick-image">
@@ -454,7 +454,7 @@
         <c:import url="import/signin-signup.jsp"/>
         <script src="https://code.jquery.com/jquery-3.6.0.js"
                 integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/user.js"></script>
-        <c:import url="import/script.jsp"/>
+        <script src="${requestScope.contextPath}/assets/js/user.js"></script>
+        <c:import url="import/with-header/script.jsp"/>
     </body>
 </html>

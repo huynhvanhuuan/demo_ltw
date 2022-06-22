@@ -192,7 +192,7 @@
 			/* Get address */
 			function getAddress(id) {
 				$.ajax({
-					url: '${pageContext.request.contextPath}/api/address/' + id,
+					url: '${requestScope.contextPath}/api/address/' + id,
 					type: 'GET',
 					dataType: 'json',
 					success: function (result) {
@@ -209,7 +209,7 @@
 			function getTrademarkForUpdate(id) {
 				$.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/api/trademark/' + id,
+					url: '${requestScope.contextPath}/api/trademark/' + id,
 					success: function (result) {
 						let data = result.data;
 						$('#update input[name="id"]').val(id);
@@ -223,7 +223,7 @@
 			function getTrademarkForUpdateStatus(id) {
 				$.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/api/trademark/' + id,
+					url: '${requestScope.contextPath}/api/trademark/' + id,
 					success: function (result) {
 						$('#update-status input[name="id"]').val(id);
 						$('#update-status input[name="name"]').val(result.data.name);
@@ -316,7 +316,7 @@
 						let formData = new FormData($(this)[0]);
 						$.ajax({
 							type: "POST",
-							url: '${pageContext.request.contextPath}/api/trademark',
+							url: '${requestScope.contextPath}/api/trademark',
 							data: formData,
 							processData: false,
 							contentType: false,
@@ -352,7 +352,7 @@
 						let formData = new FormData($(this)[0]);
 						$.ajax({
 							type: "PUT",
-							url: '${pageContext.request.contextPath}/api/trademark',
+							url: '${requestScope.contextPath}/api/trademark',
 							data: formData,
 							processData: false,
 							contentType: false,
@@ -387,7 +387,7 @@
 					if ($(this).valid()) {
 						let formData = new FormData($(this)[0]);
 						$.ajax({
-							url: '${pageContext.request.contextPath}/api/trademark',
+							url: '${requestScope.contextPath}/api/trademark',
 							type: 'PUT',
 							processData: false,
 							contentType: false,
@@ -430,7 +430,7 @@
 					formData.append('ids', JSON.stringify(ids));
 					$.ajax({
 						type: "DELETE",
-						url: '${pageContext.request.contextPath}/api/trademark',
+						url: '${requestScope.contextPath}/api/trademark',
 						data: formData,
 						processData: false,
 						contentType: false,
@@ -467,7 +467,7 @@
 							console.log(pair[0] + ', ' + pair[1]);
 						}
 						$.ajax({
-							url: '${pageContext.request.contextPath}/api/address/t',
+							url: '${requestScope.contextPath}/api/address/t',
 							type: 'POST',
 							processData: false,
 							contentType: false,
@@ -512,7 +512,7 @@
 					e.preventDefault();
 					$.ajax({
 						type: "DELETE",
-						url: '${pageContext.request.contextPath}/api/address',
+						url: '${requestScope.contextPath}/api/address',
 					})
 				});
 
@@ -663,7 +663,7 @@
 						table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
 					},
 					"ajax": {
-						"url": "${pageContext.request.contextPath}/api/trademark",
+						"url": "${requestScope.contextPath}/api/trademark",
 						"dataSrc": "data"
 					},
 					"columnDefs": [
@@ -759,7 +759,7 @@
 
 				$.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/api/province',
+					url: '${requestScope.contextPath}/api/province',
 					dataType: "json",
 					contentType: "application/json",
 					success: function (result) {

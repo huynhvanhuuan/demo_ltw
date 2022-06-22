@@ -2,18 +2,18 @@ body {
     height: 100vh;
 }
 
-.error {
+section.error {
     height: 100%;
     display: flex;
     justify-content: center;
 }
 
-.error-content {
+section.error .error-content {
     position: relative;
     margin: auto;
 }
 
-.error-content h3 {
+section.error .error-content h3 {
     font-style: normal;
     font-weight: bold;
     font-size: 36px;
@@ -23,7 +23,7 @@ body {
     color: #999;
 }
 
-.error-content span {
+section.error .error-content span {
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
@@ -32,7 +32,7 @@ body {
     color: #5d5f5f;
 }
 
-.error-content button {
+section.error .error-content button {
     width: 254px;
     height: 56px;
     margin: 30px auto 0;
@@ -54,7 +54,7 @@ body {
     transition: background 0.5s ease-in-out;
 }
 
-.error-content button:hover {
+section.error .error-content button:hover {
     background: #236e47;
     color: #ffffff;
     -webkit-transition: color 0.2s ease-in-out;

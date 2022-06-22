@@ -38,7 +38,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
 			productDetails.forEach(productDetail -> result.add(ProductDetailDto.createFromEntity(productDetail)));
 
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
+			return new AppServiceResult<>(true, 0, "Success", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -55,7 +55,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
 						"Product id is not exist: " + id, null);
 
-			return new AppServiceResult<>(true, 0, "Succeed!", ProductDetailDto.createFromEntity(productDetail));
+			return new AppServiceResult<>(true, 0, "Success", ProductDetailDto.createFromEntity(productDetail));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),

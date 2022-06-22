@@ -14,7 +14,7 @@
                 </div>
                 <div class="card-body">
                     <p class="login-box-msg">Bạn quên mật khẩu? Hãy điền tên tài khoản để được cấp lại mật khẩu.</p>
-                    <form action="${pageContext.request.contextPath}/admin/recover-password" method="post">
+                    <form action="${requestScope.contextPath}/admin/recover-password" method="post">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Tên tài khoản hoặc email">
                             <div class="input-group-append">
@@ -31,7 +31,7 @@
                         </div>
                     </form>
                     <p class="mt-3 mb-1">
-                        <a href="${pageContext.request.contextPath}/admin/getSigninPage">Đăng nhập</a>
+                        <a href="${requestScope.contextPath}/admin/getSigninPage">Đăng nhập</a>
                     </p>
                 </div>
                 <!-- /.login-card-body -->

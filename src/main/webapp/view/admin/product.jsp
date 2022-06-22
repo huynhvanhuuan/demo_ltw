@@ -298,7 +298,7 @@
 			function getProductForUpdate(id) {
 				$.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/api/product/' + id,
+					url: '${requestScope.contextPath}/api/product/' + id,
 					success: function (result) {
 						let data = result.data;
 						$('#update input[name="id"]').val(id);
@@ -368,7 +368,7 @@
 						let formData = new FormData(this);
 						/*$.ajax({
 							type: 'POST',
-							url: '${pageContext.request.contextPath}/api/product',
+							url: '${requestScope.contextPath}/api/product',
 							data: formData,
 							success: function (response) {
 								if (response.success) {
@@ -408,7 +408,7 @@
 					let formData = new FormData(this);
 					$.ajax({
 						type: 'PUT',
-						url: '${pageContext.request.contextPath}/api/product',
+						url: '${requestScope.contextPath}/api/product',
 						data: formData,
 						success: function (response) {
 							if (response.success) {
@@ -529,7 +529,7 @@
 						table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
 					},
 					"ajax": {
-						"url": "${pageContext.request.contextPath}/api/product",
+						"url": "${requestScope.contextPath}/api/product",
 						"dataSrc": "data"
 					},
 					"columnDefs": [
@@ -642,7 +642,7 @@
 
 				$.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/api/category',
+					url: '${requestScope.contextPath}/api/category',
 					dataType: "json",
 					contentType: "application/json",
 					success: function (result) {
@@ -659,7 +659,7 @@
 
 				$.ajax({
 					type: "GET",
-					url: '${pageContext.request.contextPath}/api/trademark',
+					url: '${requestScope.contextPath}/api/trademark',
 					dataType: "json",
 					contentType: "application/json",
 					success: function (result) {

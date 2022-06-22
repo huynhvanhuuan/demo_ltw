@@ -9,6 +9,7 @@ import vn.edu.hcmuaf.fit.util.DateUtil;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AppUserDAOImpl implements AppUserDAO {
     private static AppUserDAOImpl instance;
@@ -114,16 +115,18 @@ public class AppUserDAOImpl implements AppUserDAO {
             if (appUser.getId() == 0) {
                 userInfoDAO.save(appUser.getUserInfo()); // save new user info and get id
                 statement = connection.prepareStatement(QUERY.APP_USER.CREATE, Statement.RETURN_GENERATED_KEYS);
+                statement.setString(1, appUser.getUsername());
+                statement.setString(2, appUser.getEmail());
+                statement.setString(3, appUser.getPhone());
+                statement.setString(4, appUser.getPassword());
                 statement.setLong(5, appUser.getUserInfo().getId());
             } else {
                 statement = connection.prepareStatement(QUERY.APP_USER.UPDATE);
-                statement.setLong(5, appUser.getId());
+                statement.setString(1, appUser.getPassword());
+                statement.setBoolean(2, appUser.getNotLocked());
+                statement.setBoolean(3, appUser.getEnabled());
+                statement.setLong(4, appUser.getId());
             }
-
-            statement.setString(1, appUser.getUsername());
-            statement.setString(2, appUser.getEmail());
-            statement.setString(3, appUser.getPhone());
-            statement.setString(4, appUser.getPassword());
             statement.executeUpdate();
 
             if (appUser.getId() == 0) {
@@ -134,16 +137,37 @@ public class AppUserDAOImpl implements AppUserDAO {
             }
 
             // update role
-            List<AppRole> appRoles = appRoleDAO.findByUserId(appUser.getId()); // if user has role admin, customer
+            List<AppRole> appRoles = appRoleDAO.findByUserId(appUser.getId()); // nếu người dùng có quyền customer, shipper
             // save new role if user has new role
-            for (AppRole appRole : appUser.getAppRoles()) { // get new roles list: admin, shipper
-                if (appRoles.contains(appRole)) continue; // contain admin => continue
-                appUserRoleDAO.save(appUser.getId(), appRole.getId()); // save shipper
+            for (AppRole appRole : appUser.getAppRoles()) { // lấy được danh sách quyền mới. Vd: admin, shipper
+                AtomicBoolean isNewRole = new AtomicBoolean(false);
+                appRoles.forEach(role -> { // hiện có quyền customer, shipper trong danh sách quyền cũ
+                    if (role.getId() != appRole.getId()) { // nếu có quyền mới: id admin != id còn lại
+                        isNewRole.set(true);
+                    }
+                });
+
+                if (isNewRole.get()) { // đúng nếu có quyền mới
+                    appUserRoleDAO.save(appUser.getId(), appRole.getId()); // lưu quyền mới admin, trong database có customer, shipper và admin
+                }
+
+                isNewRole.set(false); // reset
             }
+
             // remove role if user role not exist
-            for (AppRole appRole : appRoles) { // get current roles list: admin, customer (not count shipper)
-                if (appUser.getAppRoles().contains(appRole)) continue; // contain admin => continue
-                appUserRoleDAO.remove(appUser.getId(), appRole.getId()); // remove customer
+            for (AppRole appRole : appRoles) { // hiện tại đang có quyền customer, shipper (không lấy quyền admin vừa thêm)
+                AtomicBoolean isRemove = new AtomicBoolean(false);
+                appUser.getAppRoles().forEach(role -> { // hiện có quyền admin, shipper trong danh sách quyền mới
+                    if (role.getId() != appRole.getId()) { // nếu không có quyền cũ: id customer != id còn lại
+                        isRemove.set(true);
+                    }
+                });
+
+                if (isRemove.get()) { // nếu có quyền không có trong appUser
+                    appUserRoleDAO.remove(appUser.getId(), appRole.getId()); // remove customer
+                }
+
+                isRemove.set(false); // reset
             }
         } catch (Exception e) {
             e.printStackTrace();

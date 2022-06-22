@@ -3,9 +3,9 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <c:import url="import/head.jsp"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cart.css"/>
-        <title>Giỏ hàng</title>
+        <c:import url="import/with-header/head.jsp"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/cart.css"/>
+        <title>Giỏ hàng của bạn | Amanda</title>
     </head>
     <body>
         <c:import url="import/header.jsp"/>
@@ -35,7 +35,7 @@
                             <label class="c-label" for="select-1"></label>
                         </div>
                         <div class="box-control__item box-name">
-                            <img src="${pageContext.request.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+                            <img src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
                                  alt="box product card 1"
                                  class="box__product-img"/>
                             <div class="box__product-info">
@@ -68,7 +68,7 @@
                             <label class="c-label" for="select-2"></label>
                         </div>
                         <div class="box-control__item box-name">
-                            <img src="${pageContext.request.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+                            <img src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
                                  alt="box product card 1"
                                  class="box__product-img"/>
                             <div class="box__product-info">
@@ -101,7 +101,7 @@
                             <label class="c-label" for="select-3"></label>
                         </div>
                         <div class="box-control__item box-name">
-                            <img src="${pageContext.request.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+                            <img src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
                                  alt="box product card 1"
                                  class="box__product-img"/>
                             <div class="box__product-info">
@@ -134,7 +134,7 @@
                             <label class="c-label" for="select-4"></label>
                         </div>
                         <div class="box-control__item box-name">
-                            <img src="${pageContext.request.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+                            <img src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
                                  alt="box product card 1"
                                  class="box__product-img"/>
                             <div class="box__product-info">
@@ -167,7 +167,7 @@
                             <label class="c-label" for="select-2"></label>
                         </div>
                         <div class="box-control__item box-name">
-                            <img src="${pageContext.request.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+                            <img src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
                                  alt="box product card 1"
                                  class="box__product-img"/>
                             <div class="box__product-info">
@@ -200,7 +200,7 @@
                             <label class="c-label" for="select-2"></label>
                         </div>
                         <div class="box-control__item box-name">
-                            <img src="${pageContext.request.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+                            <img src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
                                  alt="box product card 1"
                                  class="box__product-img"/>
                             <div class="box__product-info">
@@ -251,7 +251,7 @@
             </div>
         </main>
         <c:import url="import/footer.jsp"/>
-        <script src="${pageContext.request.contextPath}/assets/js/cart.js"></script>
-        <c:import url="import/script.jsp"/>
+        <script src="${requestScope.contextPath}/assets/js/cart.js"></script>
+        <c:import url="import/with-header/script.jsp"/>
     </body>
 </html>

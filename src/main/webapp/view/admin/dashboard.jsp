@@ -25,7 +25,7 @@
 									<div class="icon">
 										<i class="fas fa-hand-holding-usd"></i>
 									</div>
-									<a href="${pageContext.request.contextPath}/admin/sale-report"
+									<a href="${requestScope.contextPath}/admin/sale-report"
 									   class="small-box-footer">Xem chi tiết <i
 											class="fas fa-arrow-circle-right"></i></a>
 								</div>
@@ -39,7 +39,7 @@
 									<div class="icon">
 										<i class="ion ion-bag"></i>
 									</div>
-									<a href="${pageContext.request.contextPath}/admin/order" class="small-box-footer">Xem
+									<a href="${requestScope.contextPath}/admin/order" class="small-box-footer">Xem
 										chi tiết <i class="fas fa-arrow-circle-right"></i></a>
 								</div>
 							</div>
@@ -52,7 +52,7 @@
 									<div class="icon">
 										<i class="fas fa-warehouse"></i>
 									</div>
-									<a href="${pageContext.request.contextPath}/admin/sale-report"
+									<a href="${requestScope.contextPath}/admin/sale-report"
 									   class="small-box-footer">Xem chi tiết <i
 											class="fas fa-arrow-circle-right"></i></a>
 								</div>
@@ -66,7 +66,7 @@
 									<div class="icon">
 										<i class="ion ion-person-add"></i>
 									</div>
-									<a href="${pageContext.request.contextPath}/admin/user?role=3"
+									<a href="${requestScope.contextPath}/admin/user?role=3"
 									   class="small-box-footer">Xem chi tiết <i
 											class="fas fa-arrow-circle-right"></i></a>
 								</div>
@@ -146,7 +146,7 @@
 										</div>
 									</div>
 									<div class="card-footer clearfix">
-										<a href="${pageContext.request.contextPath}/admin/order"
+										<a href="${requestScope.contextPath}/admin/order"
 										   class="btn btn-sm btn-secondary float-right">Xem tất cả các đơn hàng</a>
 									</div>
 								</div>
@@ -208,7 +208,7 @@
 									<div class="card-header border-0">
 										<div class="d-flex justify-content-between">
 											<h3 class="card-title">Doanh thu (theo năm)</h3>
-											<a href="${pageContext.request.contextPath}/admin/sale-report">Xem báo
+											<a href="${requestScope.contextPath}/admin/sale-report">Xem báo
 												cáo</a>
 										</div>
 									</div>

@@ -3,11 +3,11 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <c:import url="import/head.jsp"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/root.css"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/grid.css"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/contact-us.css"/>
-        <title>Liên hệ với chúng tôi</title>
+        <c:import url="import/with-header/head.jsp"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/root.css"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/grid.css"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/contact-us.css"/>
+        <title>Liên hệ với chúng tôi | Amanda</title>
     </head>
     <body>
         <c:import url="import/header.jsp"/>
@@ -92,6 +92,6 @@
         </section>
         <c:import url="import/footer.jsp"/>
         <c:import url="import/signin-signup.jsp"/>
-        <c:import url="import/script.jsp"/>
+        <c:import url="import/with-header/script.jsp"/>
     </body>
 </html>

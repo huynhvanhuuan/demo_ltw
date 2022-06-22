@@ -6,7 +6,7 @@
                 <div class="info">
                     <div class="info-item">
                         <div class="logo">
-                            <img class="logo-img" src="${pageContext.request.contextPath}/assets/images/logo.jpg"
+                            <img class="logo-img" src="${requestScope.contextPath}/assets/images/logo.jpg"
                                  alt="footer-logo"/>
                         </div>
                     </div>

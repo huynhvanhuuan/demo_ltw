@@ -6,11 +6,11 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <c:import url="import/head.jsp"/>
+        <c:import url="import/with-header/head.jsp"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/card.css"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/product-detail.css"/>
-        <title>Amanda - Chi tiết sản phẩm</title>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/card.css"/>
+        <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/product-detail.css"/>
+        <title>Chi tiết sản phẩm | Amanda</title>
     </head>
     <body>
         <c:import url="import/header.jsp"/>
@@ -22,7 +22,7 @@
                             <div class="product-img-main">
                                 <c:forEach items="${images}" var="imagesPerDetail" begin="0" end="0">
                                     <c:forEach items="${imagesPerDetail.value}" var="image" begin="0" end="0">
-                                        <img src="${pageContext.request.contextPath}/image/${image}" alt="${product.name}">
+                                        <img src="${requestScope.contextPath}/image/${image}" alt="${product.name}">
                                     </c:forEach>
                                 </c:forEach>
                             </div>
@@ -30,7 +30,7 @@
                                 <c:forEach items="${images}" var="imagesPerDetail">
                                     <c:forEach items="${imagesPerDetail.value}" var="image">
                                         <img class="product-img-item mx-3" style="cursor: pointer;"
-                                             src="${pageContext.request.contextPath}/image/${image}" alt="${product.name}">
+                                             src="${requestScope.contextPath}/image/${image}" alt="${product.name}">
                                     </c:forEach>
                                 </c:forEach>
                             </div>
@@ -125,7 +125,7 @@
                                 <div class="user-review--info__left">
                                     <img
                                             class="user-review--img"
-                                            src="${pageContext.request.contextPath}/assets/images/user/user-1.jpg"
+                                            src="${requestScope.contextPath}/assets/images/user/user-1.jpg"
                                             alt="customer avatar"
                                     />
                                 </div>
@@ -154,7 +154,7 @@
                                 <div class="user-review--info__left">
                                     <img
                                             class="user-review--img"
-                                            src="${pageContext.request.contextPath}/assets/images/user/user-2.jpg"
+                                            src="${requestScope.contextPath}/assets/images/user/user-2.jpg"
                                             alt="customer avatar 2"
                                     />
                                 </div>
@@ -183,7 +183,7 @@
                                 <div class="user-review--info__left">
                                     <img
                                             class="user-review--img"
-                                            src="${pageContext.request.contextPath}/assets/images/user/user-3.jpg"
+                                            src="${requestScope.contextPath}/assets/images/user/user-3.jpg"
                                             alt="customer avatar 3"
                                     />
                                 </div>
@@ -217,7 +217,7 @@
                                 <div class="card-img">
                                     <img
                                             class="card-img-item"
-                                            src="${pageContext.request.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+                                            src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
                                             alt="card image"
                                     />
                                 </div>
@@ -252,7 +252,7 @@
                                 <div class="card-img">
                                     <img
                                             class="card-img-item"
-                                            src="${pageContext.request.contextPath}/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
+                                            src="${requestScope.contextPath}/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
                                             alt="card image"
                                     />
                                 </div>
@@ -287,7 +287,7 @@
                                 <div class="card-img">
                                     <img
                                             class="card-img-item"
-                                            src="${pageContext.request.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
+                                            src="${requestScope.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
                                             alt="card image"
                                     />
                                 </div>
@@ -322,7 +322,7 @@
                                 <div class="card-img">
                                     <img
                                             class="card-img-item"
-                                            src="${pageContext.request.contextPath}/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
+                                            src="${requestScope.contextPath}/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
                                             alt="card image"
                                     />
                                 </div>
@@ -356,12 +356,12 @@
         </main>
         <c:import url="import/footer.jsp"/>
         <c:import url="import/signin-signup.jsp"/>
-        <script src="${pageContext.request.contextPath}/assets/js/product-detail.js"></script>
-        <c:import url="import/script.jsp"/>
+        <script src="${requestScope.contextPath}/assets/js/product-detail.js"></script>
+        <c:import url="import/with-header/script.jsp"/>
         <script>
             function getProductDetail(materialId, colorId) {
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/api/product-detail",
+                    url: "${requestScope.contextPath}/api/product-detail",
                     type: "GET",
                     data: {
                         materialId: materialId,

@@ -1,7 +1,6 @@
 package vn.edu.hcmuaf.fit.service.impl;
 
 import vn.edu.hcmuaf.fit.constant.AppError;
-import vn.edu.hcmuaf.fit.dao.AppUserDAO;
 import vn.edu.hcmuaf.fit.dao.VerificationTokenDAO;
 import vn.edu.hcmuaf.fit.dao.impl.AppUserDAOImpl;
 import vn.edu.hcmuaf.fit.dao.impl.VerificationTokenDAOImpl;
@@ -10,7 +9,6 @@ import vn.edu.hcmuaf.fit.entity.AppUser;
 import vn.edu.hcmuaf.fit.entity.VerificationToken;
 import vn.edu.hcmuaf.fit.service.AppMailService;
 import vn.edu.hcmuaf.fit.util.AppUtils;
-import vn.edu.hcmuaf.fit.util.DateUtil;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -27,14 +25,13 @@ public class AppMailServiceImpl implements AppMailService {
     private static String password;
     private static String baseUrlVerifyEmail;
     private final VerificationTokenDAO verificationTokenDAO;
-    private final AppUserDAO appUserDAO;
 
     private AppMailServiceImpl() {
         init();
         verificationTokenDAO = VerificationTokenDAOImpl.getInstance();
-        appUserDAO = AppUserDAOImpl.getInstance();
+        // appUserDAO = AppUserDAOImpl.getInstance();
 
-        ((VerificationTokenDAOImpl) verificationTokenDAO).setAppUserDAO(appUserDAO);
+        ((VerificationTokenDAOImpl) verificationTokenDAO).setAppUserDAO(AppUserDAOImpl.getInstance());
     }
 
     public static AppMailServiceImpl getInstance() {
@@ -63,38 +60,31 @@ public class AppMailServiceImpl implements AppMailService {
     @Override
     public AppBaseResult sendMailVerify(AppUser appUser) {
         VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setId(0L);
         verificationToken.setToken(UUID.randomUUID());
-        verificationToken.setDateCreated(DateUtil.getNow());
         verificationToken.setAppUser(appUser);
-        verificationToken.setVerified(Boolean.FALSE);
 
         boolean isSuccess = sendVerifyEmailRegister(appUser.getEmail(), verificationToken.getToken().toString());
 
         if (isSuccess) {
-            verificationToken.setLastSent(DateUtil.getNow());
             verificationTokenDAO.save(verificationToken);
-            return new AppBaseResult(true, 200, "Gửi mail thành công");
+            return new AppBaseResult(true, 0, "Gửi mail thành công");
         }
 
         return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), "Gửi mail không thành công");
     }
 
     @Override
-    public AppBaseResult resendMailVerify(String email) {
-        AppUser appUser = appUserDAO.findByEmail(email);
-
-        if (appUser == null) {
-            return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(), "Email chưa được đăng ký: " + email);
-        }
-
+    public AppBaseResult resendMailVerify(AppUser appUser) {
         VerificationToken verificationToken = verificationTokenDAO.findByUserId(appUser.getId());
+
+        if (verificationToken == null) return sendMailVerify(appUser);
 
         verificationToken.setToken(UUID.randomUUID());
 
         boolean isSuccess = sendVerifyEmailRegister(appUser.getEmail(), verificationToken.getToken().toString());
 
         if (isSuccess) {
-            verificationToken.setLastSent(DateUtil.getNow());
             verificationTokenDAO.save(verificationToken);
             return new AppBaseResult(true, 200, "Gửi mail thành công");
         }
@@ -104,10 +94,10 @@ public class AppMailServiceImpl implements AppMailService {
 
     private boolean sendVerifyEmailRegister(String email, String token) {
         try {
-            Message message = new MimeMessage(session);
+            MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username,"Amanda"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-            message.setSubject("Xác nhận tài khoản");
+            message.setSubject("Xác nhận tài khoản", "UTF-8");
             message.setContent(AppUtils.getVerifyEmailContent(baseUrlVerifyEmail + token), "text/html; charset=utf-8");
             Transport.send(message);
             return true;

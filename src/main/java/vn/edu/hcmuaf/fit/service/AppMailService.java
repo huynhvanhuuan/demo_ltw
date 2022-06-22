@@ -5,6 +5,6 @@ import vn.edu.hcmuaf.fit.entity.AppUser;
 
 public interface AppMailService {
     AppBaseResult sendMailVerify(AppUser appUser);
-    AppBaseResult resendMailVerify(String email);
+    AppBaseResult resendMailVerify(AppUser appUser);
     AppBaseResult sendMailResetPassword(String email, String fullname, String newPassword);
 }

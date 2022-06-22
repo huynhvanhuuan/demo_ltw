@@ -15,7 +15,7 @@ public class AppBaseResult {
     }
 
     public static AppBaseResult GenarateIsSucceed() {
-        return new AppBaseResult(true, 0, "Succeed!");
+        return new AppBaseResult(true, 0, "Success");
     }
 
     public static AppBaseResult GenarateIsFailed(int errorCode, String message) {

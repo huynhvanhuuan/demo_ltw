@@ -37,7 +37,7 @@ public class TrademarkServiceImpl implements TrademarkService {
 
 			trademarks.forEach(category -> result.add(TrademarkDto.createFromEntity(category)));
 
-			return new AppServiceResult<>(true, 0, "Succeed!", result);
+			return new AppServiceResult<>(true, 0, "Success", result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -54,7 +54,7 @@ public class TrademarkServiceImpl implements TrademarkService {
 				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
 						"Trademark id is not exist: " + id, null);
 
-			return new AppServiceResult<>(true, 0, "Succeed!", TrademarkDto.createFromEntity(trademark));
+			return new AppServiceResult<>(true, 0, "Success", TrademarkDto.createFromEntity(trademark));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
@@ -89,7 +89,7 @@ public class TrademarkServiceImpl implements TrademarkService {
 
 			trademarkDAO.save(newTrademark);
 
-			return new AppServiceResult<>(true, 0, "Succeed!", TrademarkDto.createFromEntity(newTrademark));
+			return new AppServiceResult<>(true, 0, "Success", TrademarkDto.createFromEntity(newTrademark));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),

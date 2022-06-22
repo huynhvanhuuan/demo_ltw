@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-body login-card-body">
                     <p class="login-box-msg">Vui lòng đăng nhập đế tiếp tục</p>
-                    <form class="needs-validation" action="${pageContext.request.contextPath}/admin/signin"
+                    <form class="needs-validation" action="${requestScope.contextPath}/admin/signin"
                           method="POST" novalidate>
                         <div class="input-group mb-3">
                             <c:choose>
@@ -95,7 +95,7 @@
                     </div>
                     <!-- /.social-auth-links -->
                     <p class="mb-1">
-                        <a href="${pageContext.request.contextPath}/admin/forgot-password">I forgot my password</a>
+                        <a href="${requestScope.contextPath}/admin/forgot-password">I forgot my password</a>
                     </p>
                 </div>
                 <!-- /.login-card-body -->
