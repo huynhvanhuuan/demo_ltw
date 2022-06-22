@@ -43,20 +43,40 @@ public class UserController extends HttpServlet {
                         break;
                 }
                 break;
-            case "/account/profile":
-                doGetProfile(request, response);
+            case "logout":
+                if (request.getSession().getAttribute("user") != null) {
+                    request.logout();
+                    request.getSession().invalidate();
+                    response.sendRedirect("/home");
+                }
                 break;
-            case "/account/payment":
-                doGetPayment(request, response);
+            case "forgot-password":
+                getForgotPassword(request, response);
                 break;
-            case "/account/address":
-                doGetAddress(request, response);
+            case "reset-password":
+                getResetPassword(request, response);
                 break;
-            case "/account/password":
-                doGetPassword(request, response);
+            case "account":
+                switch (pathParts[2]) {
+                    case "profile":
+                        getProfile(request, response);
+                        break;
+                    case "payment":
+                        getPayment(request, response);
+                        break;
+                    case "address":
+                        getAddress(request, response);
+                        break;
+                    case "change-password":
+                        getChangePassword(request, response);
+                        break;
+                    default:
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        break;
+                }
                 break;
-            case "/purchase":
-                doGetPurchase(request, response);
+            case "purchase":
+                getPurchase(request, response);
                 break;
             default:
                 request.getRequestDispatcher("/view/client/user/profile.jsp").forward(request, response);
@@ -82,23 +102,31 @@ public class UserController extends HttpServlet {
         request.getRequestDispatcher("/view/client/user/verify/failure.jsp").forward(request, response);
     }
 
-    private void doGetProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void getForgotPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/view/client/user/forgot-password.jsp").forward(request, response);
+    }
+
+    private void getResetPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/view/client/user/reset-password/success.jsp").forward(request, response);
+    }
+
+    private void getProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/view/client/user/account/profile.jsp").forward(request, response);
     }
 
-    private void doGetPayment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void getPayment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/view/client/user/account/payment.jsp").forward(request, response);
     }
 
-    private void doGetAddress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void getAddress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/view/client/user/account/address.jsp").forward(request, response);
     }
 
-    private void doGetPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void getChangePassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/views/client/user/account/password.jsp").forward(request, response);
     }
 
-    private void doGetPurchase(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void getPurchase(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/views/client/user/purchase.jsp").forward(request, response);
     }
 }

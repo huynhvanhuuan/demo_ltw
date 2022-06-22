@@ -86,7 +86,7 @@ public class AppMailServiceImpl implements AppMailService {
 
         if (isSuccess) {
             verificationTokenDAO.save(verificationToken);
-            return new AppBaseResult(true, 200, "Gửi mail thành công");
+            return new AppBaseResult(true, 0, "Gửi mail thành công");
         }
 
         return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), "Gửi mail không thành công");
@@ -110,14 +110,14 @@ public class AppMailServiceImpl implements AppMailService {
     @Override
     public AppBaseResult sendMailResetPassword(String email, String fullname, String newPassword) {
         try {
-            Message message = new MimeMessage(session);
+            MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username,"Amanda"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-            message.setSubject("Đặt lại mật khẩu");
+            message.setSubject("Đặt lại mật khẩu", "UTF-8");
             message.setContent(AppUtils.getResetPasswordContent(fullname, newPassword), "text/html; charset=utf-8");
             Transport.send(message);
 
-            return new AppBaseResult(true, 200, "Gửi mail thành công");
+            return new AppBaseResult(true, 0, "Gửi mail thành công");
         } catch (Exception e) {
             e.printStackTrace();
         }

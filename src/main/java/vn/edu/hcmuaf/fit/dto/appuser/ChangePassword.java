@@ -5,6 +5,12 @@ public class ChangePassword {
     private String oldPassword;
     private String newPassword;
 
+    public ChangePassword(Long userId, String oldPassword, String newPassword) {
+        this.userId = userId;
+        this.oldPassword = oldPassword;
+        this.newPassword = newPassword;
+    }
+
     public Long getUserId() {
         return userId;
     }

@@ -2,11 +2,12 @@ package vn.edu.hcmuaf.fit.controller.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import vn.edu.hcmuaf.fit.domain.AppBaseResult;
-import vn.edu.hcmuaf.fit.domain.AppServiceResult;
-import vn.edu.hcmuaf.fit.dto.appuser.AppUserForAdminDto;
-import vn.edu.hcmuaf.fit.dto.appuser.UserRegister;
+import vn.edu.hcmuaf.fit.constant.AppError;
+import vn.edu.hcmuaf.fit.domain.*;
+import vn.edu.hcmuaf.fit.dto.appuser.*;
 import vn.edu.hcmuaf.fit.dto.userinfo.UserInfoDtoResponse;
+import vn.edu.hcmuaf.fit.entity.AppUser;
+import vn.edu.hcmuaf.fit.infrastructure.AppJwtTokenProvider;
 import vn.edu.hcmuaf.fit.service.AppUserService;
 import vn.edu.hcmuaf.fit.service.impl.AppUserServiceImpl;
 
@@ -23,7 +24,7 @@ import java.util.UUID;
 public class AppUserAPI extends HttpServlet {
 	private final Gson GSON = new GsonBuilder().serializeNulls().create();
 	private final AppUserService appUserService = AppUserServiceImpl.getInstance();
-
+	private final AppJwtTokenProvider appJwtTokenProvider = new AppJwtTokenProvider();
 	@Override
 	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 		HttpServletRequest request = (HttpServletRequest) req;
@@ -68,11 +69,11 @@ public class AppUserAPI extends HttpServlet {
 					case "resend-verify-email":
 						resendVerifyEmail(request, response);
 						break;
+					case "reset-password":
+						resetPassword(request, response);
+						break;
 					case "login":
 						login(request, response);
-						break;
-					case "logout":
-						logout(request, response);
 						break;
 				}
 				break;
@@ -135,9 +136,27 @@ public class AppUserAPI extends HttpServlet {
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		String username = request.getParameter("username");
+		String username = request.getParameter("usernameSignin");
+		String password = request.getParameter("passwordSignin");
 
+		AppServiceResult<AppUser> result = appUserService.getUserLogin(new UserLogin(username, password));
 
+		if (result.isSuccess()) {
+			AppUserDomain appUserDomain = new AppUserDomain(result.getData());
+			String userToken = appJwtTokenProvider.generateJwtToken(appUserDomain);
+			UserLoginResponse userLoginResponse = new UserLoginResponse(appUserDomain.getUserId(), appUserDomain.getUsername(), userToken);
+
+			// save to session
+			HttpSession session = request.getSession();
+			session.setAttribute("user", userLoginResponse);
+
+			AppServiceResult<UserLoginResponse> res =
+					new AppServiceResult<>(true, 0, "Success", userLoginResponse);
+
+			response.getWriter().println(GSON.toJson(res));
+		} else {
+			response.getWriter().println(GSON.toJson(result));
+		}
 	}
 
 	public void getProfile(HttpServletRequest request, HttpServletResponse  response) throws IOException {
@@ -158,9 +177,22 @@ public class AppUserAPI extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 	}
 
-	public void changePassword(HttpServletRequest request, HttpServletResponse response) {
+	public void changePassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+
+		try {
+			Long id = Long.parseLong(request.getParameter("id"));
+			String oldPassword = request.getParameter("oldPassword");
+			String newPassword = request.getParameter("newPassword");
+
+			AppBaseResult result = appUserService.changePassword(new ChangePassword(id, oldPassword, newPassword));
+
+			response.getWriter().println(GSON.toJson(result));
+		} catch (Exception e) {
+			AppBaseResult result = new AppBaseResult(false, AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
+			response.getWriter().println(GSON.toJson(result));
+		}
 	}
 
 	public void uploadAvatar(HttpServletRequest request, HttpServletResponse response) {
@@ -168,9 +200,15 @@ public class AppUserAPI extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 	}
 
-	public void resetPassword(HttpServletRequest request, HttpServletResponse response) {
+	public void resetPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+
+		String email = request.getParameter("email");
+
+		AppBaseResult result = appUserService.resetPassword(email);
+
+		response.getWriter().println(GSON.toJson(result));
 	}
 
 	public void updateStatus(HttpServletRequest request, HttpServletResponse response) {

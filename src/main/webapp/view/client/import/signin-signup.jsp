@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<% String path = request.getContextPath();%>
 <div class="box-signup-signin">
     <div class="signup-signin">
         <span class="popup-close">&times;</span>
@@ -13,11 +12,11 @@
                 </div>
                 <form id="signin" class="popup-form">
                     <div class="form-group">
-                        <input type="text" name="username-signin" class="form-input" placeholder=" "/>
+                        <input type="text" name="usernameSignin" class="form-input" placeholder=" "/>
                         <label class="form-label-fluid">Email hoặc số điện thoại</label>
                     </div>
                     <div class="form-group">
-                        <input type="password" name="password-signin" class="form-input signin-password" placeholder=" "/>
+                        <input type="password" name="passwordSignin" class="form-input signin-password" placeholder=" "/>
                         <label class="form-label-fluid">Nhập mật khẩu của bạn</label>
                         <i class="hide-password fas fa-eye-slash"></i>
                     </div>
@@ -26,7 +25,7 @@
                     </div>
                 </form>
                 <div class="forgot-password">
-                    <a href="?forgot=true" class="text-link">Quên mật khẩu ?</a>
+                    <a href="${requestScope.contextPath}/user/forgot-password" class="text-link">Quên mật khẩu ?</a>
                 </div>
                 <p class="text-way">Hoặc</p>
                 <div class="other-way-signin">

@@ -22,6 +22,10 @@
         });
 
         /* Validation */
+        $.validator.addMethod("noSpace", function(value, element) {
+            return value.indexOf(" ") < 0 && value !== "";
+        }, "Không được chứa khoảng trống")
+
         $('#signup').validate({
             rules: {
                 lastName: {
@@ -42,16 +46,17 @@
                 },
                 usernameSignup: {
                     required: true,
-                    minlength: 3
+                    noSpace: true
                 },
                 passwordSignup: {
                     required: true,
-                    minlength: 6
+                    minlength: 6,
+                    noSpace: true
                 },
                 confirmPassword: {
                     required: true,
                     equalTo: '#password'
-                },
+                }
             },
             messages: {
                 lastName: {
@@ -72,7 +77,6 @@
                 },
                 usernameSignup: {
                     required: 'Nhập tên đăng nhập của bạn',
-                    minlength: 'Tên đăng nhập phải có ít nhất 3 ký tự'
                 },
                 passwordSignup: {
                     required: 'Nhập mật khẩu của bạn',
@@ -82,6 +86,32 @@
                     required: 'Nhập lại mật khẩu của bạn',
                     equalTo: 'Mật khẩu không khớp'
                 },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#signin').validate({
+            rules: {
+                usernameSignin: {
+                    required: true,
+                },
+                passwordSignin: {
+                    required: true,
+                }
+            },
+            messages: {
+                usernameSignin: 'Nhập tên đăng nhập của bạn',
+                passwordSignin: 'Nhập mật khẩu của bạn',
             },
             errorElement: 'span',
             errorPlacement: function (error, element) {
@@ -131,6 +161,33 @@
                     }
                 });
             }
+        });
+
+        $('#signin').submit(function (e) {
+           e.preventDefault();
+           if ($(this).valid()) {
+                $.ajax({
+                     url: '${requestScope.contextPath}/api/user/login',
+                     type: 'POST',
+                     data: $(this).serialize(),
+                     success: function (response) {
+                          if (response.success) {
+                            window.location.href = '${requestScope.contextPath}/home';
+                          } else {
+                            Toast.fire({
+                                 icon: 'error',
+                                 title: response.message
+                            });
+                          }
+                     },
+                     error: function (error) {
+                          Toast.fire({
+                            icon: 'error',
+                            title: error.message
+                          });
+                     }
+                });
+           }
         });
     });
 </script>

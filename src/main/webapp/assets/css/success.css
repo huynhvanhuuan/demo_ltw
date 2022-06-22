@@ -78,14 +78,14 @@ section.success .flex-center {
     justify-content: center;
 }
 
-#resend {
+#resend, #reset-password {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 2vh;
 }
 
-#resend input[name="email"] {
+input[name="email"] {
     height: 5vh;
     width: 40%;
     border: 5px solid var(--primary-color);
@@ -97,19 +97,19 @@ section.success .flex-center {
     letter-spacing: 0.02em;
 }
 
-#resend input[name="email"]::placeholder {
+input[name="email"]::placeholder {
     opacity: 0.75;
 }
 
-#resend input[name="email"]:focus {
+input[name="email"]:focus {
     outline: none;
 }
 
-#resend input[name="email"]:focus::placeholder {
+input[name="email"]:focus::placeholder {
     color: transparent;
 }
 
-#resend button {
+button {
     height: 5vh;
     width: 10%;
     border: 0;
@@ -120,7 +120,7 @@ section.success .flex-center {
     color: var(--text-black);
 }
 
-#resend button:hover {
+button:hover {
     color: var(--text-black);
     background: var(--fourth-color);
 }

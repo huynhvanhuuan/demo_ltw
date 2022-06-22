@@ -239,6 +239,39 @@ public class AppUserServiceImpl implements AppUserService {
         }
     }
 
+    @Override
+    public AppServiceResult<AppUser> getUserLogin(UserLogin userLogin) {
+        AppUser appUser = appUserDAO.findByUsername(userLogin.getUsername());
+
+        if (appUser == null) {
+            appUser = appUserDAO.findByEmail(userLogin.getUsername());
+
+            if (appUser == null) appUser = appUserDAO.findByPhone(userLogin.getUsername());
+        }
+
+        if (appUser == null) {
+            return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+                        "Sai tài khoản hoặc mật khẩu!", null);
+        }
+
+        if (!appUser.getPassword().equals(hashPassword(userLogin.getPassword()))) {
+            return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+                    "Sai tài khoản hoặc mật khẩu!", null);
+        }
+
+        if (!appUser.getEnabled()) {
+            return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+                    "Tài khoản chưa được xác thực!", null);
+        }
+
+        if (!appUser.getNotLocked()) {
+            return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+                    "Tài khoản của bạn đã bị khoá!", null);
+        }
+
+        return new AppServiceResult<>(true, 0, "Success", appUser);
+    }
+
     private String hashPassword(String password) {
         try {
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");

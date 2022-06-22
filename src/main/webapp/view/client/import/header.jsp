@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <header class="header">
     <div class="container">
@@ -37,8 +38,26 @@
                             <ion-icon name="cart-outline"></ion-icon>
                         </a>
                     </li>
-                    <li class="header-item"><a role="button" id="btnSignin">Đăng nhập</a></li>
-                    <li class="header-item"><a role="button" id="btnSignup">Đăng ký</a></li>
+                    <c:choose>
+                        <c:when test="${sessionScope.user != null}">
+                            <li class="header-item">
+                                <a href="${requestScope.contextPath}/user/account/profile">
+                                    <ion-icon name="person-outline"></ion-icon>
+                                </a>
+                            </li>
+                            <li class="header-item">
+                                <a href="${requestScope.contextPath}/user/logout">Đăng xuất</a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="header-item">
+                                <a role="button" id="btnSignin">Đăng nhập</a>
+                            </li>
+                            <li class="header-item">
+                                <a role="button" id="btnSignup">Đăng ký</a>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
                 </ul>
             </div>
         </div>

@@ -3,14 +3,14 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <c:import url="import/with-header/head.jsp"/>
+        <c:import url="../../import/with-header/head.jsp"/>
         <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/header_signed_in.css"/>
         <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/user.css">
         <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/root.css">
         <title>Hồ sơ | Amanda</title>
     </head>
     <body>
-        <c:import url="import/header.jsp"/>
+        <c:import url="../../import/header.jsp"/>
         <main class="container-body">
             <section class="box-userr">
                 <div class="circle-img-user">
@@ -450,11 +450,11 @@
                 </div>
             </section>
         </main>
-        <c:import url="import/footer.jsp"/>
-        <c:import url="import/signin-signup.jsp"/>
+        <c:import url="../../import/footer.jsp"/>
+        <c:import url="../../import/signin-signup.jsp"/>
         <script src="https://code.jquery.com/jquery-3.6.0.js"
                 integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
         <script src="${requestScope.contextPath}/assets/js/user.js"></script>
-        <c:import url="import/with-header/script.jsp"/>
+        <c:import url="../../import/with-header/script.jsp"/>
     </body>
 </html>

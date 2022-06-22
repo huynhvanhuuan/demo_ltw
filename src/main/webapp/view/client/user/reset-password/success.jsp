@@ -9,14 +9,14 @@
 	<body>
 		<section class="success">
 			<div class="success-content">
-				<h3 style="color: var(--primary-color);">Đăng ký tài khoản thành công</h3>
-				<span style="display: block; text-align: center">Vui lòng kiểm tra email để xác minh tài khoản của bạn.</span>
+				<h3 style="color: var(--primary-color);">Đặt lại mật khẩu thành công</h3>
+				<span style="display: block; text-align: center">Chúng tôi đã gửi mật khẩu mới đến email của bạn. Xin vui lòng kiểm tra</span>
 				<div class="flex-center">
 					<a href="${requestScope.contextPath}/home" class="btn-primary">Trở về trang chủ</a>
 				</div>
 				<hr>
 				<span style="display: block; text-align: center">Không nhận được thư? Hãy nhập email vào ô bên dưới và gửi cho chúng tôi</span>
-				<form id="resend" novalidate="novalidate">
+				<form id="reset-password" novalidate="novalidate">
 					<input type="text" id="email" name="email" placeholder="Nhập email của bạn">
 					<button type="submit">Gửi</button>
 				</form>
@@ -35,7 +35,7 @@
 				width: '800px'
 			});
 
-			$("#resend").submit(function (e) {
+			$("#reset-password").submit(function (e) {
 				e.preventDefault();
 				const email = $("#email").val();
 
@@ -47,7 +47,7 @@
 					return;
 				}
 				$.ajax({
-					url: "${requestScope.contextPath}/api/user/resend-verify-email",
+					url: "${requestScope.contextPath}/api/user/reset-password",
 					type: "POST",
 					data: { email: email },
 					success: function(response) {
