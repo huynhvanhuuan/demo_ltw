@@ -1,8 +1,8 @@
 :root {
-    --primary-color: #45d58f;
+    --primary-color: #32a66c;
     --primary-color-rgba: rgba(69, 213, 143, 0.2);
     --primary-color-rgba1: rgba(69, 213, 143, 0.05);
-    --primary-color-hover: rgba(69, 213, 143, 0.92);
+    --primary-color-hover: rgba(87, 222, 154, 0.92);
     --secondary-color: #ff865d;
     --third-color: #46bf9d;
     --fourth-color: #41cc88;

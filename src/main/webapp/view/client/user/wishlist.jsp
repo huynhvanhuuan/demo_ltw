@@ -3,12 +3,12 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <c:import url="import/with-header/head.jsp"/>
+        <c:import url="../import/with-header/head.jsp"/>
         <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/wishlist.css"/>
         <title>Danh sách yêu thích | Amanda</title>
     </head>
     <body>
-        <c:import url="import/header.jsp"/>
+        <c:import url="../import/header.jsp"/>
         <main class="content">
             <div class="container">
                 <div class="content-title">Danh sách yêu thích</div>
@@ -151,10 +151,10 @@
             </div>
         </main>
 
-        <c:import url="import/footer.jsp"/>
-        <c:import url="import/signin-signup.jsp"/>
+        <c:import url="../import/footer.jsp"/>
+        <c:import url="../import/signin-signup.jsp"/>
         <script src="${requestScope.contextPath}/assets/js/signup-signin.js"></script>
         <script src="${requestScope.contextPath}/assets/js/product.js"></script>
-        <c:import url="import/with-header/script.jsp"/>
+        <c:import url="../import/with-header/script.jsp"/>
     </body>
 </html>

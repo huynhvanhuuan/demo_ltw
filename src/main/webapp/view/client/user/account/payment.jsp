@@ -11,445 +11,243 @@
     </head>
     <body>
         <c:import url="../../import/header.jsp"/>
-        <main class="container-body">
-            <section class="box-userr">
-                <div class="circle-img-user">
-                    <img src="${requestScope.contextPath}/assets/images/user/user-4.jpg" alt="">
-                </div>
-                <div class="big-name-user">
-                    <p>Nguyễn Văn A</p>
-                </div>
-            </section>
-            <section class="box-noidung">
+        <section class="user">
+            <div class="container">
                 <div class="sidebar">
-                    <div class="info side-con">
-                        <i class="fa fa-user icon" aria-hidden="true"></i>
-                        <p class="btn-left-box">Thông tin khách hàng</p>
-                    </div>
-                    <div class="order side-con">
-                        <i class="fa fa-list-alt icon" aria-hidden="true"></i>
-                        <p class="right btn-right-box">Thông tin đơn hàng</p>
-                    </div>
-                </div>
-                <!-- PHẦN HIỆN RA CỦA THÔNG TIN KHÁCH HÀNG -->
-                <div class="drop-down-info">
-                    <div class="drop-down-info-sidebar">
-                        <div class="personal side-item"><p>Hồ sơ</p></div>
-                        <div class="address side-item"><p>Địa chỉ</p></div>
-                        <div class="psw side-item"><p>Đổi mật khẩu</p></div>
-                    </div>
-                    <div class="drop-down-personal">
-                        <div class="left-info">
-                            <div class="seen-part">
-                                <div class="seen-text">
-                                    <ul>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Họ và tên :</p>
-                                                <p class="p_right">Nguyễn Văn A</p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Email :</p>
-                                                <p class="p_right">19130024@st.hcmuaf.edu.vn</p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Số điện thoại :</p>
-                                                <p class="p_right">123456789</p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Giới tính :</p>
-                                                <p class="p_right">Nam</p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Ngày sinh: </p>
-                                                <p class="p_right">25/03/2001</p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="seen-btn">
-                                    <div class="btn"><a href="">Thay đổi hồ sơ</a></div>
-                                </div>
+                    <div class="sidebar-user">
+                        <a href="${requestScope.contextPath}/user/account/profile">
+                            <div class="sidebar-avatar">
+                                <div class="sidebar-avatar__placeholder"></div>
+                                <img class="sidebar-avatar__img" src="https://robohash.org/ankoi0310" alt="username"/>
                             </div>
-                            <div class="btn-hide-part">
-                                <div class="hide-text">
-                                    <ul>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Tên đăng nhập :</p>
-                                                <div class="p_right"><input type="text" class="write"/></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Họ và tên :</p>
-                                                <div class="p_right"><input type="text" class="write"/></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Email :</p>
-                                                <div class="p_right"><input type="text" class="write"/></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Số điện thoại :</p>
-                                                <div class="p_right"><input type="text" class="write"/></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Giới tính</p>
-                                                <div class="p_right list-sex">
-                                                    <div class="sex-item">
-                                                        <div class="check-sex">
-                                                            <input type="radio" class="user__check-sex"
-                                                                   name="check-sex" checked/>
-                                                        </div>
-                                                        <div class="sex-user-info">Nam</div>
-                                                    </div>
-                                                    <div class="sex-item">
-                                                        <div class="check-sex">
-                                                            <input type="radio" class="user__check-sex"
-                                                                   name="check-sex" checked/>
-                                                        </div>
-                                                        <div class="sex-user-info">Nữ</div>
-                                                    </div>
-                                                    <div class="sex-item">
-                                                        <div class="check-sex">
-                                                            <input type="radio" class="user__check-sex"
-                                                                   name="check-sex" checked/>
-                                                        </div>
-                                                        <div class="sex-user-info">Khác</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text">
-                                                <p class="p_left">Ngày sinh</p>
-                                                <div class="p_right list-birth">
-                                                    <div class="form-control">
-                                                        <select class="form-user-input" name="day"></select>
-                                                        <label>Ngày</label>
-                                                        <i class="fas fa-sort-down"></i>
-                                                    </div>
-                                                    <div class="form-control">
-                                                        <select class="form-user-input" name="month"></select>
-                                                        <label>Tháng</label>
-                                                        <i class="fas fa-sort-down"></i>
-                                                    </div>
-                                                    <div class="form-control">
-                                                        <select class="form-user-input" name="year"></select>
-                                                        <label>Năm</label>
-                                                        <i class="fas fa-sort-down"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="hide-btn">
-                                    <div class="btn">
-                                        <a href="">Cập nhật hồ sơ</a>
+                        </a>
+                        <div>
+                            <div class="sidebar-username">Huỳnh Văn Hữu Ân</div>
+                            <div>
+                                <a class="edit" href="${requestScope.contextPath}/user/account/profile">
+                                    Sửa hồ sơ&ensp;<i class="fas fa-edit"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <div class="menu-dropdown menu-dropdown-open">
+                            <div class="menu-dropdown-header">
+                                <a href="${requestScope.contextPath}/user/account/profile">
+                                    <i class="far fa-user"></i>
+                                    <div class="menu-dropdown-header-title">
+                                        <span>Tài khoản của tôi</span>
                                     </div>
+                                </a>
+                            </div>
+                            <div class="menu-dropdown-body menu-dropdown-body-open" style="opacity: 1">
+                                <div class="menu-dropdown-item">
+                                    <a class="item" href="${requestScope.contextPath}/user/account/profile">Hồ Sơ</a>
+                                    <a class="item active" href="${requestScope.contextPath}/user/account/payment">Ngân Hàng</a>
+                                    <a class="item" href="${requestScope.contextPath}/user/account/address">Địa Chỉ</a>
+                                    <a class="item" href="${requestScope.contextPath}/user/account/change-password">Đổi Mật Khẩu</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="right-img">
-                            <div class="img-box">
-                                <img src="${requestScope.contextPath}/assets/images/user/user-4.jpg"
-                                     alt="User image">
-                            </div>
-                            <div class="pick-image">
-                                <div class="btn-img" href="">Chọn ảnh</div>
-                            </div>
-                            <div class="note">
-                                <p>Dung lượng file tối đa 1MB</p>
-                                <p>Định dạng: .JPEG, .PNG</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="drop-down-address">
-                        <div class="seen-part">
-                            <div class="seen-text">
-                                <ul>
-                                    <li>
-                                        <div class="text text_first">
-                                            <p class="p_left">Họ và tên :</p>
-                                            <p class="p_right">Nguyễn Văn A</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="text">
-                                            <p class="p_left">Số điện thoại :</p>
-                                            <p class="p_right">123456789</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="text">
-                                            <p class="p_left">Địa chỉ nhận hàng :</p>
-                                            <p class="p_right">Số nhà 123, đường CMT8, TP. Thủ Đức</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="seen-btn">
-                                <div class="btn">
-                                    <a href="">Thay đổi địa chỉ</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="btn-hide-part">
-                            <div class="hide-text">
-                                <div class="text">
-                                    <p class="p_left">Địa chỉ mới :</p>
-                                    <div class="p_right"><input type="text" class="write"></input></div>
-                                </div>
-                            </div>
-                            <div class="hide-btn">
-                                <div class="btn">
-                                    <a href="">Cập nhật địa chỉ</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="drop-down-psw">
-                        <div class="seen-text">
-                            <ul>
-                                <li>
-                                    <div class="text text_first">
-                                        <p class="p_left">Mật khẩu hiện tại :</p>
-                                        <div class="p_right"><input type="text" class="write"></input></div>
+                        <div class="menu-dropdown">
+                            <div class="menu-dropdown-header">
+                                <a class="" href="${requestScope.contextPath}/user/purchase">
+                                    <i class="far fa-clipboard-list"></i>
+                                    <div class="menu-dropdown-header-title">
+                                        <span>Đơn mua</span>
                                     </div>
-                                </li>
-                                <li>
-                                    <div class="text">
-                                        <p class="p_left">Mật khẩu mới :</p>
-                                        <div class="p_right"><input type="text" class="write"></input></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="text">
-                                        <p class="p_left">Xác thực mật khẩu :</p>
-                                        <div class="p_right"><input type="text" class="write"></input></div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="seen-btn">
-                            <div class="btn">
-                                <a href="">Thay đổi mật khẩu</a>
+                                </a>
+                            </div>
+                            <div class="menu-dropdown-body" style="opacity: 0">
+                                <div class="menu-dropdown-item"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- PHẦN HIỆN RA CỦA THÔNG TIN ĐƠN HÀNG -->
-                <div class="drop-down-order">
-                    <div class="drop-down-order-sidebar">
-                        <div class="tat-ca side-item item-glow"><p>Tất cả</p></div>
-                        <div class="cho-xac-nhan side-item item-glow"><p>Chờ xác nhận</p></div>
-                        <div class="cho-lay-hang side-item item-glow"><p>Chờ lấy hàng</p></div>
-                        <div class="dang-giao side-item item-glow"><p>Đang giao</p></div>
-                        <div class="da-giao side-item item-glow"><p>Đã giao</p></div>
-                        <div class="da-huy side-item item-glow"><p>Đã hủy</p></div>
-                    </div>
-                    <div class="drop-down-info-order">
-                        <div class="drop-down-tat-ca">
-                            <i>
-                                <div class="item">
-                                    <div class="top">
-                                        <div class="left">
-                                            <p>Tình trạng đơn hàng:</p>
-                                        </div>
-                                        <div class="right">
-                                            <p>ĐANG GIAO</p>
-                                        </div>
-                                    </div>
-                                    <a class="mid" href="product-detail.html">
-                                        <i>
-                                            <div class="item-order">
-                                                <div class="img">
-                                                    <img src="./images/sofa_vai_poppy/sofa_vai_poppy_mau_hong_5.jpg"
-                                                         alt="">
+                <div class="content">
+                    <div class="content-profile">
+                        <div class="profile-container">
+                            <div class="profile-header">
+                                <h1 class="profile-title">Hồ sơ của tôi</h1>
+                                <div class="profile-alert">Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
+                            </div>
+                            <div class="d-flex profile-body">
+                                <div class="profile-detail">
+                                    <form id="profile" novalidate="novalidate">
+                                        <div class="profile-form-group">
+                                            <div class="profile-row">
+                                                <div class="profile-detail-title">
+                                                    <label>Tên đăng nhập</label>
                                                 </div>
-                                                <div class="name-sp">
-                                                    <div class="name"><p>SOFA VẢI POPPY MÀU HỒNG</p></div>
-                                                    <div class="sl"><p>x1</p></div>
+                                                <div class="profile-detail-value">
+                                                    <div class="none-edit-value">{username}</div>
                                                 </div>
-                                                <div class="price">
-                                                    <div class="first-price"><p>25.415.000đ</p></div>
-                                                    <div class="last-price"><p>25.415.000đ</p></div>
-                                                </div>
-                                            </div>
-                                        </i>
-                                    </a>
-                                    <div class="bot">
-                                        <div class="total-price">
-                                            <div class="total-price-left">
-                                                <p>Tổng số tiền:</p>
-                                            </div>
-                                            <div class="total-price-right">
-                                                <p>25.415.000đ</p>
                                             </div>
                                         </div>
-                                        <div class="btn-ship">
-                                            <div class="ship">
-                                                <p class="ship-text">Đơn hàng sẽ được chuẩn bị và chuyển đi trước :</p>
-                                                <p class="ship-date">23/12/2021</p>
-                                            </div>
-                                            <div class="button">
-                                                <div class="btn">
-                                                    <a class="button-again" href="">
-                                                        <p>Hủy đơn hàng</p>
-                                                    </a>
+                                        <div class="profile-form-group">
+                                            <div class="profile-row">
+                                                <div class="profile-detail-title">
+                                                    <label>Email</label>
+                                                </div>
+                                                <div class="profile-detail-value">
+                                                    <div class="none-edit-value">{email}</div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="profile-form-group">
+                                            <div class="profile-row">
+                                                <div class="profile-detail-title">
+                                                    <label>Số điện thoại</label>
+                                                </div>
+                                                <div class="profile-detail-value">
+                                                    <div class="none-edit-value">{phone}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-form-group">
+                                            <div class="profile-row">
+                                                <div class="profile-col">
+                                                    <div class="profile-detail-title">
+                                                        <label>Họ</label>
+                                                    </div>
+                                                    <div class="profile-detail-value">
+                                                        <div class="edit-value">
+                                                            <input type="text" placeholder="" value="Huỳnh Văn Hữu">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-col">
+                                                    <div class="profile-detail-title">
+                                                        <label>Tên</label>
+                                                    </div>
+                                                    <div class="profile-detail-value">
+                                                        <div class="edit-value">
+                                                            <input type="text" placeholder="" value="Ân">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-form-group">
+                                            <div class="profile-row">
+                                                <div class="profile-detail-title">
+                                                    <label>Giới tính</label>
+                                                </div>
+                                                <div class="profile-detail-value">
+                                                    <div class="profile-gender">
+                                                        <input type="hidden" name="gender">
+                                                        <div class="profile-radio-group" role="radiogroup">
+                                                            <div class="profile-radio" tabindex="0" role="radio" aria-checked="true">
+                                                                <div class="profile-radio-button profile-radio-button--checked">
+                                                                    <div class="profile-radio-button__outer-circle">
+                                                                        <div class="profile-radio-button__inner-circle"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-radio-label">Nam</div>
+                                                            </div>
+                                                            <div class="profile-radio" tabindex="0" role="radio" aria-checked="false">
+                                                                <div class="profile-radio-button">
+                                                                    <div class="profile-radio-button__outer-circle">
+                                                                        <div class="profile-radio-button__inner-circle"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-radio-label">Nữ</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-form-group">
+                                            <div class="profile-row">
+                                                <div class="profile-detail-title">
+                                                    <label>Ngày sinh</label>
+                                                </div>
+                                                <div class="profile-detail-value">
+                                                    <div class="profile-date-of-birth">
+                                                        <div class="dropdown dropdown-day">
+                                                            <select name="day">
+                                                                <option value="1">Ngày 1</option>
+                                                                <option value="2">Ngày 2</option>
+                                                                <option value="3">Ngày 3</option>
+                                                                <option value="4">Ngày 4</option>
+                                                                <option value="5">Ngày 5</option>
+                                                                <option value="6">Ngày 6</option>
+                                                                <option value="7">Ngày 7</option>
+                                                                <option value="8">Ngày 8</option>
+                                                                <option value="9">Ngày 9</option>
+                                                                <option value="10">Ngày 10</option>
+                                                                <option value="11">Ngày 11</option>
+                                                                <option value="12">Ngày 12</option>
+                                                                <option value="13">Ngày 13</option>
+                                                                <option value="14">Ngày 14</option>
+                                                                <option value="15">Ngày 15</option>
+                                                                <option value="16">Ngày 16</option>
+                                                                <option value="17">Ngày 17</option>
+                                                                <option value="18">Ngày 18</option>
+                                                                <option value="19">Ngày 19</option>
+                                                                <option value="20">Ngày 20</option>
+                                                                <option value="21">Ngày 21</option>
+                                                                <option value="22">Ngày 22</option>
+                                                                <option value="23">Ngày 23</option>
+                                                                <option value="24">Ngày 24</option>
+                                                                <option value="25">Ngày 25</option>
+                                                                <option value="26">Ngày 26</option>
+                                                                <option value="27">Ngày 27</option>
+                                                                <option value="28">Ngày 28</option>
+                                                                <option value="29">Ngày 29</option>
+                                                                <option value="30">Ngày 30</option>
+                                                                <option value="31">Ngày 31</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="dropdown dropdown-month">
+                                                            <select name="month">
+                                                                <option value="1">Tháng 1</option>
+                                                                <option value="2">Tháng 2</option>
+                                                                <option value="3">Tháng 3</option>
+                                                                <option value="4">Tháng 4</option>
+                                                                <option value="5">Tháng 5</option>
+                                                                <option value="6">Tháng 6</option>
+                                                                <option value="7">Tháng 7</option>
+                                                                <option value="8">Tháng 8</option>
+                                                                <option value="9">Tháng 9</option>
+                                                                <option value="10">Tháng 10</option>
+                                                                <option value="11">Tháng 11</option>
+                                                                <option value="12">Tháng 12</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-year">
+                                                            <input type="text" placeholder="Ex: 1995" value="{dateOrBirth.year}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-form-submit">
+                                            <button type="submit" class="profile-button-submit">Lưu</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="d-flex justify-content-center profile-image">
+                                    <div>
+                                        <div class="profile-image-content">
+                                            <div class="profile-image-data" style="background-image: url('https://robohash.org/imageUrl')"></div>
+                                        </div>
+                                        <form id="upload-avatar" novalidate="novalidate">
+                                            <input type="file" name="image" class="d-none" accept=".jpeg,.png,.jpg">
+                                            <button type="button" class="image-upload-button">Chọn ảnh</button>
+                                        </form>
+                                        <div class="profile-image-alert">
+                                            <div class="content">Định dạng: .JPEG, .PNG</div>
                                         </div>
                                     </div>
                                 </div>
-                            </i>
-                            <i>
-                                <div class="item">
-                                    <div class="top">
-                                        <div class="left">
-                                            <p>Tình trạng đơn hàng:</p>
-                                        </div>
-                                        <div class="right">
-                                            <p>ĐANG GIAO</p>
-                                        </div>
-                                    </div>
-                                    <a class="mid" href="product-detail.html">
-                                        <i>
-                                            <div class="item-order">
-                                                <div class="img">
-                                                    <img src="./images/sofa_vai_poppy/sofa_vai_poppy_mau_hong_5.jpg"
-                                                         alt="">
-                                                </div>
-                                                <div class="name-sp">
-                                                    <div class="name"><p>SOFA VẢI POPPY MÀU HỒNG</p></div>
-                                                    <div class="sl"><p>x2</p></div>
-                                                </div>
-                                                <div class="price">
-                                                    <div class="first-price"><p>25.415.000đ</p></div>
-                                                    <div class="last-price"><p>25.415.000đ</p></div>
-                                                </div>
-                                            </div>
-                                        </i>
-                                    </a>
-                                    <div class="bot">
-                                        <div class="total-price">
-                                            <div class="total-price-left">
-                                                <p>Tổng số tiền:</p>
-                                            </div>
-                                            <div class="total-price-right">
-                                                <p>50.830.000đ</p>
-                                            </div>
-                                        </div>
-                                        <div class="btn-ship">
-                                            <div class="ship">
-                                                <p class="ship-text">Đơn hàng sẽ được chuẩn bị và chuyển đi trước :</p>
-                                                <p class="ship-date">23/12/2021</p>
-                                            </div>
-                                            <div class="button">
-                                                <div class="btn">
-                                                    <a class="button-again" href="">
-                                                        <p>Hủy đơn hàng</p>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </i>
-                            <i>
-                                <div class="item">
-                                    <div class="top">
-                                        <div class="left">
-                                            <p>Tình trạng đơn hàng:</p>
-                                        </div>
-                                        <div class="right">
-                                            <p>ĐANG GIAO</p>
-                                        </div>
-                                    </div>
-                                    <a class="mid" href="product-detail.html">
-                                        <i>
-                                            <div class="item-order">
-                                                <div class="img">
-                                                    <img src="./images/sofa_vai_poppy/sofa_vai_poppy_mau_hong_5.jpg"
-                                                         alt="">
-                                                </div>
-                                                <div class="name-sp">
-                                                    <div class="name"><p>SOFA VẢI POPPY MÀU HỒNG</p></div>
-                                                    <div class="sl"><p>x1</p></div>
-                                                </div>
-                                                <div class="price">
-                                                    <div class="first-price"><p>25.415.000đ</p></div>
-                                                    <div class="last-price"><p>25.415.000đ</p></div>
-                                                </div>
-                                            </div>
-                                        </i>
-                                        <i>
-                                            <div class="item-order">
-                                                <div class="img">
-                                                    <img src="./images/sofa_vai_poppy/sofa_vai_poppy_mau_hong_4.jpg"
-                                                         alt="">
-                                                </div>
-                                                <div class="name-sp">
-                                                    <div class="name"><p>SOFA VẢI POPPY MÀU HỒNG</p></div>
-                                                    <div class="sl"><p>x1</p></div>
-                                                </div>
-                                                <div class="price">
-                                                    <div class="first-price"><p>25.415.000đ</p></div>
-                                                    <div class="last-price"><p>25.415.000đ</p></div>
-                                                </div>
-                                            </div>
-                                        </i>
-                                    </a>
-                                    <div class="bot">
-                                        <div class="total-price">
-                                            <div class="total-price-left">
-                                                <p>Tổng số tiền:</p>
-                                            </div>
-                                            <div class="total-price-right">
-                                                <p>50.830.000đ</p>
-                                            </div>
-                                        </div>
-                                        <div class="btn-ship">
-                                            <div class="ship">
-                                                <p class="ship-text">Đơn hàng sẽ được chuẩn bị và chuyển đi trước :</p>
-                                                <p class="ship-date">23/12/2021</p>
-                                            </div>
-                                            <div class="button">
-                                                <div class="btn">
-                                                    <a class="button-again" href="">
-                                                        <p>Hủy đơn hàng</p>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </i>
+                            </div>
                         </div>
-                        <div class="drop-down-cho-xac-nhan"></div>
-                        <div class="drop-down-cho-lay-hang"></div>
-                        <div class="drop-down-dang-giao"></div>
-                        <div class="drop-down-da-giao"></div>
-                        <div class="drop-down-da-huy"></div>
                     </div>
                 </div>
-            </section>
-        </main>
+            </div>
+        </section>
         <c:import url="../../import/footer.jsp"/>
         <c:import url="../../import/signin-signup.jsp"/>
         <script src="https://code.jquery.com/jquery-3.6.0.js"

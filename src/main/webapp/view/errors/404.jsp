@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<% String path = request.getContextPath(); %>
 <html lang="en">
 	<head>
 		<c:import url="../client/import/without-header/head.jsp"/>

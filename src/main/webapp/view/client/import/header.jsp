@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <header class="header">
     <div class="container">
         <div class="box">
@@ -29,19 +29,19 @@
                         </form>
                     </li>
                     <li class="header-item">
-                        <a href="#">
+                        <a href="${requestScope.contextPath}/user/wishlist">
                             <ion-icon name="heart-outline"></ion-icon>
                         </a>
                     </li>
                     <li class="header-item">
-                        <a href="#">
+                        <a href="${requestScope.contextPath}/user/cart">
                             <ion-icon name="cart-outline"></ion-icon>
                         </a>
                     </li>
                     <c:choose>
-                        <c:when test="${sessionScope.user != null}">
+                        <c:when test="${sessionScope.token != null}">
                             <li class="header-item">
-                                <a href="${requestScope.contextPath}/user/account/profile">
+                                <a href="${requestScope.contextPath}/user/purchase">
                                     <ion-icon name="person-outline"></ion-icon>
                                 </a>
                             </li>

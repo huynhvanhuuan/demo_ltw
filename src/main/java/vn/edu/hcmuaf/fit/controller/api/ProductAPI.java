@@ -21,7 +21,7 @@ import java.util.List;
 @WebServlet(name = "api-product", urlPatterns = "/api/product/*")
 public class ProductAPI extends HttpServlet {
     private final Gson GSON = new GsonBuilder().serializeNulls().create();
-    private final ProductService productService = ProductServiceImpl.getInstance();
+    private final ProductService productService = new ProductServiceImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");

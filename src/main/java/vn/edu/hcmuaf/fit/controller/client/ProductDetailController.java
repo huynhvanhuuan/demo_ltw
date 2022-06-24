@@ -15,7 +15,7 @@ import java.util.*;
 @WebServlet(name = "client-product-detail", value = "/product-detail")
 public class ProductDetailController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private final ProductService productService = ProductServiceImpl.getInstance();
+    private final ProductService productService = new ProductServiceImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long id = Long.parseLong(request.getParameter("id"));

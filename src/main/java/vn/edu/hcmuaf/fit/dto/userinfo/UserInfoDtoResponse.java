@@ -11,7 +11,7 @@ public class UserInfoDtoResponse {
     private String email;
     private String phone;
     private Date dateOfBirth;
-    private boolean isMale;
+    private boolean male;
     private String imageUrl;
 
     public UserInfoDtoResponse() {
@@ -27,7 +27,7 @@ public class UserInfoDtoResponse {
         this.email = email;
         this.phone = phone;
         this.dateOfBirth = dateOfBirth;
-        this.isMale = isMale;
+        this.male = isMale;
         this.imageUrl = imageUrl;
     }
 
@@ -96,11 +96,11 @@ public class UserInfoDtoResponse {
     }
 
     public boolean isMale() {
-        return isMale;
+        return male;
     }
 
     public void setMale(boolean male) {
-        isMale = male;
+        this.male = male;
     }
 
     public String getImageUrl() {

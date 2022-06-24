@@ -14,23 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-	private static ProductServiceImpl instance;
 	private final ProductDAO productDAO;
 	private int totalPage = 1;
 	
-	private ProductServiceImpl() {
+	public ProductServiceImpl() {
 		this.productDAO = ProductDAOImpl.getInstance();
 
 		((ProductDAOImpl) productDAO).setTrademarkDAO(TrademarkDAOImpl.getInstance());
 		((ProductDAOImpl) productDAO).setCategoryDAO(CategoryDAOImpl.getInstance());
 		((ProductDAOImpl) productDAO).setProductDetailDAO(ProductDetailDAOImpl.getInstance());
-	}
-
-	public static ProductServiceImpl getInstance() {
-		if (instance == null) {
-			instance = new ProductServiceImpl();
-		}
-		return instance;
 	}
 
 	@Override

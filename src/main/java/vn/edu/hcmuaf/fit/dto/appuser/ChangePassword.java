@@ -2,12 +2,12 @@ package vn.edu.hcmuaf.fit.dto.appuser;
 
 public class ChangePassword {
     private Long userId;
-    private String oldPassword;
+    private String currentPassword;
     private String newPassword;
 
-    public ChangePassword(Long userId, String oldPassword, String newPassword) {
+    public ChangePassword(Long userId, String currentPassword, String newPassword) {
         this.userId = userId;
-        this.oldPassword = oldPassword;
+        this.currentPassword = currentPassword;
         this.newPassword = newPassword;
     }
 
@@ -19,12 +19,12 @@ public class ChangePassword {
         this.userId = userId;
     }
 
-    public String getOldPassword() {
-        return oldPassword;
+    public String getCurrentPassword() {
+        return currentPassword;
     }
 
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
     }
 
     public String getNewPassword() {

@@ -2,7 +2,6 @@ package vn.edu.hcmuaf.fit.controller.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import vn.edu.hcmuaf.fit.constant.AppError;
 import vn.edu.hcmuaf.fit.domain.*;
 import vn.edu.hcmuaf.fit.dto.appuser.*;
 import vn.edu.hcmuaf.fit.dto.userinfo.UserInfoDtoResponse;
@@ -23,8 +22,9 @@ import java.util.UUID;
 @MultipartConfig
 public class AppUserAPI extends HttpServlet {
 	private final Gson GSON = new GsonBuilder().serializeNulls().create();
-	private final AppUserService appUserService = AppUserServiceImpl.getInstance();
+	private final AppUserService appUserService = new AppUserServiceImpl();
 	private final AppJwtTokenProvider appJwtTokenProvider = new AppJwtTokenProvider();
+
 	@Override
 	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 		HttpServletRequest request = (HttpServletRequest) req;
@@ -41,60 +41,49 @@ public class AppUserAPI extends HttpServlet {
 			case "GET":
 				switch (pathParts[1]) {
 					case "list":
-						getUsers(response);
+						getUsers(request);
 						break;
-					case "profile":
-						getProfile(request, response);
+					case "account":
+						switch (pathParts[2]) {
+							case "profile":
+								getProfile(request);
+								break;
+						}
 						break;
 					case "verify":
-						if (pathParts.length == 3) {
-							try {
-								UUID token = UUID.fromString(pathParts[2]);
-								verify(request, response, token);
-							} catch (Exception e) {
-								request.setAttribute("error", "Mã xác nhận không hợp lệ");
-								request.getRequestDispatcher("/user/verify/failure").forward(request, response);
-							}
-						} else {
-							response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-						}
+						UUID token = UUID.fromString(pathParts[2]);
+						verify(request, token);
 						break;
 				}
 				break;
 			case "POST":
 				switch (pathParts[1]) {
 					case "register":
-						register(request, response);
+						register(request);
 						break;
 					case "resend-verify-email":
-						resendVerifyEmail(request, response);
+						resendVerifyEmail(request);
 						break;
 					case "reset-password":
 						resetPassword(request, response);
 						break;
 					case "login":
-						login(request, response);
+						login(request);
+						break;
+					case "change-password":
+						changePassword(request);
 						break;
 				}
 				break;
 		}
 	}
 
-	public void getUsers(HttpServletResponse response) throws IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+	public void getUsers(HttpServletRequest request) {
 		AppServiceResult<List<AppUserForAdminDto>> result = appUserService.getUsers();
-		if (result.isSuccess()) {
-			response.setStatus(200);
-			response.getWriter().println(GSON.toJson(result));
-		} else {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
+		request.setAttribute("result", GSON.toJson(result));
 	}
 
-	public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+	public void register(HttpServletRequest request) throws ServletException, IOException {
 		String lastName = request.getParameter("lastName");
 		String firstName = request.getParameter("firstName");
 		String phone = request.getParameter("phone");
@@ -104,123 +93,65 @@ public class AppUserAPI extends HttpServlet {
 		String password = request.getParameter("passwordSignup");
 
 		UserRegister userRegister = new UserRegister(lastName, firstName, phone, isMale, email, username, password);
-
 		AppBaseResult result = appUserService.register(userRegister);
-
-		response.getWriter().println(GSON.toJson(result));
+		request.setAttribute("result", GSON.toJson(result));
 	}
 
-	private void resendVerifyEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+	private void resendVerifyEmail(HttpServletRequest request) {
 		String email = request.getParameter("email");
-
 		AppBaseResult result = appUserService.resendVerifyEmail(email);
-
-		response.getWriter().println(GSON.toJson(result));
+		request.setAttribute("result", GSON.toJson(result));
 	}
 
-	private void verify(HttpServletRequest request, HttpServletResponse response, UUID token) throws IOException, ServletException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+	private void verify(HttpServletRequest request, UUID token) {
 		AppBaseResult result = appUserService.verifyEmail(token);
-
-		if (result.isSuccess()) {
-			request.getRequestDispatcher("/user/verify/success").forward(request, response);
-		} else {
-			request.setAttribute("error", result.getMessage());
-			request.getRequestDispatcher("/user/verify/failure").forward(request, response);
-		}
+		request.setAttribute("result", GSON.toJson(result));
 	}
 
-	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+	public void login(HttpServletRequest request) throws ServletException, IOException {
 		String username = request.getParameter("usernameSignin");
 		String password = request.getParameter("passwordSignin");
 
 		AppServiceResult<AppUser> result = appUserService.getUserLogin(new UserLogin(username, password));
-
+		UserLoginResponse userLoginResponse = null;
 		if (result.isSuccess()) {
 			AppUserDomain appUserDomain = new AppUserDomain(result.getData());
 			String userToken = appJwtTokenProvider.generateJwtToken(appUserDomain);
-			UserLoginResponse userLoginResponse = new UserLoginResponse(appUserDomain.getUserId(), appUserDomain.getUsername(), userToken);
 
-			// save to session
-			HttpSession session = request.getSession();
-			session.setAttribute("user", userLoginResponse);
-
-			AppServiceResult<UserLoginResponse> res =
-					new AppServiceResult<>(true, 0, "Success", userLoginResponse);
-
-			response.getWriter().println(GSON.toJson(res));
-		} else {
-			response.getWriter().println(GSON.toJson(result));
+			userLoginResponse = new UserLoginResponse(appUserDomain.getUserId(), appUserDomain.getUsername(), userToken);
 		}
+		AppServiceResult<UserLoginResponse> res = new AppServiceResult<>(result.isSuccess(), result.getErrorCode(), result.getMessage(), userLoginResponse);
+		request.setAttribute("result", GSON.toJson(res));
 	}
 
-	public void getProfile(HttpServletRequest request, HttpServletResponse  response) throws IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		try {
-			Long id = Long.parseLong(request.getParameter("id"));
-			AppServiceResult<UserInfoDtoResponse> result = appUserService.getProfile(id);
-
-			response.getWriter().println(GSON.toJson(result));
-		} catch (NumberFormatException e) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
+	public void getProfile(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Long userId = (Long) session.getAttribute("user_id");
+		AppServiceResult<UserInfoDtoResponse> result = appUserService.getProfile(userId);
+		request.setAttribute("result", GSON.toJson(result));
 	}
 
 	public void saveProfile(HttpServletRequest request, HttpServletResponse response) {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
 	}
 
-	public void changePassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+	public void changePassword(HttpServletRequest request) {
+		Long id = (Long) request.getSession().getAttribute("user_id");
+		String currentPassword = request.getParameter("currentPassword");
+		String newPassword = request.getParameter("newPassword");
 
-		try {
-			Long id = Long.parseLong(request.getParameter("id"));
-			String oldPassword = request.getParameter("oldPassword");
-			String newPassword = request.getParameter("newPassword");
-
-			AppBaseResult result = appUserService.changePassword(new ChangePassword(id, oldPassword, newPassword));
-
-			response.getWriter().println(GSON.toJson(result));
-		} catch (Exception e) {
-			AppBaseResult result = new AppBaseResult(false, AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
-			response.getWriter().println(GSON.toJson(result));
-		}
+		AppBaseResult result = appUserService.changePassword(new ChangePassword(id, currentPassword, newPassword));
+		request.setAttribute("result", GSON.toJson(result));
 	}
 
 	public void uploadAvatar(HttpServletRequest request, HttpServletResponse response) {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
 	}
 
 	public void resetPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-
 		String email = request.getParameter("email");
-
 		AppBaseResult result = appUserService.resetPassword(email);
-
-		response.getWriter().println(GSON.toJson(result));
+		request.setAttribute("result", GSON.toJson(result));
 	}
 
 	public void updateStatus(HttpServletRequest request, HttpServletResponse response) {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-
-	public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 	}
 }

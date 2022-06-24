@@ -13,20 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryServiceImpl implements CategoryService {
-	private static CategoryServiceImpl instance;
 	private final CategoryDAO categoryDAO;
-	
-	private CategoryServiceImpl() {
+
+	public CategoryServiceImpl() {
 		categoryDAO = CategoryDAOImpl.getInstance();
 	}
 
-	public static CategoryServiceImpl getInstance() {
-		if (instance == null) {
-			instance = new CategoryServiceImpl();
-		}
-		return instance;
-	}
-	
 	@Override
 	public AppServiceResult<List<CategoryDto>> getCategories() {
 		try {

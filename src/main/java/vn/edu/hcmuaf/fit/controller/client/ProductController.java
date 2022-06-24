@@ -21,7 +21,7 @@ import java.util.List;
 public class ProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private final ProductDetailService productDetailService = ProductDetailServiceImpl.getInstance();
-    private final ProductService productService = ProductServiceImpl.getInstance();
+    private final ProductService productService = new ProductServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

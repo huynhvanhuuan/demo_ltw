@@ -19,14 +19,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class AppUserServiceImpl implements AppUserService {
-    private static AppUserServiceImpl instance;
     private final AppUserDAO appUserDAO;
     private final UserInfoDAO userInfoDAO;
     private final AppRoleDAO appRoleDAO;
     private final VerificationTokenDAO verificationTokenDAO;
     private final AppMailService appMailService;
 
-    private AppUserServiceImpl() {
+    public AppUserServiceImpl() {
         appUserDAO = AppUserDAOImpl.getInstance();
         userInfoDAO = UserInfoDAOImpl.getInstance();
         appRoleDAO = AppRoleDAOImpl.getInstance();
@@ -35,13 +34,6 @@ public class AppUserServiceImpl implements AppUserService {
         ((VerificationTokenDAOImpl) verificationTokenDAO).setAppUserDAO(appUserDAO);
 
         appMailService = AppMailServiceImpl.getInstance();
-    }
-
-    public static AppUserServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new AppUserServiceImpl();
-        }
-        return instance;
     }
 
     @Override
@@ -179,7 +171,26 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppBaseResult changePassword(ChangePassword changePassword) {
-        return null;
+        try {
+            AppUser appUser = appUserDAO.findById(changePassword.getUserId());
+            if (appUser == null) {
+                return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(),
+                        "Id không tồn tại: " + changePassword.getUserId());
+            }
+
+            if (!appUser.getPassword().equals(hashPassword(changePassword.getCurrentPassword()))) {
+                return AppBaseResult.GenarateIsFailed(AppError.Validation.errorCode(),
+                        "Mật khẩu cũ không chính xác!");
+            }
+
+            appUser.setPassword(hashPassword(changePassword.getNewPassword()));
+            appUserDAO.save(appUser);
+
+            return new AppBaseResult(true, 0, "Đổi mật khẩu thành công.\n Vui lòng đăng nhập lại!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
+        }
     }
 
     @Override

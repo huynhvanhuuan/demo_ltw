@@ -22,7 +22,7 @@ import java.util.List;
 @MultipartConfig
 public class CategoryAPI extends HttpServlet {
 	private final Gson GSON = new GsonBuilder().serializeNulls().create();
-	private final CategoryService categoryService = CategoryServiceImpl.getInstance();
+	private final CategoryService categoryService = new CategoryServiceImpl();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

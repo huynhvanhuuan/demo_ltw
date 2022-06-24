@@ -46,7 +46,7 @@
 					return;
 				}
 				$.ajax({
-					url: "${requestScope.contextPath}/api/user/reset-password",
+					url: "${requestScope.contextPath}/user/reset-password",
 					type: "POST",
 					data: { email: email },
 					success: function(response) {

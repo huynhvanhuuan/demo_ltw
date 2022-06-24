@@ -47,7 +47,7 @@
 					return;
 				}
 				$.ajax({
-					url: "${requestScope.contextPath}/api/user/resend-verify-email",
+					url: "${requestScope.contextPath}/user/resend-verify-email",
 					type: "POST",
 					data: { email: email },
 					success: function(response) {
