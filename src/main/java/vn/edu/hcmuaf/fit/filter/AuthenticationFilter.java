@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebFilter(filterName = "AuthenticationFilter", urlPatterns = { "/user/*", "/admin/*" })
+@WebFilter(filterName = "AuthenticationFilter", urlPatterns = { "/user/*", "/admin/*" }, asyncSupported = true)
 public class AuthenticationFilter implements Filter {
     private AppJwtTokenProvider jwtTokenProvider;
 

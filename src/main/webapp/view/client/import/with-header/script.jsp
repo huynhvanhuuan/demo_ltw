@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!-- jQuery -->
 <script src="${requestScope.contextPath}/assets/plugins/jquery/jquery.min.js"></script>
@@ -8,7 +9,9 @@
 <script src="${requestScope.contextPath}/assets/plugins/jquery-dateformat/jquery-dateformat.min.js"></script>
 <!-- SweetAlert2 -->
 <script src="${requestScope.contextPath}/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
-<script src="${requestScope.contextPath}/assets/js/signup-signin.js"></script>
+<c:if test="${sessionScope.token == null}">
+    <script src="${requestScope.contextPath}/assets/js/signup-signin.js"></script>
+</c:if>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
@@ -168,6 +171,48 @@
             }
         });
 
+        $('#profile').validate({
+            rules: {
+                lastName: {
+                    required: true,
+                },
+                firstName: {
+                    required: true,
+                },
+                year: {
+                    required: true,
+                    digits: true,
+                    min: 1900,
+                    max: new Date().getFullYear()
+                }
+            },
+            messages: {
+                lastName: {
+                    required: 'Vui lòng nhập họ của bạn',
+                },
+                firstName: {
+                    required: 'Vui lòng nhập tên của bạn',
+                },
+                year: {
+                    required: 'Vui lòng nhập năm sinh của bạn',
+                    digits: 'Năm sinh không hợp lệ',
+                    min: 'Năm sinh phải lớn hơn 1900',
+                    max: 'Năm sinh phải nhỏ hơn năm hiện tại'
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.profile-form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        })
+
         $('input[type="text"]').change(function () {
             $(this).val($(this).val().trim());
         });
@@ -241,7 +286,7 @@
             if ($(this).valid()) {
                 $.ajax({
                     url: '${requestScope.contextPath}/user/change-password',
-                    type: 'POST',
+                    type: 'PUT',
                     data: formData,
                     success: function (response) {
                         if (response.success) {
@@ -252,6 +297,112 @@
                                 timerProgressBar: true,
                                 onClose: function () {
                                     window.location.href = '${requestScope.contextPath}/user/logout';
+                                }
+                            });
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.message
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: error.message
+                        });
+                    }
+                });
+            }
+        });
+
+        /* Upload profile image */
+        $('.profile-radio-button').click(function () {
+            if (!$(this).hasClass('profile-radio-button--checked')) {
+                $(this).addClass('profile-radio-button--checked');
+                $(this).parent().siblings().find('.profile-radio-button').removeClass('profile-radio-button--checked');
+
+                let value = $(this).parent().find('.profile-radio-label').text();
+                $('input[name="gender"]').val(value === 'Nam' ? 1 : 0);
+            }
+        });
+
+        $('.image-upload-button').click(function () {
+            $(this).parent().find('input[name=image]').click();
+        });
+
+        $('input[name=image]').change(function () {
+            $('#upload-avatar').submit();
+        });
+
+        $('#upload-avatar').submit(function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            $.ajax({
+                url: '${requestScope.contextPath}/user/upload-profile-image',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = '${requestScope.contextPath}/user/account/profile';
+                    }
+                },
+                error: function (error) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: error.message
+                    });
+                }
+            });
+        });
+
+        $('select[name=day]').change(function () {
+            let day = $(this).val();
+            let month = $('select[name=month]').val();
+            let year = $('input[name=year]').val();
+            $('input[name=dateOfBirth]').val(formatDateOfBirth(day, month, year));
+        })
+
+        $('select[name=month]').change(function () {
+            let day = $('select[name=day]').val();
+            let month = $(this).val();
+            let year = $('input[name=year]').val();
+            $('input[name=dateOfBirth]').val(formatDateOfBirth(day, month, year));
+        })
+
+        $('input[name=year]').keyup(function () {
+            let day = $('select[name=day]').val();
+            let month = $('select[name=month]').val();
+            let year = $(this).val();
+            $('input[name=dateOfBirth]').val(formatDateOfBirth(day, month, year));
+        })
+
+        function formatDateOfBirth(day, month, year) {
+            return DateFormat.format.date(new Date().setFullYear(year, month - 1, day), 'yyyy-MM-dd');
+        }
+
+        $('#profile').submit(function (e) {
+            e.preventDefault();
+            let form = $(this);
+            let formData = new FormData(this);
+            if ($(this).valid()) {
+                $.ajax({
+                    url: '${requestScope.contextPath}/user/profile',
+                    type: 'PUT',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.success) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.message,
+                                timer: 1000,
+                                timerProgressBar: true,
+                                onClose: function () {
+                                    window.location.href = '${requestScope.contextPath}/user/account/profile';
                                 }
                             });
                         } else {

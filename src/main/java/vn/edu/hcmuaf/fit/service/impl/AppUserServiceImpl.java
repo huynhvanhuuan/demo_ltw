@@ -1,6 +1,9 @@
 package vn.edu.hcmuaf.fit.service.impl;
 
-import vn.edu.hcmuaf.fit.constant.*;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FilenameUtils;
+import vn.edu.hcmuaf.fit.constant.AppError;
+import vn.edu.hcmuaf.fit.constant.RoleConstant;
 import vn.edu.hcmuaf.fit.dao.*;
 import vn.edu.hcmuaf.fit.dao.impl.*;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
@@ -13,10 +16,15 @@ import vn.edu.hcmuaf.fit.service.AppMailService;
 import vn.edu.hcmuaf.fit.service.AppUserService;
 import vn.edu.hcmuaf.fit.util.*;
 
+import java.io.File;
 import java.math.BigInteger;
+import java.nio.file.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+
+import static vn.edu.hcmuaf.fit.constant.FileConstant.TEMP_PROFILE_IMAGE_BASE_URL;
+import static vn.edu.hcmuaf.fit.constant.FileConstant.USER_IMAGE_FOLDER;
 
 public class AppUserServiceImpl implements AppUserService {
     private final AppUserDAO appUserDAO;
@@ -73,7 +81,7 @@ public class AppUserServiceImpl implements AppUserService {
             userNew.getUserInfo().setLastName(userRegister.getLastName());
             userNew.getUserInfo().setFullName(AppUtils.getFullName(userRegister.getLastName(), userRegister.getFirstName()));
             userNew.getUserInfo().setMale(userRegister.isMale());
-            userNew.getUserInfo().setImageUrl(FileConstant.TEMP_PROFILE_IMAGE_BASE_URL + userRegister.getUsername());
+            userNew.getUserInfo().setImageUrl(TEMP_PROFILE_IMAGE_BASE_URL + userRegister.getUsername());
 
             // Set default role
             AppRole defaultRole = appRoleDAO.findByName(RoleConstant.CUSTOMER);
@@ -140,7 +148,7 @@ public class AppUserServiceImpl implements AppUserService {
             AppUser appUser = appUserDAO.findById(userId);
             if (appUser == null) {
                 return new AppServiceResult<>(false, AppError.Validation.errorCode(),
-                        AppError.Validation.errorMessage(), null);
+                        "Id không tồn tài: " + userId, null);
             }
 
             userInfoDto.setId(appUser.getId());
@@ -152,21 +160,39 @@ public class AppUserServiceImpl implements AppUserService {
                 userInfoDto.setFirstName(appUser.getUserInfo().getFirstName());
                 userInfoDto.setLastName(appUser.getUserInfo().getLastName());
                 userInfoDto.setFullName(appUser.getUserInfo().getFullName());
+                userInfoDto.setDateOfBirth(appUser.getUserInfo().getDateOfBirth());
                 userInfoDto.setMale(appUser.getUserInfo().isMale());
-                userInfoDto.setImageUrl(appUser.getUserInfo().getImageUrl().contains(FileConstant.TEMP_PROFILE_IMAGE_BASE_URL)
-                        ? FileConstant.TEMP_PROFILE_IMAGE_BASE_URL + appUser.getUsername() : appUser.getUserInfo().getImageUrl());
+                userInfoDto.setImageUrl(appUser.getUserInfo().getImageUrl().contains(TEMP_PROFILE_IMAGE_BASE_URL)
+                        ? TEMP_PROFILE_IMAGE_BASE_URL + appUser.getUsername() : appUser.getUserInfo().getImageUrl());
             }
             return new AppServiceResult<>(true, 0, "Success", userInfoDto);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-                    AppError.Unknown.errorMessage(), null);
+            return new AppServiceResult<>(false, AppError.Unknown.errorCode(), AppError.Unknown.errorMessage(), null);
         }
     }
 
     @Override
     public AppServiceResult<UserInfoDtoResponse> saveProfile(UserInfoDtoRequest userInfo) {
-        return null;
+        try {
+            AppUser appUser = appUserDAO.findById(userInfo.getUserId());
+            if (appUser == null) {
+                return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+                        "Id không tồn tài: " + userInfo.getUserId(), null);
+            }
+
+            appUser.getUserInfo().setFirstName(userInfo.getFirstName());
+            appUser.getUserInfo().setLastName(userInfo.getLastName());
+            appUser.getUserInfo().setFullName(userInfo.getFullName());
+            appUser.getUserInfo().setMale(userInfo.isMale());
+            appUser.getUserInfo().setDateOfBirth(userInfo.getDateOfBirth());
+
+            userInfoDAO.save(appUser.getUserInfo());
+
+            UserInfoDtoResponse userInfoDto = getProfile(userInfo.getUserId()).getData();
+            return new AppServiceResult<>(true, 0, "Cập nhật thành công!", userInfoDto);
+        } catch (Exception e) {
+            return new AppServiceResult<>(false, AppError.Unknown.errorCode(), AppError.Unknown.errorMessage(), null);
+        }
     }
 
     @Override
@@ -194,6 +220,53 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public AppServiceResult<UserInfoDtoResponse> uploadImage(FileItem image, Long userId) {
+        try {
+            AppUser appUser = appUserDAO.findById(userId);
+
+            if (appUser == null) {
+                return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+                        "Id không tồn tài: " + userId, null);
+            }
+
+            // constructs the directory path to store upload file
+            Path imageFolder = Paths.get(USER_IMAGE_FOLDER).toAbsolutePath().normalize();
+            if (!Files.exists(imageFolder)) {
+                Files.createDirectories(imageFolder);
+            }
+
+            // delete old image if exists
+            String currentImage = appUser.getUserInfo().getImageUrl();
+            if (!appUser.getUserInfo().getImageUrl().contains(TEMP_PROFILE_IMAGE_BASE_URL)) {
+                Files.deleteIfExists(Paths.get(imageFolder + File.separator + currentImage));
+            }
+
+            String fileName = new File(image.getName()).getName();
+            String filePath = imageFolder + File.separator + fileName;
+
+            String extension = FilenameUtils.getExtension(filePath);
+
+            String newImage = DateUtil.toStringddMMyyyyHHmmss(new Date()) + "." + extension;
+            File storeFile = new File(imageFolder + File.separator + newImage);
+
+            // saves the image on disk
+            image.write(storeFile);
+
+            // save new image url to database
+            appUser.getUserInfo().setImageUrl(newImage);
+
+            userInfoDAO.save(appUser.getUserInfo());
+            // appUserDAO.save(appUser);
+
+            AppServiceResult<UserInfoDtoResponse> result = getProfile(userId);
+
+            return new AppServiceResult<>(true, 0, "Tải hình ảnh thành công!", result.getData());
+        } catch (Exception e) {
+            return new AppServiceResult<>(false, AppError.Validation.errorCode(), "Không thể tải ảnh lên!", null);
+        }
+    }
+
+    @Override
     public AppBaseResult resetPassword(String email) {
         try {
             AppUser appUser = appUserDAO.findByEmail(email);
@@ -214,7 +287,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppBaseResult updateActive(UserStatus userStatus) {
+    public AppBaseResult updateStatus(UserStatus userStatus) {
         return null;
     }
 

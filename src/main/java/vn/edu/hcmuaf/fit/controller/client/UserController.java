@@ -9,13 +9,20 @@ import vn.edu.hcmuaf.fit.dto.appuser.UserLoginResponse;
 import vn.edu.hcmuaf.fit.dto.userinfo.UserInfoDtoResponse;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.UUID;
 
+import static vn.edu.hcmuaf.fit.constant.FileConstant.TEMP_PROFILE_IMAGE_BASE_URL;
+import static vn.edu.hcmuaf.fit.constant.FileConstant.USER_IMAGE_PATH;
+
 @WebServlet(name = "client-user", urlPatterns = "/user/*")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 100) // 100MB
 public class UserController extends HttpServlet {
     private final Gson GSON = new GsonBuilder().serializeNulls().create();
 
@@ -32,6 +39,10 @@ public class UserController extends HttpServlet {
         switch (method) {
             case "GET":
                 switch (pathParts[1]) {
+                    case "register":
+                        if ("success".equals(pathParts[2])) getRegisterSuccess(request, response);
+                        else response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        break;
                     case "verify":
                         switch (pathParts[2]) {
                             case "success":
@@ -54,10 +65,6 @@ public class UserController extends HttpServlet {
                                 }
                                 break;
                         }
-                        break;
-                    case "register":
-                        if ("success".equals(pathParts[2])) getRegisterSuccess(request, response);
-                        else response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                         break;
                     case "logout":
                         if (request.getSession().getAttribute("user") != null) {
@@ -86,9 +93,6 @@ public class UserController extends HttpServlet {
                             case "change-password":
                                 getChangePassword(request, response);
                                 break;
-                            default:
-                                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                                break;
                         }
                         break;
                     case "purchase":
@@ -97,9 +101,9 @@ public class UserController extends HttpServlet {
                     case "wishlist":
                         getWishlist(request, response);
                         break;
-                    default:
-                        response.sendRedirect("/user/purchase");
-                        break;
+//                    default:
+//                        response.sendRedirect("/user/purchase");
+//                        break;
                 }
                 break;
             case "POST":
@@ -115,11 +119,20 @@ public class UserController extends HttpServlet {
                     case "login":
                         login(request, response);
                         break;
+                    case "upload-profile-image":
+                        uploadImage(request, response);
+                        break;
+                }
+                break;
+            case "PUT":
+                switch (pathParts[1]) {
+                    case "profile":
+                        saveProfile(request, response);
+                        break;
                     case "change-password":
                         changePassword(request, response);
                         break;
                 }
-                break;
         }
     }
 
@@ -147,16 +160,29 @@ public class UserController extends HttpServlet {
     public void getProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
-        request.getRequestDispatcher(request.getContextPath() + "/api/user/account/profile").include(request, response);
+        getPrivateProfile(request, response);
 
-        Type type = new TypeToken<AppServiceResult<UserInfoDtoResponse>>() {}.getType();
-        AppServiceResult<UserInfoDtoResponse> result = new Gson().fromJson((String) request.getAttribute("result"), type);
-
-        HttpSession session = request.getSession();
-        session.setAttribute("user", result.getData());
-
-        request.removeAttribute("result");
         request.getRequestDispatcher("/view/client/user/account/profile.jsp").forward(request, response);
+    }
+
+    private void getPrivateProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("user") == null) {
+            request.getRequestDispatcher("/api/user/account/profile").include(request, response);
+            Type type = new TypeToken<AppServiceResult<UserInfoDtoResponse>>() {}.getType();
+            AppServiceResult<UserInfoDtoResponse> result = new Gson().fromJson((String) request.getAttribute("profile"), type);
+
+            if (result.isSuccess()) {
+                result.getData().setImageUrl(
+                        result.getData().getImageUrl().contains(TEMP_PROFILE_IMAGE_BASE_URL) ?
+                                result.getData().getImageUrl() : USER_IMAGE_PATH + result.getData().getImageUrl());
+                session.setAttribute("user", result.getData());
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+
+            request.removeAttribute("profile");
+        }
     }
 
     public void getPayment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -172,6 +198,15 @@ public class UserController extends HttpServlet {
     }
 
     public void getPurchase(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+
+        getPrivateProfile(request, response);
+
+        request.getRequestDispatcher("/api/user/purchase").include(request, response);
+
+        request.removeAttribute("purchase");
         request.getRequestDispatcher("/view/client/user/purchase.jsp").forward(request, response);
     }
 
@@ -187,8 +222,9 @@ public class UserController extends HttpServlet {
         request.getRequestDispatcher("/api/user/register").include(request, response);
 
         Type type = new TypeToken<AppBaseResult>() {}.getType();
-        AppBaseResult result = GSON.fromJson((String) request.getAttribute("result"), type);
+        AppBaseResult result = GSON.fromJson((String) request.getAttribute("register"), type);
 
+        request.removeAttribute("register");
         response.getWriter().println(GSON.toJson(result));
     }
 
@@ -199,9 +235,9 @@ public class UserController extends HttpServlet {
         request.getRequestDispatcher("/api/user/resend-verify-email").include(request, response);
 
         Type type = new TypeToken<AppBaseResult>() {}.getType();
-        AppBaseResult result = GSON.fromJson((String) request.getAttribute("result"), type);
+        AppBaseResult result = GSON.fromJson((String) request.getAttribute("resendVerify"), type);
 
-        request.removeAttribute("result");
+        request.removeAttribute("resendVerify");
         response.getWriter().println(GSON.toJson(result));
     }
 
@@ -210,9 +246,9 @@ public class UserController extends HttpServlet {
         request.getRequestDispatcher("/api/user/verify/" + token).include(request, response);
 
         Type type = new TypeToken<AppBaseResult>() {}.getType();
-        AppBaseResult result = GSON.fromJson((String) request.getAttribute("result"), type);
+        AppBaseResult result = GSON.fromJson((String) request.getAttribute("verify"), type);
 
-        request.removeAttribute("result");
+        request.removeAttribute("verify");
         if (result.isSuccess()) {
             request.getRequestDispatcher("/user/verify/success").forward(request, response);
         } else {
@@ -227,7 +263,7 @@ public class UserController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("/api/user/login").include(request, response);
         Type type = new TypeToken<AppServiceResult<UserLoginResponse>>() {}.getType();
-        AppServiceResult<UserLoginResponse> result = GSON.fromJson((String) request.getAttribute("result"), type);
+        AppServiceResult<UserLoginResponse> result = GSON.fromJson((String) request.getAttribute("login"), type);
 
         UserLoginResponse userLoginResponse = result.getData();
         if (result.isSuccess()) {
@@ -239,13 +275,28 @@ public class UserController extends HttpServlet {
             session.setAttribute("token", userLoginResponse.getToken());
         }
 
-        request.removeAttribute("result");
+        request.removeAttribute("login");
         response.getWriter().println(GSON.toJson(result));
     }
 
-    public void saveProfile(HttpServletRequest request, HttpServletResponse response) {
+    public void saveProfile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        request.getRequestDispatcher("/api/user/profile").include(request, response);
+
+        Type type = new TypeToken<AppServiceResult<UserInfoDtoResponse>>() {}.getType();
+        AppServiceResult<UserInfoDtoResponse> result = GSON.fromJson((String) request.getAttribute("profile"), type);
+
+        if (result.isSuccess()) {
+            result.getData().setImageUrl(
+                    result.getData().getImageUrl().contains(TEMP_PROFILE_IMAGE_BASE_URL) ?
+                            result.getData().getImageUrl() : USER_IMAGE_PATH + result.getData().getImageUrl());
+            request.getSession().setAttribute("user", result.getData());
+        }
+
+        request.removeAttribute("profile");
+        response.getWriter().println(GSON.toJson(result));
     }
 
     public void changePassword(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -255,15 +306,30 @@ public class UserController extends HttpServlet {
         request.getRequestDispatcher("/api/user/change-password").include(request, response);
 
         Type type = new TypeToken<AppBaseResult>() {}.getType();
-        AppBaseResult result = GSON.fromJson((String) request.getAttribute("result"), type);
+        AppBaseResult result = GSON.fromJson((String) request.getAttribute("changePassword"), type);
 
-        request.removeAttribute("result");
+        request.removeAttribute("changePassword");
         response.getWriter().println(GSON.toJson(result));
     }
 
-    public void uploadAvatar(HttpServletRequest request, HttpServletResponse response) {
+    public void uploadImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        request.getRequestDispatcher("/api/user/upload-profile-image").include(request, response);
+
+        Type type = new TypeToken<AppServiceResult<UserInfoDtoResponse>>() {}.getType();
+        AppServiceResult<UserInfoDtoResponse> result = GSON.fromJson((String) request.getAttribute("uploadImage"), type);
+
+        if (result.isSuccess()) {
+            result.getData().setImageUrl(
+                    result.getData().getImageUrl().contains(TEMP_PROFILE_IMAGE_BASE_URL) ?
+                            result.getData().getImageUrl() : USER_IMAGE_PATH + result.getData().getImageUrl());
+            request.getSession().setAttribute("user", result.getData());
+        }
+
+        request.removeAttribute("uploadImage");
+        response.getWriter().println(GSON.toJson(result));
     }
 
     public void resetPassword(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

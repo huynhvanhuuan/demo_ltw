@@ -1,5 +1,6 @@
 package vn.edu.hcmuaf.fit.service;
 
+import org.apache.commons.fileupload.FileItem;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.appuser.*;
@@ -20,7 +21,7 @@ public interface AppUserService {
     AppServiceResult<UserInfoDtoResponse> getProfile(Long userId);
     AppServiceResult<UserInfoDtoResponse> saveProfile(UserInfoDtoRequest userInfo);
     AppBaseResult changePassword(ChangePassword changePassword);
-    // AppServiceResult<String> uploadImage(MultipartFile file);
+    AppServiceResult<UserInfoDtoResponse> uploadImage(FileItem image, Long userId);
     AppBaseResult resetPassword(String email);
-    AppBaseResult updateActive(UserStatus userStatus);
+    AppBaseResult updateStatus(UserStatus userStatus);
 }

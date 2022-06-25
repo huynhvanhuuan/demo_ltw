@@ -39,6 +39,17 @@ public class AppJwtTokenProvider {
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
 
+    // decode token
+    /*public AppUserDomain decodeJwtToken(String token) {
+        Map<String, Claim> claims = JWT.decode(token).getClaims();
+
+        String username = getSubject(token);
+        String[] authorities = (String[]) claims.get(SecurityConstant.AUTHORITIES);
+        List<GrantedAuthority> grantedAuthorities = stream(authorities).map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+        return new AppUserDomain(username, grantedAuthorities);
+    }*/
+
     private String[] getClaimsFromUser(AppUserDomain appUser) {
         List<String> authorities = new ArrayList<>();
         for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
@@ -64,7 +75,7 @@ public class AppJwtTokenProvider {
         Date expirationDate = verifier.verify(token).getExpiresAt();
         boolean isTokenExpired = expirationDate.before(new Date());
 
-        return !username.isEmpty() && !isTokenExpired;
+        return username != null && !username.isEmpty() && !isTokenExpired;
     }
 
     public String getSubject(String token) {
@@ -72,10 +83,9 @@ public class AppJwtTokenProvider {
         return verifier.verify(token).getSubject();
     }
 
-    public List<GrantedAuthority> getRolesFromToken(String token) {
+    public List<GrantedAuthority> getAuthoritiesFromToken(String token) {
         JWTVerifier verifier = getJwtVerifier();
         String[] claims = verifier.verify(token).getClaim(SecurityConstant.AUTHORITIES).asArray(String.class);
         return stream(claims).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
-
 }

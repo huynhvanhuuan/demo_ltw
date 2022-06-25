@@ -121,6 +121,7 @@ public class AppUserDAOImpl implements AppUserDAO {
                 statement.setString(4, appUser.getPassword());
                 statement.setLong(5, appUser.getUserInfo().getId());
             } else {
+                userInfoDAO.save(appUser.getUserInfo()); // update user info and get id
                 statement = connection.prepareStatement(QUERY.APP_USER.UPDATE);
                 statement.setString(1, appUser.getPassword());
                 statement.setBoolean(2, appUser.getNotLocked());

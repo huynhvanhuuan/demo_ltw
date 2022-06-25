@@ -18,7 +18,7 @@
                         <a href="${requestScope.contextPath}/user/account/profile">
                             <div class="sidebar-avatar">
                                 <div class="sidebar-avatar__placeholder"></div>
-                                <img class="sidebar-avatar__img" src="https://robohash.org/ankoi0310" alt="username"/>
+                                <img class="sidebar-avatar__img" src="${sessionScope.user.imageUrl}" alt="username"/>
                             </div>
                         </a>
                         <div>

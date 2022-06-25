@@ -91,7 +91,30 @@ public class AddressDAOImpl implements AddressDAO {
     }
 
     @Override
-    public void save(Address address) {}
+    public void save(Address address) {
+        connection = DbManager.connectionPool.getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement(address.getId() == 0 ? QUERY.ADDRESS.CREATE : QUERY.ADDRESS.UPDATE, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, address.getNumber());
+            statement.setString(2, address.getStreet());
+            statement.setLong(3, address.getWard().getId());
+            statement.setLong(4, address.getDistrict().getId());
+            statement.setString(5, address.getPath());
+
+            if (address.getId() != 0) {
+                statement.setLong(6, address.getId());
+            }
+            statement.executeUpdate();
+
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                address.setId(rs.getLong(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        DbManager.connectionPool.releaseConnection(connection);
+    }
 
     @Override
     public void remove(Long id) {
