@@ -18,7 +18,6 @@ import java.util.Properties;
 import java.util.UUID;
 
 public class AppMailServiceImpl implements AppMailService {
-    private static AppMailServiceImpl instance;
     private static final Properties props = new Properties();
     private static Session session;
     private static String username;
@@ -26,19 +25,12 @@ public class AppMailServiceImpl implements AppMailService {
     private static String baseUrlVerifyEmail;
     private final VerificationTokenDAO verificationTokenDAO;
 
-    private AppMailServiceImpl() {
+    public AppMailServiceImpl() {
         init();
         verificationTokenDAO = VerificationTokenDAOImpl.getInstance();
         // appUserDAO = AppUserDAOImpl.getInstance();
 
         ((VerificationTokenDAOImpl) verificationTokenDAO).setAppUserDAO(AppUserDAOImpl.getInstance());
-    }
-
-    public static AppMailServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new AppMailServiceImpl();
-        }
-        return instance;
     }
 
     private void init() {
@@ -122,10 +114,5 @@ public class AppMailServiceImpl implements AppMailService {
             e.printStackTrace();
         }
         return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), "Gửi mail không thành công");
-    }
-
-    public static void main (String[] args) throws IOException {
-         AppMailServiceImpl appMailService = AppMailServiceImpl.getInstance();
-         System.out.println(appMailService.sendMailResetPassword("chilungdaica@gmail.com", "Dương Nguyễn Cẩm Nhung", "Anhyeuem &#10084;").isSuccess() ?"Send mail success":"Send mail fail");
     }
 }

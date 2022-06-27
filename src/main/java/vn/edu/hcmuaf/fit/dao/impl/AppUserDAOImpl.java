@@ -65,7 +65,7 @@ public class AppUserDAOImpl implements AppUserDAO {
                 Date lastUpdated = DateUtil.toDatetime(rs.getString("last_updated"));
                 Set<AppRole> appRoles = new LinkedHashSet<>(appRoleDAO.findByUserId(id));
 
-                AppUser appUser = new AppUser(id, username, email, phone, password, notLocked, enabled, appRoles, userInfo, dateCreated, lastUpdated, null, null, null);
+                AppUser appUser = new AppUser(id, username, email, phone, password, notLocked, enabled, appRoles, userInfo, dateCreated, lastUpdated, null, null, null, null);
                 appUsers.add(appUser);
             }
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class AppUserDAOImpl implements AppUserDAO {
                 Date lastUpdated = DateUtil.toDatetime(rs.getString("last_updated"));
                 Set<AppRole> appRoles = new LinkedHashSet<>(appRoleDAO.findByUserId(id));
 
-                user = new AppUser(id, username, email, phone, password, notLocked, enabled, appRoles, userInfo, dateCreated, lastUpdated, null, null, null);
+                user = new AppUser(id, username, email, phone, password, notLocked, enabled, appRoles, userInfo, dateCreated, lastUpdated, null, null, null, null);
             }
         } catch (Exception e) {
             DbManager.connectionPool.releaseConnection(connection);
@@ -202,7 +202,7 @@ public class AppUserDAOImpl implements AppUserDAO {
                 Date lastUpdated = DateUtil.toDatetime(rs.getString("last_updated"));
 
                 AppUser appUser = new AppUser(id, username, email, phone, password, notLocked, enabled, null,
-                        userInfo, dateCreated, lastUpdated, null, null, null);
+                        userInfo, dateCreated, lastUpdated, null, null, null, null);
                 appUsers.add(appUser);
             }
         } catch (Exception e) {
@@ -235,7 +235,7 @@ public class AppUserDAOImpl implements AppUserDAO {
                 Set<AppRole> appRoles = new LinkedHashSet<>(appRoleDAO.findByUserId(id));
 
                 appUser = new AppUser(id, username, email, phone, password, notLocked, enabled, appRoles,
-                        userInfo, dateCreated, lastUpdated, null, null, null);
+                        userInfo, dateCreated, lastUpdated, null, null, null, null);
             }
         } catch (Exception e) {
             DbManager.connectionPool.releaseConnection(connection);
@@ -267,7 +267,7 @@ public class AppUserDAOImpl implements AppUserDAO {
                 Set<AppRole> appRoles = new LinkedHashSet<>(appRoleDAO.findByUserId(id));
 
                 appUser = new AppUser(id, username, email, phone, password, notLocked, enabled, appRoles,
-                        userInfo, dateCreated, lastUpdated, null, null, null);
+                        userInfo, dateCreated, lastUpdated, null, null, null, null);
             }
         } catch (Exception e) {
             DbManager.connectionPool.releaseConnection(connection);
@@ -299,7 +299,7 @@ public class AppUserDAOImpl implements AppUserDAO {
                 Set<AppRole> appRoles = new LinkedHashSet<>(appRoleDAO.findByUserId(id));
 
                 appUser = new AppUser(id, username, email, phone, password, notLocked, enabled, appRoles,
-                        userInfo, dateCreated, lastUpdated, null, null, null);
+                        userInfo, dateCreated, lastUpdated, null, null, null, null);
             }
         } catch (Exception e) {
             DbManager.connectionPool.releaseConnection(connection);

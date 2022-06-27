@@ -30,6 +30,8 @@ section.error .error-content span {
     line-height: 20px;
     letter-spacing: 0.02em;
     color: #5d5f5f;
+    padding: 0 10px;
+    display: block;
 }
 
 section.error .error-content button {

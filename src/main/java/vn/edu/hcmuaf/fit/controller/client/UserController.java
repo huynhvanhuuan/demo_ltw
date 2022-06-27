@@ -77,11 +77,9 @@ public class UserController extends HttpServlet {
                         }
                         break;
                     case "logout":
-                        if (request.getSession().getAttribute("user") != null) {
-                            request.logout();
-                            request.getSession().invalidate();
-                            response.sendRedirect("/home");
-                        }
+                        request.logout();
+                        request.getSession().invalidate();
+                        response.sendRedirect("/home");
                         break;
                     case "forgot-password":
                         getForgotPassword(request, response);
@@ -125,6 +123,7 @@ public class UserController extends HttpServlet {
                 switch (pathParts[1]) {
                     case "register":
                         register(request, response);
+                        break;
                     case "resend-verify-email":
                         resendVerifyEmail(request, response);
                         break;

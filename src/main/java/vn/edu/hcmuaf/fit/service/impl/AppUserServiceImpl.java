@@ -41,7 +41,7 @@ public class AppUserServiceImpl implements AppUserService {
 
         ((VerificationTokenDAOImpl) verificationTokenDAO).setAppUserDAO(appUserDAO);
 
-        appMailService = AppMailServiceImpl.getInstance();
+        appMailService = new AppMailServiceImpl();
     }
 
     @Override
@@ -94,7 +94,8 @@ public class AppUserServiceImpl implements AppUserService {
             appUserDAO.save(userNew);
 
             // Send mail verify
-            return appMailService.sendMailVerify(userNew);
+            AppBaseResult result = appMailService.sendMailVerify(userNew);
+            return new AppBaseResult(result.isSuccess(), result.getErrorCode(), result.isSuccess() ? "Đăng ký thành công" : result.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());

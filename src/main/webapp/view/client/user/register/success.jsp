@@ -62,6 +62,12 @@
 								title: response.message
 							});
 						}
+					},
+					error: function(error) {
+						Toast.fire({
+							icon: 'error',
+							title: error.responseJSON.message
+						});
 					}
 				});
 			});

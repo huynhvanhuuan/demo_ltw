@@ -242,10 +242,11 @@
         $('#signup').submit(function (e) {
             e.preventDefault();
             if ($(this).valid()) {
+                let data = $(this).serialize();
                 $.ajax({
                     url: '${requestScope.contextPath}/user/register',
                     type: 'POST',
-                    data: $(this).serialize(),
+                    data: data,
                     success: function (response) {
                         if (response.success) {
                             window.location.href = '${requestScope.contextPath}/user/register/success';
@@ -257,6 +258,7 @@
                         }
                     },
                     error: function (error) {
+                        console.log(error);
                         Toast.fire({
                             icon: 'error',
                             title: error.responseJSON.message
@@ -275,7 +277,7 @@
                     data: $(this).serialize(),
                     success: function (response) {
                         if (response.success) {
-                            window.location.href = '${requestScope.contextPath}/home';
+                            window.location.href = document.location.href;
                         } else {
                             Toast.fire({
                                 icon: 'error',
@@ -295,13 +297,14 @@
 
         $('#change-password').submit(function (e) {
             e.preventDefault();
-            let form = $(this);
-            let formData = form.serialize();
+            let formData = new FormData($(this)[0]);
             if ($(this).valid()) {
                 $.ajax({
                     url: '${requestScope.contextPath}/user/change-password',
                     type: 'PUT',
                     data: formData,
+                    contentType: false,
+                    processData: false,
                     success: function (response) {
                         if (response.success) {
                             Toast.fire({
