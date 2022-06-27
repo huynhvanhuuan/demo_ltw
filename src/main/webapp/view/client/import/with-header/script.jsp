@@ -815,5 +815,131 @@
                 }
             });
         </c:if>
+
+        function getProductDetail(materialId, colorId) {
+            $.ajax({
+                url: "${requestScope.contextPath}/api/product-detail",
+                type: "GET",
+                data: {
+                    materialId: materialId,
+                    colorId: colorId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log(response.data);
+                    } else {
+                        Toast.fire({
+                            icon: "error",
+                            title: response.message
+                        });
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function addToCart() {
+            $.ajax({
+                type: "POST",
+                url: '${requestScope.contextPath}/api/cart/add',
+                data: {sku: sku, quantity: 1},
+                success: function (response) {
+                    if (response.success) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.message,
+                        })
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: response.message,
+                        })
+                    }
+                },
+                error: function (error) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: error.message,
+                    })
+                }
+            });
+        }
+
+        $('#product-form').validate({
+            rules: {
+                quantity: {
+                    required: true,
+                    number: true,
+                    min: 1
+                }
+            },
+            messages: {
+                quantity: {
+                    required: 'Vui lòng nhập số lượng',
+                    number: 'Vui lòng nhập số',
+                    min: 'Số lượng phải lớn hơn 0'
+                }
+            },
+            errorElement: 'em',
+            errorPlacement: function (error, element) {
+                Toast.fire({
+                    icon: 'error',
+                    title: error.text()
+                });
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid').removeClass('is-valid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-valid').removeClass('is-invalid');
+            },
+            submitHandler: function (form) {
+                // mua ngay
+                /*$.ajax({
+                    url: "${requestScope.contextPath}/api/",
+                            type: "POST",
+                            data: $(form).serialize(),
+                            success: function(response) {
+                                if (response.success) {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: 'Thêm vào giỏ hàng thành công'
+                                    });
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: 'Thêm vào giỏ hàng thất bại'
+                                    });
+                                }
+                            },
+                            error: function(error) {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: error.responseJSON.message
+                                });
+                            }
+                        });*/
+            }
+        });
+
+        $("input[name='material']").change(function () {
+            let materialId = $(this).val();
+            if ($("input[name='color']").is(":checked")) {
+                let colorId = $("input[name='color']").val();
+                getProductDetail(materialId, colorId);
+            }
+        });
+
+        $("input[name='color']").change(function () {
+            let colorId = $(this).val();
+            console.log(colorId);
+            if ($("input[name='material']").is(":checked")) {
+                console.log($("input[name='material']").val());
+                let materialId = $("input[name='material']").val();
+                getProductDetail(materialId, colorId);
+            }
+        });
     });
 </script>

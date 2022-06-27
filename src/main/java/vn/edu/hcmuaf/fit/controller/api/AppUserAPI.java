@@ -51,7 +51,7 @@ public class AppUserAPI extends HttpServlet {
 			return;
 		}
 
-		String[] pathParts = path.split("/");
+		String[] pathParts = path.split("/"); // []/account/profile
 		String method = request.getMethod();
 		switch (method) {
 			case "GET":

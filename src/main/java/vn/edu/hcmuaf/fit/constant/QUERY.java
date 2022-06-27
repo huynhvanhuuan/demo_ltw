@@ -18,6 +18,7 @@ public class QUERY {
         public static final String FIND_BY_ID = "select * from product_detail where id = ?";
         public static final String FIND_BY_PRODUCT_ID = "select * from product_detail where product_id = ?";
         public static final String FIND_BY_SKU = "select * from product_detail where sku = ?";
+        public static final String FIND_BY_COLOR_AND_MATERIAL = "select * from product_detail where color_id = ? and material_id = ?";
         public static final String CREATE = "insert into product_detail(sku, product_id, image, color_id, material_sku, unit_price, unit_in_stock, discount) values(?,?,?,?,?,?,?,?)";
         public static final String UPDATE = "update product_detail set sku = ?, product_id = ?, image = ?, color_id = ?, material_sku = ?, unit_price = ?, unit_in_stock = ?, discount = ? where sku = ? and date_created = ?";
         public static final String DELETE = "delete from product_detail where sku = ? and date_created = ?";

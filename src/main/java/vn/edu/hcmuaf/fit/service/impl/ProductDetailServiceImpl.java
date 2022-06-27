@@ -56,6 +56,23 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 	}
 
 	@Override
+	public AppServiceResult<ProductDetailDto> getProductDetail(Long colorId, Long materialId) {
+		try {
+			ProductDetail productDetail = productDetailDAO.findById(colorId, materialId);
+
+			if (productDetail == null)
+				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+						"Sản phẩm không tồn tại", null);
+
+			return new AppServiceResult<>(true, 0, "Tìm thấy sản phẩm", ProductDetailDto.createFromEntity(productDetail));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
+					"Không thể tải sản phẩm", null);
+		}
+	}
+
+	@Override
 	public AppServiceResult<ProductDetailDto> createProductDetail(ProductDetailCreate productDetail) {
 		return null;
 	}

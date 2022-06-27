@@ -261,10 +261,11 @@
         <c:import url="import/footer.jsp"/>
         <c:import url="import/signin-signup.jsp"/>
         <c:import url="import/with-header/script.jsp"/>
-        <script src="${requestScope.contextPath}/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
-        <script src="${requestScope.contextPath}/assets/plugins/toastr/toastr.min.js"></script>
         <script src="${requestScope.contextPath}/assets/js/product.js"></script>
         <script>
+            $(function () {
+
+            })
             /* Toast */
             const Toast = Swal.mixin({
                 toast: true,
@@ -272,28 +273,6 @@
                 showConfirmButton: false,
                 timer: 3000
             });
-
-            function addToCart(sku) {
-                $.ajax({
-                    type: "POST",
-                    url: '${requestScope.contextPath}/api/cart/add',
-                    data: {sku: sku, quantity: 1},
-                    success: function (response) {
-                        if (response.statusCode === 1) {
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.message,
-                            })
-                        } else {
-                            Toast.fire({
-                                icon: 'error',
-                                title: response.message,
-                            })
-                        }
-                    }
-                });
-                return false;
-            }
         </script>
     </body>
 </html>

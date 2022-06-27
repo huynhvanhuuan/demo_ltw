@@ -30,8 +30,6 @@ public class AddressAPI extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		request.setCharacterEncoding("UTF-8");
 
 		String path = request.getPathInfo();
 		if (path == null || path.equals("/")) {

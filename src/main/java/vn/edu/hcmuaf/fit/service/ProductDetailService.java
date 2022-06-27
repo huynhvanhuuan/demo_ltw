@@ -9,6 +9,7 @@ import java.util.List;
 public interface ProductDetailService {
 	AppServiceResult<List<ProductDetailDto>> getProductDetails(Long productId);
 	AppServiceResult<ProductDetailDto> getProductDetail(Long id);
+	AppServiceResult<ProductDetailDto> getProductDetail(Long materialId, Long colorId);
 	AppServiceResult<ProductDetailDto> createProductDetail(ProductDetailCreate productDetail);
 	AppBaseResult updateProductDetail(ProductDetailUpdate productDetail);
 	AppBaseResult deleteProductDetail(Long id);

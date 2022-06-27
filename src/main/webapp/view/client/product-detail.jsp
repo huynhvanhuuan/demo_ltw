@@ -44,13 +44,15 @@
                                 </p>
                             </div>
                             <form class="form" id="product-form" novalidate="novalidate">
+                                <input type="hidden" name="productId">
+                                <input type="hidden" name="quantity">
                                 <div class="product-material">
                                     <p class="p-title">Vật liệu:</p>
                                     <div class="row">
                                         <jsp:useBean id="materials" scope="request" type="java.util.Map"/>
                                         <c:forEach items="${materials}" var="material">
                                             <div class="col">
-                                                <input type="radio" name="material" id="material-${material.key}">
+                                                <input type="radio" name="material" id="material-${material.key}" value="${material.key}">
                                                 <label for="material-${material.key}" class="option">
                                                     <i class="dot"></i>
                                                     <span>${material.value.name}</span>
@@ -65,7 +67,7 @@
                                         <jsp:useBean id="colors" scope="request" type="java.util.Map"/>
                                         <c:forEach items="${colors}" var="color">
                                             <li class="color-item">
-                                                <input class="input-radio" id="color-${color.key}" type="radio" name="color"/>
+                                                <input class="input-radio" id="color-${color.key}" type="radio" name="color" value="${color.key}"/>
                                                 <label class="color-title" for="color-${color.key}" style="background-color: ${color.value.hex}; cursor: pointer;"></label>
                                             </li>
                                         </c:forEach>
@@ -99,8 +101,8 @@
                                     </c:if>
                                 </div>
                                 <div class="product-add-cart">
-                                    <button class="btn-purchase">Mua ngay</button>
-                                    <div class="btn-add-to-cart">
+                                    <button type="submit" class="btn-purchase">Mua ngay</button>
+                                    <div class="btn-add-to-cart" onclick="addToCart()">
                                         <i class="fab fa-opencart"></i>
                                         <span>Thêm vào giỏ hàng</span>
                                     </div>
@@ -181,8 +183,7 @@
                         <div class="user-review">
                             <div class="user-review--info">
                                 <div class="user-review--info__left">
-                                    <img
-                                            class="user-review--img"
+                                    <img class="user-review--img"
                                             src="${requestScope.contextPath}/assets/images/user/user-3.jpg"
                                             alt="customer avatar 3"
                                     />
@@ -285,8 +286,7 @@
                                 <a href="product-detail.jsp" class="card-link"></a>
                                 <div class="card-discount">20% giảm</div>
                                 <div class="card-img">
-                                    <img
-                                            class="card-img-item"
+                                    <img class="card-img-item"
                                             src="${requestScope.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
                                             alt="card image"
                                     />
@@ -311,9 +311,7 @@
                                             <ion-icon name="heart-outline"></ion-icon>
                                         </div>
                                     </div>
-                                    <a href="product-detail.jsp" class="btn-add-card"
-                                    >Thêm vào giỏ hàng</a
-                                    >
+                                    <a href="product-detail.jsp" class="btn-add-card">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                             <div class="card">
@@ -344,9 +342,7 @@
                                             <ion-icon name="heart-outline"></ion-icon>
                                         </div>
                                     </div>
-                                    <a href="product-detail.jsp" class="btn-add-card"
-                                    >Thêm vào giỏ hàng</a
-                                    >
+                                    <a href="product-detail.jsp" class="btn-add-card">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -358,33 +354,5 @@
         <c:import url="import/signin-signup.jsp"/>
         <script src="${requestScope.contextPath}/assets/js/product-detail.js"></script>
         <c:import url="import/with-header/script.jsp"/>
-        <script>
-            function getProductDetail(materialId, colorId) {
-                $.ajax({
-                    url: "${requestScope.contextPath}/api/product-detail",
-                    type: "GET",
-                    data: {
-                        materialId: materialId,
-                        colorId: colorId
-                    },
-                    success: function(data) {
-                        console.log(data);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            }
-
-            $(function () {
-                $("input[name='material']").change(function () {
-                    let materialId = $(this).val();
-                    if ($("input[name='color']").val() === "") {
-                        let colorId = $("input[name='color']").val();
-                        getProductDetail(materialId, colorId);
-                    }
-                });
-            });
-        </script>
     </body>
 </html>
