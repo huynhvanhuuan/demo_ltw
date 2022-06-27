@@ -13,21 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDetailServiceImpl implements ProductDetailService {
-	private static ProductDetailServiceImpl instance;
 	private final ProductDetailDAO productDetailDAO;
-	private ProductDetailServiceImpl() {
+	public ProductDetailServiceImpl() {
 		this.productDetailDAO = ProductDetailDAOImpl.getInstance();
 
 		((ProductDetailDAOImpl) productDetailDAO).setProductDAO(ProductDAOImpl.getInstance());
 		((ProductDetailDAOImpl) productDetailDAO).setColorDAO(ColorDAOImpl.getInstance());
 		((ProductDetailDAOImpl) productDetailDAO).setMaterialDAO(MaterialDAOImpl.getInstance());
-	}
-
-	public static ProductDetailServiceImpl getInstance() {
-		if (instance == null) {
-			instance = new ProductDetailServiceImpl();
-		}
-		return instance;
 	}
 
 	@Override

@@ -10,6 +10,9 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/base.css"/>
 <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/header.css"/>
+<!-- Select2 -->
+<link rel="stylesheet" href="${requestScope.contextPath}/assets/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="${requestScope.contextPath}/assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <c:if test="${sessionScope.token == null}">
     <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/signup-signin.css"/>
 </c:if>
@@ -22,5 +25,22 @@
     .swal2-title {
         font-size: 16px !important;
         margin-left: 5px !important;
+    }
+
+    .swal2-container .swal2-popup.swal2-toast {
+        flex-direction: column;
+        align-items: start;
+        position: relative;
+    }
+
+    .swal2-container .swal2-popup.swal2-toast .swal2-title,
+    .swal2-container .swal2-popup.swal2-toast .swal2-content {
+        margin-left: 50px;
+        margin-bottom: 5px;
+        text-align: left;
+    }
+
+    .swal2-container .swal2-popup.swal2-toast .swal2-content {
+        margin-left: 30px;
     }
 </style>

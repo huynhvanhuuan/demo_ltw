@@ -16,6 +16,7 @@ public class ProductDetail implements Serializable {
     private Date dateCreated;
     private Date lastUpdated;
     private boolean active;
+    private Long totalPrice;
 
     public ProductDetail() {
     }
@@ -130,5 +131,9 @@ public class ProductDetail implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Long getTotalPrice() {
+        return unitPrice - (unitPrice * discount / 100);
     }
 }

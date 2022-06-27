@@ -33,26 +33,7 @@ public class WardDAOImpl implements WardDAO {
 
     @Override
     public List<Ward> findAll() {
-        List<Ward> wards = new ArrayList<>();
-        connection = DbManager.connectionPool.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(QUERY.WARD.FIND_ALL);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                long id = rs.getLong("id");
-                String name = rs.getString("name");
-                String prefix = rs.getString("prefix");
-                District district = districtDAO.findById(rs.getLong("district_id"));
-
-                Ward ward = new Ward(id, name, prefix, district);
-                wards.add(ward);
-            }
-        } catch (SQLException e) {
-            DbManager.connectionPool.releaseConnection(connection);
-            return null;
-        }
-        DbManager.connectionPool.releaseConnection(connection);
-        return wards;
+        return null;
     }
 
     @Override
@@ -92,7 +73,7 @@ public class WardDAOImpl implements WardDAO {
         connection = DbManager.connectionPool.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(QUERY.WARD.FIND_BY_DISTRICT_ID);
-            statement.setLong(1, districtId);
+            statement.setLong(1, district.getId());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 long id = rs.getLong("id");
@@ -104,7 +85,7 @@ public class WardDAOImpl implements WardDAO {
             }
         } catch (SQLException e) {
             DbManager.connectionPool.releaseConnection(connection);
-            return null;
+            return wards;
         }
         DbManager.connectionPool.releaseConnection(connection);
         return wards;

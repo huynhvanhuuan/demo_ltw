@@ -1,5 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<div class="box-signup-signin">
+<c:if test="${sessionScope.token == null}">
+    <div class="box-signup-signin">
     <div class="signup-signin">
         <span class="popup-close">&times;</span>
         <div class="signin">
@@ -129,3 +131,4 @@
         </div>
     </div>
 </div>
+</c:if>

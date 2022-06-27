@@ -183,7 +183,7 @@
                             <div class="card-img">
                                 <c:forEach items="${product.products}" var="detail" end="0">
                                     <c:forTokens items="${detail.imageUrl}" delims="," var="image" end="0">
-                                        <img src="${requestScope.contextPath}/image/${image}" alt="${product.name}" height="256"/>
+                                        <img src="${requestScope.contextPath}/image/product/${image}" alt="${product.name}" height="256"/>
                                     </c:forTokens>
                                 </c:forEach>
                             </div>

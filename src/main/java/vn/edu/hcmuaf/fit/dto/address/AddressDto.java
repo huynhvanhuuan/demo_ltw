@@ -9,6 +9,7 @@ public class AddressDto {
     private WardDto ward;
     private DistrictDto district;
     private String path;
+    private Boolean defaultAddress;
 
     public Long getId() {
         return id;
@@ -58,6 +59,14 @@ public class AddressDto {
         this.path = path;
     }
 
+    public Boolean getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(Boolean defaultAddress) {
+        this.defaultAddress = defaultAddress;
+    }
+
     public static AddressDto createFromEntity(Address address) {
         AddressDto dest = new AddressDto();
 
@@ -65,6 +74,7 @@ public class AddressDto {
         dest.number = address.getNumber();
         dest.street = address.getStreet();
         dest.path = address.getPath();
+        dest.defaultAddress = address.getDefaultAddress();
 
         if (address.getWard() != null)
             dest.ward = WardDto.createFromEntity(address.getWard());

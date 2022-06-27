@@ -40,28 +40,7 @@ public class AddressDAOImpl implements AddressDAO {
 
     @Override
     public List<Address> findAll() {
-        List<Address> addresses = new ArrayList<>();
-        connection = DbManager.connectionPool.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.FIND_ALL);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                long id = rs.getLong("id");
-                String number = rs.getString("number");
-                String street = rs.getString("street");
-                Ward ward = wardDAO.findById(rs.getLong("ward_id"));
-                District district = districtDAO.findById(rs.getLong("district_id"));
-                String path = rs.getString("path");
-
-                Address address = new Address(id, number, street, ward, district, path);
-                addresses.add(address);
-            }
-        } catch (SQLException e) {
-            DbManager.connectionPool.releaseConnection(connection);
-            return addresses;
-        }
-        DbManager.connectionPool.releaseConnection(connection);
-        return addresses;
+        return null;
     }
 
     @Override
@@ -79,8 +58,9 @@ public class AddressDAOImpl implements AddressDAO {
                 Ward ward = wardDAO.findById(rs.getLong("ward_id"));
                 District district = districtDAO.findById(rs.getLong("district_id"));
                 String path = rs.getString("path");
+                Boolean isDefault = rs.getBoolean("is_default");
 
-                address = new Address(id, number, street, ward, district, path);
+                address = new Address(id, number, street, ward, district, path, isDefault);
             }
         } catch (SQLException e) {
             DbManager.connectionPool.releaseConnection(connection);
@@ -97,12 +77,13 @@ public class AddressDAOImpl implements AddressDAO {
             PreparedStatement statement = connection.prepareStatement(address.getId() == 0 ? QUERY.ADDRESS.CREATE : QUERY.ADDRESS.UPDATE, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, address.getNumber());
             statement.setString(2, address.getStreet());
-            statement.setLong(3, address.getWard().getId());
+            statement.setLong(3, address.getWard() == null ? 0 : address.getWard().getId());
             statement.setLong(4, address.getDistrict().getId());
             statement.setString(5, address.getPath());
 
             if (address.getId() != 0) {
-                statement.setLong(6, address.getId());
+                statement.setBoolean(6, address.getDefaultAddress());
+                statement.setLong(7, address.getId());
             }
             statement.executeUpdate();
 
@@ -144,8 +125,9 @@ public class AddressDAOImpl implements AddressDAO {
                 Ward ward = wardDAO.findById(rs.getLong("ward_id"));
                 District district = districtDAO.findById(rs.getLong("district_id"));
                 String path = rs.getString("path");
+                Boolean isDefault = rs.getBoolean("is_default");
 
-                Address address = new Address(id, number, street, ward, district, path);
+                Address address = new Address(id, number, street, ward, district, path, isDefault);
                 addresses.add(address);
             }
         } catch (SQLException e) {
@@ -171,8 +153,9 @@ public class AddressDAOImpl implements AddressDAO {
                 Ward ward = wardDAO.findById(rs.getLong("ward_id"));
                 District district = districtDAO.findById(rs.getLong("district_id"));
                 String path = rs.getString("path");
+                Boolean isDefault = rs.getBoolean("is_default");
 
-                Address address = new Address(id, number, street, ward, district, path);
+                Address address = new Address(id, number, street, ward, district, path, isDefault);
                 addresses.add(address);
             }
         } catch (SQLException e) {
@@ -198,8 +181,9 @@ public class AddressDAOImpl implements AddressDAO {
                 String street = rs.getString("street");
                 Ward ward = wardDAO.findById(rs.getLong("ward_id"));
                 District district = districtDAO.findById(rs.getLong("district_id"));
+                Boolean isDefault = rs.getBoolean("is_default");
 
-                address = new Address(id, number, street, ward, district, path);
+                address = new Address(id, number, street, ward, district, path, isDefault);
             }
         } catch (SQLException e) {
             DbManager.connectionPool.releaseConnection(connection);
@@ -211,30 +195,14 @@ public class AddressDAOImpl implements AddressDAO {
 
     @Override
     public void saveForTrademark(Address address, Long trademarkId) {
+        save(address);
         connection = DbManager.connectionPool.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement(address.getId() == 0 ? QUERY.ADDRESS.CREATE : QUERY.ADDRESS.UPDATE, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, address.getNumber());
-            statement.setString(2, address.getStreet());
-            statement.setLong(3, address.getWard() == null ? 0 : address.getWard().getId());
-            statement.setLong(4, address.getDistrict().getId());
-            statement.setString(5, address.getPath());
-            if (address.getId() != 0) {
-                statement.setLong(6, address.getId());
-            }
+            PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.CREATE_TRADEMARK_ADDRESS);
+            statement.setLong(1, trademarkId);
+            statement.setLong(2, address.getId());
+
             statement.executeUpdate();
-            if (address.getId() == 0) {
-                ResultSet rs = statement.getGeneratedKeys();
-                if (rs.next()) {
-                    address.setId(rs.getLong(1));
-                }
-
-                statement = connection.prepareStatement(QUERY.TRADEMARK.CREATE_ADDRESS);
-                statement.setLong(1, trademarkId);
-                statement.setLong(2, address.getId());
-
-                statement.executeUpdate();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -243,30 +211,14 @@ public class AddressDAOImpl implements AddressDAO {
 
     @Override
     public void saveForUser(Address address, Long userId) {
+        save(address);
         connection = DbManager.connectionPool.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement(address.getId() == 0 ? QUERY.ADDRESS.CREATE : QUERY.ADDRESS.UPDATE, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, address.getNumber());
-            statement.setString(2, address.getStreet());
-            statement.setLong(3, address.getWard() == null ? 0 : address.getWard().getId());
-            statement.setLong(4, address.getDistrict().getId());
-            statement.setString(5, address.getPath());
-            if (address.getId() != 0) {
-                statement.setLong(6, address.getId());
-            }
+            PreparedStatement statement = connection.prepareStatement(QUERY.ADDRESS.CREATE_USER_ADDRESS);
+            statement.setLong(1, userId);
+            statement.setLong(2, address.getId());
+
             statement.executeUpdate();
-            if (address.getId() == 0) {
-                ResultSet rs = statement.getGeneratedKeys();
-                if (rs.next()) {
-                    address.setId(rs.getLong(1));
-                }
-
-                statement = connection.prepareStatement(QUERY.APP_USER.CREATE_ADDRESS);
-                statement.setLong(1, userId);
-                statement.setLong(2, address.getId());
-
-                statement.executeUpdate();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

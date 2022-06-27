@@ -14,7 +14,7 @@ import java.io.IOException;
 @WebServlet(name = "api-product-detail", urlPatterns = "/api/product-detail/*")
 public class ProductDetailAPI extends HttpServlet {
     private final Gson GSON = new GsonBuilder().serializeNulls().create();
-    private final ProductDetailService productDetailService = ProductDetailServiceImpl.getInstance();
+    private final ProductDetailService productDetailService = new ProductDetailServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

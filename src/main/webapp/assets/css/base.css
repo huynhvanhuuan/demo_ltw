@@ -69,7 +69,9 @@ button {
 
 .container {
     width: 120rem;
+    max-width: 120rem !important;
     margin: 0 auto;
+    padding: 0 !important;
 }
 
 .col-1-2 {

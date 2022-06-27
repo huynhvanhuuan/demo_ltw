@@ -5,8 +5,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
+import vn.edu.hcmuaf.fit.dto.address.AddressDto;
 import vn.edu.hcmuaf.fit.dto.appuser.UserLoginResponse;
 import vn.edu.hcmuaf.fit.dto.userinfo.UserInfoDtoResponse;
+import vn.edu.hcmuaf.fit.service.AddressService;
+import vn.edu.hcmuaf.fit.service.impl.AddressServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -14,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.UUID;
 
 import static vn.edu.hcmuaf.fit.constant.FileConstant.TEMP_PROFILE_IMAGE_BASE_URL;
@@ -25,12 +29,18 @@ import static vn.edu.hcmuaf.fit.constant.FileConstant.USER_IMAGE_PATH;
         maxRequestSize = 1024 * 1024 * 100) // 100MB
 public class UserController extends HttpServlet {
     private final Gson GSON = new GsonBuilder().serializeNulls().create();
+    private AddressService addressService;
+
+    @Override
+    public void init() throws ServletException {
+        addressService = new AddressServiceImpl();
+    }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getPathInfo();
         if (path == null || path.equals("/")) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            request.getRequestDispatcher("/user/account/profile").forward(request, response);
             return;
         }
 
@@ -82,20 +92,25 @@ public class UserController extends HttpServlet {
                     case "account":
                         switch (pathParts[2]) {
                             case "profile":
+                                request.setAttribute("path", "profile");
                                 getProfile(request, response);
                                 break;
                             case "payment":
+                                request.setAttribute("path", "payment");
                                 getPayment(request, response);
                                 break;
                             case "address":
+                                request.setAttribute("path", "address");
                                 getAddress(request, response);
                                 break;
                             case "change-password":
+                                request.setAttribute("path", "change-password");
                                 getChangePassword(request, response);
                                 break;
                         }
                         break;
                     case "purchase":
+                        request.setAttribute("path", "purchase");
                         getPurchase(request, response);
                         break;
                     case "wishlist":
@@ -133,6 +148,7 @@ public class UserController extends HttpServlet {
                         changePassword(request, response);
                         break;
                 }
+                break;
         }
     }
 
@@ -162,7 +178,7 @@ public class UserController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         getPrivateProfile(request, response);
 
-        request.getRequestDispatcher("/view/client/user/account/profile.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
     }
 
     private void getPrivateProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -186,15 +202,25 @@ public class UserController extends HttpServlet {
     }
 
     public void getPayment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/view/client/user/account/payment.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
     }
 
     public void getAddress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/view/client/user/account/address.jsp").forward(request, response);
+        response.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("user_id");
+
+        AppServiceResult<List<AddressDto>> result = addressService.getAddressByUserId(userId);
+        if (result.isSuccess()) {
+            request.setAttribute("addresses", result.getData());
+            request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     public void getChangePassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/view/client/user/account/change-password.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
     }
 
     public void getPurchase(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -207,7 +233,7 @@ public class UserController extends HttpServlet {
         request.getRequestDispatcher("/api/user/purchase").include(request, response);
 
         request.removeAttribute("purchase");
-        request.getRequestDispatcher("/view/client/user/purchase.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
     }
 
     public void getWishlist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -46,7 +46,7 @@ public class ProvinceDAOImpl implements ProvinceDAO {
             }
         } catch (SQLException e) {
             DbManager.connectionPool.releaseConnection(connection);
-            return null;
+            return provinces;
         }
         DbManager.connectionPool.releaseConnection(connection);
         return provinces;

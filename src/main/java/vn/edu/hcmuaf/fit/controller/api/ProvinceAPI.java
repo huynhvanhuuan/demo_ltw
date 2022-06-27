@@ -3,6 +3,7 @@ package vn.edu.hcmuaf.fit.controller.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import vn.edu.hcmuaf.fit.constant.AppError;
+import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.address.ProvinceDto;
 import vn.edu.hcmuaf.fit.service.CommonService;
@@ -17,34 +18,30 @@ import java.util.List;
 @WebServlet(name = "api-province", urlPatterns = "/api/province/*")
 public class ProvinceAPI extends HttpServlet {
     private final Gson GSON = new GsonBuilder().serializeNulls().create();
-    private final CommonService provinceService = CommonServiceImpl.getInstance();
+    private CommonService commonService;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void init() throws ServletException {
+        commonService = new CommonServiceImpl();
+    }
+
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        String pathInfo = request.getPathInfo();
-        try {
-            if (pathInfo == null || pathInfo.equals("/")) {
-                AppServiceResult<List<ProvinceDto>> result = provinceService.getProvinces();
-                if (result.isSuccess()) {
-                    response.setStatus(200);
-                    response.getWriter().println(GSON.toJson(result));
-                } else {
-                    response.sendError(result.getErrorCode(), result.getMessage());
-                }
-            } else {
-                Long id = Long.parseLong(pathInfo.substring(1));
-                AppServiceResult<ProvinceDto> result = provinceService.getProvince(id);
-                if (result.isSuccess()) {
-                    response.setStatus(200);
-                    response.getWriter().println(GSON.toJson(result));
-                } else {
-                    response.sendError(result.getErrorCode(), result.getMessage());
-                }
-            }
-        } catch (NumberFormatException e) {
-            response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
+
+        String path = request.getPathInfo();
+        if ((path == null || path.equals("/")) && request.getMethod().equals("GET")) {
+            getProvinces(response);
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            AppBaseResult result = AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), "Lỗi. Không tìm thấy đường dẫn!");
+            response.getWriter().println(GSON.toJson(result));
         }
+    }
+
+    private void getProvinces(HttpServletResponse response) throws IOException {
+        AppServiceResult<List<ProvinceDto>> result = commonService.getProvinces();
+        response.getWriter().println(GSON.toJson(result));
     }
 }

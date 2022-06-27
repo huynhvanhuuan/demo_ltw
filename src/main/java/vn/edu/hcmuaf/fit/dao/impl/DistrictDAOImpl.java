@@ -16,7 +16,9 @@ public class DistrictDAOImpl implements DistrictDAO {
     private WardDAO wardDAO;
 
     private DistrictDAOImpl() {
-        this.provinceDAO = ProvinceDAOImpl.getInstance();
+        this.wardDAO = WardDAOImpl.getInstance();
+
+        ((WardDAOImpl) wardDAO).setDistrictDAO(this);
     }
 
     public static DistrictDAO getInstance() {
@@ -36,27 +38,7 @@ public class DistrictDAOImpl implements DistrictDAO {
 
     @Override
     public List<District> findAll() {
-        List<District> districts = new ArrayList<>();
-        connection = DbManager.connectionPool.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(QUERY.DISTRICT.FIND_ALL);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                long id = rs.getLong("id");
-                String name = rs.getString("name");
-                String prefix = rs.getString("prefix");
-                Province province = provinceDAO.findById(rs.getLong("province_id"));
-                Set<Ward> wards = new LinkedHashSet<>(wardDAO.findByDistrictId(id));
-                District district = new District(id, name, prefix, province, wards);
-
-                districts.add(district);
-            }
-        } catch (SQLException e) {
-            DbManager.connectionPool.releaseConnection(connection);
-            return null;
-        }
-        DbManager.connectionPool.releaseConnection(connection);
-        return districts;
+        return null;
     }
 
     @Override
@@ -84,13 +66,11 @@ public class DistrictDAOImpl implements DistrictDAO {
     }
 
     @Override
-    public void save(District object) {
-
+    public void save(District district) {
     }
 
     @Override
     public void remove(Long id) {
-
     }
 
     @Override

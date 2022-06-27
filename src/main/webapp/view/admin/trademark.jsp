@@ -338,7 +338,7 @@
 							error: function (error) {
 								Toast.fire({
 									icon: 'error',
-									title: error.message,
+									title: error.responseJSON.message,
 								})
 							}
 						});
@@ -374,7 +374,7 @@
 							error: function (error) {
 								Toast.fire({
 									icon: 'error',
-									title: error.message,
+									title: error.responseJSON.message,
 								})
 							}
 						});
@@ -410,7 +410,7 @@
 							error: function (error) {
 								Toast.fire({
 									icon: 'error',
-									title: error.message
+									title: error.responseJSON.message
 								});
 							}
 						})
@@ -452,7 +452,7 @@
 						error: function (error) {
 							Toast.fire({
 								icon: 'error',
-								title: error.message,
+								title: error.responseJSON.message,
 							})
 						}
 					});
@@ -490,7 +490,7 @@
 							error: function (error) {
 								Toast.fire({
 									icon: 'error',
-									title: error.message
+									title: error.responseJSON.message
 								});
 							}
 						});
@@ -567,13 +567,13 @@
 
 				$('#create-address').validate({
 					rules: {
-						province: {
+						provinceId: {
 							mustChoose: true
 						},
-						district: {
+						districtId: {
 							mustChoose: true
 						},
-						ward: {
+						wardId: {
 							mustChoose: true
 						},
 						street: {
@@ -584,9 +584,9 @@
 						}
 					},
 					messages: {
-						province: "Vui lòng chọn tỉnh, thành phố",
-						district: "Vui lòng chọn quận, huyện",
-						ward: "Vui lòng chọn phường, xã",
+						provinceId: "Vui lòng chọn tỉnh, thành phố",
+						districtId: "Vui lòng chọn quận, huyện",
+						wardId: "Vui lòng chọn phường, xã",
 						street: "Vui lòng nhập tên đường",
 						number: "Vui lòng nhập số nhà, lô, kios,.."
 					},

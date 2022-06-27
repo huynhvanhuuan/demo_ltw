@@ -7,9 +7,16 @@
         <welcome-file>view/index.jsp</welcome-file>
     </welcome-file-list>
 
+    <request-character-encoding>UTF-8</request-character-encoding>
+    <response-character-encoding>UTF-8</response-character-encoding>
+
     <error-page>
         <error-code>400</error-code>
         <location>/view/errors/400.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/view/errors/401.jsp</location>
     </error-page>
     <error-page>
         <error-code>403</error-code>

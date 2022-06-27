@@ -13,7 +13,7 @@ public class DbConnection implements IConnectionPool {
     private final String pwd;
     private final String database;
     private final List<Connection> connectionPool;
-    private final List<Connection> usedConnections = new ArrayList<>();
+    private final List<Connection> usedConnections;
 
     public static DbConnection init(String uid, String pwd, String database) {
         List<Connection> pool = new ArrayList<>(MAX_POOL_SIZE);
@@ -28,6 +28,7 @@ public class DbConnection implements IConnectionPool {
         this.pwd = pwd;
         this.database = database;
         this.connectionPool = pool;
+        this.usedConnections = new ArrayList<>();
     }
 
     @Override
@@ -41,6 +42,11 @@ public class DbConnection implements IConnectionPool {
                     // throw new RuntimeException("Maximum pool size reached, no available connections!");
                 }
             }
+
+            if (connectionPool.size() <= 5) {
+                DbManager.connectionPool = DbConnection.init(uid, pwd, database);
+            }
+
             Connection connection = connectionPool.remove(0);
             if (connection == null || !connection.isValid(MAX_TIMEOUT)) {
                 connection = createConnection(uid, pwd, database);

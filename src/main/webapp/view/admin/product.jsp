@@ -389,7 +389,7 @@
 							error: function (error) {
 								Toast.fire({
 									icon: 'error',
-									title: error.message
+									title: error.responseJSON.message
 								})
 							}
 						});*/
@@ -428,7 +428,7 @@
 						error: function (error) {
 							Toast.fire({
 								icon: 'error',
-								title: error.message
+								title: error.responseJSON.message
 							})
 						}
 					});

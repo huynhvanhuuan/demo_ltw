@@ -32,26 +32,21 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public AppServiceResult<List<ProductDto>> getProducts(int currentPage) {
-		try {
-			List<Product> products = productDAO.findAll();
-			List<ProductDto> result = new ArrayList<>();
+		List<Product> products = productDAO.findAll();
+		List<ProductDto> result = new ArrayList<>();
 
-			if (currentPage > 0) {
-				totalPage = (int) Math.ceil(products.size() / (double) PaginationConstant.DEFAULT_PAGE_SIZE);
-				int start = (currentPage - 1) * PaginationConstant.DEFAULT_PAGE_SIZE;
-				int end = start + PaginationConstant.DEFAULT_PAGE_SIZE;
-				if (end > products.size()) end = products.size();
-				products = products.subList(start, end);
-			}
-
-			products.forEach(product -> result.add(ProductDto.createFromEntity(product)));
-
-			return new AppServiceResult<>(true, 0, "Success", result);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-					AppError.Unknown.errorMessage(), null);
+		totalPage = (int) Math.ceil(products.size() / (double) PaginationConstant.DEFAULT_PAGE_SIZE);
+		if (currentPage > 0 || currentPage <= totalPage) {
+			int start = (currentPage - 1) * PaginationConstant.DEFAULT_PAGE_SIZE;
+			int end = start + PaginationConstant.DEFAULT_PAGE_SIZE;
+			if (end > products.size()) end = products.size();
+			products = products.subList(start, end);
+		} else {
+			products = products.subList(0, PaginationConstant.DEFAULT_PAGE_SIZE);
 		}
+
+		products.forEach(product -> result.add(ProductDto.createFromEntity(product)));
+		return new AppServiceResult<>(true, 0, "Lấy danh sách sản phẩm thành công!", result);
 	}
 
 	@Override

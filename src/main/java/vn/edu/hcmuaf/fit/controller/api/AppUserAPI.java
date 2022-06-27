@@ -34,8 +34,14 @@ import static vn.edu.hcmuaf.fit.constant.FileConstant.*;
 		maxRequestSize = 1024 * 1024 * 100) // 100MB
 public class AppUserAPI extends HttpServlet {
 	private final Gson GSON = new GsonBuilder().serializeNulls().create();
-	private final AppUserService appUserService = new AppUserServiceImpl();
-	private final AppJwtTokenProvider appJwtTokenProvider = new AppJwtTokenProvider();
+	private AppUserService appUserService;
+	private AppJwtTokenProvider appJwtTokenProvider;
+
+	@Override
+	public void init() throws ServletException {
+		appUserService = new AppUserServiceImpl();
+		appJwtTokenProvider = new AppJwtTokenProvider();
+	}
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,10 +68,16 @@ public class AppUserAPI extends HttpServlet {
 							case "profile":
 								getProfile(request);
 								break;
+							default:
+								response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+								break;
 						}
 						break;
 					case "purchase":
 						getPurchase(request);
+					default:
+						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+						break;
 				}
 				break;
 			case "POST":
@@ -85,6 +97,12 @@ public class AppUserAPI extends HttpServlet {
 					case "upload-profile-image":
 						uploadImage(request);
 						break;
+					case "add-address":
+						addAddress(request);
+						break;
+					default:
+						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+						break;
 				}
 				break;
 			case "PUT":
@@ -94,6 +112,9 @@ public class AppUserAPI extends HttpServlet {
 						break;
 					case "change-password":
 						changePassword(request);
+						break;
+					default:
+						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 						break;
 				}
 				break;
@@ -250,6 +271,7 @@ public class AppUserAPI extends HttpServlet {
 	}
 
 	private void addAddress(HttpServletRequest request) {
+
 	}
 
 	public void updateStatus(HttpServletRequest request, HttpServletResponse response) {

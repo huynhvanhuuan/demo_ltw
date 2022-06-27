@@ -29,12 +29,12 @@
                         </form>
                     </li>
                     <li class="header-item">
-                        <a href="${requestScope.contextPath}/user/wishlist">
+                        <a href="${requestScope.contextPath}/wishlist">
                             <ion-icon name="heart-outline"></ion-icon>
                         </a>
                     </li>
                     <li class="header-item">
-                        <a href="${requestScope.contextPath}/user/cart">
+                        <a href="${requestScope.contextPath}/cart">
                             <ion-icon name="cart-outline"></ion-icon>
                         </a>
                     </li>

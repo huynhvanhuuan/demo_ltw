@@ -1,31 +1,35 @@
 package vn.edu.hcmuaf.fit.dto.address;
 
 public class AddressUpdate {
-    private Long id;
+    private Long addressId;
     private String number;
     private String street;
     private Long wardId;
     private Long districtId;
     private Long provinceId;
+    private Boolean defaultAddress;
+    private Long id;
 
     public AddressUpdate() {
     }
 
-    public AddressUpdate(Long id, String number, String street, Long wardId, Long districtId, Long provinceId) {
-        this.id = id;
+    public AddressUpdate(Long addressId, String number, String street, Long wardId, Long districtId, Long provinceId, Boolean defaultAddress, Long id) {
+        this.addressId = addressId;
         this.number = number;
         this.street = street;
         this.wardId = wardId;
         this.districtId = districtId;
         this.provinceId = provinceId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+        this.defaultAddress = defaultAddress;
         this.id = id;
+    }
+
+    public Long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
     }
 
     public String getNumber() {
@@ -66,5 +70,21 @@ public class AddressUpdate {
 
     public void setProvinceId(Long provinceId) {
         this.provinceId = provinceId;
+    }
+
+    public Boolean getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(Boolean defaultAddress) {
+        this.defaultAddress = defaultAddress;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

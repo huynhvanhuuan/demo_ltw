@@ -22,7 +22,7 @@
                             <div class="product-img-main">
                                 <c:forEach items="${images}" var="imagesPerDetail" begin="0" end="0">
                                     <c:forEach items="${imagesPerDetail.value}" var="image" begin="0" end="0">
-                                        <img src="${requestScope.contextPath}/image/${image}" alt="${product.name}">
+                                        <img src="${requestScope.contextPath}/image/product/${image}" alt="${product.name}">
                                     </c:forEach>
                                 </c:forEach>
                             </div>
@@ -30,7 +30,7 @@
                                 <c:forEach items="${images}" var="imagesPerDetail">
                                     <c:forEach items="${imagesPerDetail.value}" var="image">
                                         <img class="product-img-item mx-3" style="cursor: pointer;"
-                                             src="${requestScope.contextPath}/image/${image}" alt="${product.name}">
+                                             src="${requestScope.contextPath}/image/product/${image}" alt="${product.name}">
                                     </c:forEach>
                                 </c:forEach>
                             </div>

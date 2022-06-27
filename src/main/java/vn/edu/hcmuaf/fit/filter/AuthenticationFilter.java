@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebFilter(filterName = "AuthenticationFilter", urlPatterns = { "/user/*", "/admin/*" }, asyncSupported = true)
+@WebFilter(filterName = "AuthenticationFilter", value = "/*", asyncSupported = true)
 public class AuthenticationFilter implements Filter {
     private AppJwtTokenProvider jwtTokenProvider;
 
@@ -45,12 +45,17 @@ public class AuthenticationFilter implements Filter {
                 }
             }
 
-            if (req.getServletPath().equals("/user")) {
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            for (String url : SecurityConstant.PUBLIC_GET_URLS) {
+                if (req.getRequestURI().contains(url) && req.getMethod().equalsIgnoreCase("GET")) {
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
+
+            if (req.getServletPath().equals("/user") || req.getServletPath().equals("/cart")) {
                 res.sendRedirect("/home");
                 return;
             } else if (req.getServletPath().equals("/admin")) {
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 res.sendRedirect("/admin/login");
                 return;
             }
