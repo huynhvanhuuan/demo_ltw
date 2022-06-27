@@ -18,11 +18,12 @@ public class AppUser implements Serializable {
     private Set<Wishlist> wishlists = new LinkedHashSet<>();
     private Set<Address> addresses = new LinkedHashSet<>();
     private Set<Order> orders = new LinkedHashSet<>();
+    private Set<CartItem> cart = new LinkedHashSet<>();
 
     public AppUser() {}
 
     public AppUser(Long id, String username, String email, String phone, String password, Boolean notLocked, Boolean enabled, Set<AppRole> appRoles, UserInfo userInfo, Date dateCreated, Date lastUpdated, Set<Wishlist> wishlists,
-                   Set<Address> addresses, Set<Order> orders) {
+                   Set<Address> addresses, Set<Order> orders, Set<CartItem> cart) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -37,6 +38,7 @@ public class AppUser implements Serializable {
         this.wishlists = wishlists;
         this.addresses = addresses;
         this.orders = orders;
+        this.cart = cart;
     }
 
     public Long getId() {
@@ -149,6 +151,21 @@ public class AppUser implements Serializable {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    public Set<CartItem> getcart() {
+        return cart;
+    }
+
+    public void setcart(Set<CartItem> cart) {
+        this.cart = cart;
+    }
+
+    public void addToCart(CartItem item) {
+        if (cart == null) {
+            cart = new LinkedHashSet<>();
+        }
+        cart.add(item);
     }
 
     public void addRole(AppRole role) {

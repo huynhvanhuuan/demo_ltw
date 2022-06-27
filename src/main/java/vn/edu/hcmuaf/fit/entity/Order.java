@@ -1,29 +1,28 @@
 package vn.edu.hcmuaf.fit.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.*;
 
 public class Order implements Serializable {
 	private String id;
-	private String uesrId;
-	private BigInteger totalPrice;
+	private AppUser appUser;
+	private Long totalPrice;
 	private String address;
 	private Date dateCreated;
 	private Date lastUpdated;
-	private Set<OrderItem> orderItems = new LinkedHashSet<>();
+	private Set<OrderItem> items = new LinkedHashSet<>();
 	
 	public Order() {
 	}
 	
-	public Order(String id, String uesrId, BigInteger totalPrice, String address, Date dateCreated, Date lastUpdated, Set<OrderItem> orderItems) {
+	public Order(String id, AppUser appUser, Long totalPrice, String address, Date dateCreated, Date lastUpdated, Set<OrderItem> items) {
 		this.id = id;
-		this.uesrId = uesrId;
+		this.appUser = appUser;
 		this.totalPrice = totalPrice;
 		this.address = address;
 		this.dateCreated = dateCreated;
 		this.lastUpdated = lastUpdated;
-		this.orderItems = orderItems;
+		this.items = items;
 	}
 	
 	public String getId() {
@@ -33,20 +32,20 @@ public class Order implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public String getUesrId() {
-		return uesrId;
+
+	public AppUser getAppUser() {
+		return appUser;
+	}
+
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
 	}
 	
-	public void setUesrId(String uesrId) {
-		this.uesrId = uesrId;
-	}
-	
-	public BigInteger getTotalPrice() {
+	public Long getTotalPrice() {
 		return totalPrice;
 	}
 	
-	public void setTotalPrice(BigInteger totalPrice) {
+	public void setTotalPrice(Long totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 	
@@ -75,16 +74,16 @@ public class Order implements Serializable {
 	}
 	
 	public Set<OrderItem> getOrderItems() {
-		return orderItems;
+		return items;
 	}
 	
-	public void setOrderItems(Set<OrderItem> orderItems) {
-		this.orderItems = orderItems;
+	public void setOrderItems(Set<OrderItem> items) {
+		this.items = items;
 	}
 
 	public void addItem(OrderItem item) {
-		if (orderItems == null) orderItems = new LinkedHashSet<>();
-		orderItems.add(item);
+		if (items == null) items = new LinkedHashSet<>();
+		items.add(item);
 		item.setOrder(this);
 	}
 }

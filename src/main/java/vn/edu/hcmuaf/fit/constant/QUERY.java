@@ -142,13 +142,12 @@ public class QUERY {
 
     /* CART */
     public static class CART {
-        public static final String FIND_ALL = "select * from cart where user_id = ?";
-        public static final String ADD_TO_CART = "insert into cart values(?,?,?)";
-        public static final String UPDATE_PRODUCT_QUANTITY = "update cart set quantity = ? where user_id = ? and product_sku like ?";
-        public static final String REMOVE = "delete from cart where user_id like ? and product_sku like ?";
-        public static final String REMOVE_FROM_CART = "delete from cart where user_id = ? and trademark_id = ?";
-        public static final String REMOVE_BY_USER_ID = "delete from cart where user_id = ?";
-        public static final String REMOVE_BY_PRODUCT_SKU = "select * from cart where product_sku like ?";
+        public static final String FIND_BY_USER_ID = "select * from cart where user_id = ?";
+        public static final String FIND_BY_ID = "select * from cart where user_id = ? and product_id = ?";
+        public static final String ADD_TO_CART = "insert into cart(user_id, product_id, quantity) values(?,?,?)";
+        public static final String UPDATE_QUANTITY = "update cart set quantity = ? where user_id = ? and product_id = ?";
+        public static final String REMOVE = "delete from cart where user_id = ? and product_id = ?";
+        public static final String REMOVE_ALL = "delete from cart where user_id = ?";
     }
 
     /* WISHLIST */

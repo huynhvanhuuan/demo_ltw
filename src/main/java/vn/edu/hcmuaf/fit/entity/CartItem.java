@@ -2,16 +2,15 @@ package vn.edu.hcmuaf.fit.entity;
 
 import java.io.Serializable;
 
-public class Cart implements Serializable {
+public class CartItem implements Serializable {
     private AppUser appUser;
     private ProductDetail product;
     private int quantity;
-    private double totalPrice;
 
-    public Cart() {
+    public CartItem() {
     }
 
-    public Cart(AppUser appUser, ProductDetail product, int quantity) {
+    public CartItem(AppUser appUser, ProductDetail product, int quantity) {
         this.appUser = appUser;
         this.product = product;
         this.quantity = quantity;
@@ -42,6 +41,6 @@ public class Cart implements Serializable {
     }
 
     public double getTotalPrice() {
-        return quantity * product.getTotalPrice();
+        return quantity * product.getDiscountPrice();
     }
 }
