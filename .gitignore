@@ -36,3 +36,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+src/main/java/vn/edu/hcmuaf/fit/constant/FileConstant.java

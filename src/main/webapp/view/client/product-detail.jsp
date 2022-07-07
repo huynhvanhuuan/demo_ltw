@@ -44,15 +44,15 @@
                                 </p>
                             </div>
                             <form class="form" id="product-form" novalidate="novalidate">
-                                <input type="hidden" name="productId">
-                                <input type="hidden" name="quantity">
+                                <input type="hidden" name="id">
+                                <input type="hidden" name="productId" value="${product.id}">
                                 <div class="product-material">
                                     <p class="p-title">Vật liệu:</p>
                                     <div class="row">
                                         <jsp:useBean id="materials" scope="request" type="java.util.Map"/>
                                         <c:forEach items="${materials}" var="material">
                                             <div class="col">
-                                                <input type="radio" name="material" id="material-${material.key}" value="${material.key}">
+                                                <input type="radio" name="materialId" id="material-${material.key}" value="${material.key}">
                                                 <label for="material-${material.key}" class="option">
                                                     <i class="dot"></i>
                                                     <span>${material.value.name}</span>
@@ -67,22 +67,21 @@
                                         <jsp:useBean id="colors" scope="request" type="java.util.Map"/>
                                         <c:forEach items="${colors}" var="color">
                                             <li class="color-item">
-                                                <input class="input-radio" id="color-${color.key}" type="radio" name="color" value="${color.key}"/>
+                                                <input type="radio" class="input-radio" name="colorId" id="color-${color.key}" value="${color.key}"/>
                                                 <label class="color-title" for="color-${color.key}" style="background-color: ${color.value.hex}; cursor: pointer;"></label>
                                             </li>
                                         </c:forEach>
                                     </ul>
                                 </div>
+                                <div class="unit-in-stock">
+                                    <span class="p-title">Số lượng còn lại: <i id="unit-in-stock">${product.products.toArray()[0].unitInStock}</i></span>
+                                </div>
                                 <div class="quantity">
                                     <span class="p-title">Số lượng:</span>
                                     <div class="btn-quantity">
-                                        <div class="btn-minus">
-                                            <ion-icon name="remove-circle"></ion-icon>
-                                        </div>
-                                        <input type="text" class="quantity-count" value="1"/>
-                                        <div class="btn-add">
-                                            <ion-icon name="add-circle"></ion-icon>
-                                        </div>
+                                        <div class="btn-minus"><ion-icon name="remove-circle"></ion-icon></div>
+                                        <input type="text" name="quantity" class="quantity-count" value="1"/>
+                                        <div class="btn-add"><ion-icon name="add-circle"></ion-icon></div>
                                     </div>
                                 </div>
                                 <div class="product-rate">
@@ -108,7 +107,6 @@
                                     </div>
                                 </div>
                             </form>
-
                             <div class="wish-list">
                                 <ion-icon name="heart-outline"></ion-icon>
                                 <ion-icon name="heart"></ion-icon>
@@ -125,72 +123,12 @@
                         <div class="user-review">
                             <div class="user-review--info">
                                 <div class="user-review--info__left">
-                                    <img
-                                            class="user-review--img"
-                                            src="${requestScope.contextPath}/assets/images/user/user-1.jpg"
-                                            alt="customer avatar"
-                                    />
+                                    <img class="user-review--img" src="${requestScope.contextPath}/assets/images/user/user-1.jpg"
+                                         alt="customer avatar"/>
                                 </div>
                                 <div class="user-review--info__right user-review--comment">
                                     <div class="user-review--box">
                                         <div class="user-review--name">Khoa Pug</div>
-                                        <div class="user-review--rate">
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star-half"></ion-icon>
-                                        </div>
-                                    </div>
-                                    <p class="comment">
-                                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                                        elit. Pariatur, consequuntur? Dolorem quod ipsum cumque.
-                                        Animi illo qui rerum molestiae id enim quasi accusantium
-                                        sapiente facilis non dolores, facere, error neque!
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="user-review">
-                            <div class="user-review--info">
-                                <div class="user-review--info__left">
-                                    <img
-                                            class="user-review--img"
-                                            src="${requestScope.contextPath}/assets/images/user/user-2.jpg"
-                                            alt="customer avatar 2"
-                                    />
-                                </div>
-                                <div class="user-review--info__right user-review--comment">
-                                    <div class="user-review--box">
-                                        <div class="user-review--name">Mayuko</div>
-                                        <div class="user-review--rate">
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star-half"></ion-icon>
-                                        </div>
-                                    </div>
-                                    <p class="comment">
-                                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                                        elit. Pariatur, consequuntur? Dolorem quod ipsum cumque.
-                                        Animi illo qui rerum molestiae id enim quasi accusantium
-                                        sapiente facilis non dolores, facere, error neque!
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="user-review">
-                            <div class="user-review--info">
-                                <div class="user-review--info__left">
-                                    <img class="user-review--img"
-                                            src="${requestScope.contextPath}/assets/images/user/user-3.jpg"
-                                            alt="customer avatar 3"
-                                    />
-                                </div>
-                                <div class="user-review--info__right user-review--comment">
-                                    <div class="user-review--box">
-                                        <div class="user-review--name">Vuong Pham</div>
                                         <div class="user-review--rate">
                                             <ion-icon name="star"></ion-icon>
                                             <ion-icon name="star"></ion-icon>
@@ -216,17 +154,12 @@
                                 <a href="product-detail.jsp" class="card-link"></a>
                                 <div class="card-discount">35% giảm</div>
                                 <div class="card-img">
-                                    <img
-                                            class="card-img-item"
-                                            src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
-                                            alt="card image"
-                                    />
+                                    <img class="card-img-item" src="${requestScope.contextPath}/assets/images/ngan_ghep_ke_sach/ke_sach.png"
+                                         alt="card image"/>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-title">
-                                        <a href="product-detail.jsp"
-                                        >Ngăn Trang Trí - Ngăn Ghép Kệ Sách</a
-                                        >
+                                        <a href="product-detail.jsp">Ngăn Trang Trí - Ngăn Ghép Kệ Sách</a>
                                     </div>
                                     <div class="card-price">
                                         <span class="card-promotion-price">129.000</span>
@@ -238,109 +171,7 @@
                                             <ion-icon name="star"></ion-icon>
                                             <span>4.2</span>
                                         </div>
-                                        <div class="card-wistlist">
-                                            <ion-icon name="heart-outline"></ion-icon>
-                                        </div>
-                                    </div>
-                                    <a href="product-detail.jsp" class="btn-add-card"
-                                    >Thêm vào giỏ hàng</a
-                                    >
-                                </div>
-                            </div>
-                            <div class="card">
-                                <a href="product-detail.jsp" class="card-link"></a>
-                                <div class="card-discount">20% giảm</div>
-                                <div class="card-img">
-                                    <img
-                                            class="card-img-item"
-                                            src="${requestScope.contextPath}/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
-                                            alt="card image"
-                                    />
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">
-                                        <a href="product-detail.jsp"
-                                        >Giường Ngủ Gỗ MOHO VLINE 601</a
-                                        >
-                                    </div>
-                                    <div class="card-price">
-                                        <span class="card-promotion-price">4.632.000</span>
-                                        <span class="card-original-price">5.790.000</span>
-                                    </div>
-                                    <div class="card-detail">
-                                        <div class="card-rate">
-                                            <ion-icon name="star-outline"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <span>4.2</span>
-                                        </div>
-                                        <div class="card-wistlist">
-                                            <ion-icon name="heart-outline"></ion-icon>
-                                        </div>
-                                    </div>
-                                    <a href="product-detail.jsp" class="btn-add-card"
-                                    >Thêm vào giỏ hàng</a
-                                    >
-                                </div>
-                            </div>
-                            <div class="card">
-                                <a href="product-detail.jsp" class="card-link"></a>
-                                <div class="card-discount">20% giảm</div>
-                                <div class="card-img">
-                                    <img class="card-img-item"
-                                            src="${requestScope.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
-                                            alt="card image"
-                                    />
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">
-                                        <a href="product-detail.jsp">
-                                            Bàn Sofa - Bàn Cafe - Bàn Trà Tròn Cao
-                                        </a>
-                                    </div>
-                                    <div class="card-price">
-                                        <span class="card-promotion-price">639.000</span>
-                                        <span class="card-original-price">799.000</span>
-                                    </div>
-                                    <div class="card-detail">
-                                        <div class="card-rate">
-                                            <ion-icon name="star-outline"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <span>4.2</span>
-                                        </div>
-                                        <div class="card-wistlist">
-                                            <ion-icon name="heart-outline"></ion-icon>
-                                        </div>
-                                    </div>
-                                    <a href="product-detail.jsp" class="btn-add-card">Thêm vào giỏ hàng</a>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <a href="product-detail.jsp" class="card-link"></a>
-                                <!-- <div class="card-discount">0% giảm</div> -->
-                                <div class="card-img">
-                                    <img
-                                            class="card-img-item"
-                                            src="${requestScope.contextPath}/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
-                                            alt="card image"
-                                    />
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-title">
-                                        <a href="product-detail.jsp">Tủ Kệ Tivi Gỗ</a>
-                                    </div>
-                                    <div class="card-price">
-                                        <span class="card-promotion-price">2.490.000</span>
-                                        <span class="card-original-price">2490.000</span>
-                                    </div>
-                                    <div class="card-detail">
-                                        <div class="card-rate">
-                                            <ion-icon name="star-outline"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <span>4.2</span>
-                                        </div>
-                                        <div class="card-wistlist">
-                                            <ion-icon name="heart-outline"></ion-icon>
-                                        </div>
+                                        <div class="card-wistlist"><ion-icon name="heart-outline"></ion-icon></div>
                                     </div>
                                     <a href="product-detail.jsp" class="btn-add-card">Thêm vào giỏ hàng</a>
                                 </div>
@@ -352,7 +183,7 @@
         </main>
         <c:import url="import/footer.jsp"/>
         <c:import url="import/signin-signup.jsp"/>
-        <script src="${requestScope.contextPath}/assets/js/product-detail.js"></script>
         <c:import url="import/with-header/script.jsp"/>
+        <script src="${requestScope.contextPath}/assets/js/product-detail.js"></script>
     </body>
 </html>

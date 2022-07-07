@@ -14,6 +14,8 @@
     --grey-color: #eee;
     --error-color: #ff5b5b;
     --error-color-border: #ff3333;
+    --disabled-color: #e22b2b;
+    --disabled-color-rgba: rgba(224, 98, 98, 0.2);
 }
 
 ::-webkit-scrollbar {
@@ -121,4 +123,37 @@ button {
 .btn-primary:hover {
     background-color: var(--fourth-color);
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.card-promotion-price {
+    color: var(--primary-color);
+}
+
+.card-original-price {
+    color: var(--text-grey);
+    text-decoration: line-through;
+}
+
+.d-block {
+    display: block;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-1 {
+    margin-top: 1rem !important;
+}
+
+.ml-2 {
+    margin-left: 2rem;
+}
+
+ion-icon {
+    pointer-events: none !important;
 }

@@ -1,5 +1,8 @@
 package vn.edu.hcmuaf.fit.dto.userinfo;
 
+import vn.edu.hcmuaf.fit.entity.AppUser;
+import vn.edu.hcmuaf.fit.entity.UserInfo;
+
 import java.util.Date;
 
 public class UserInfoDtoResponse {
@@ -109,5 +112,24 @@ public class UserInfoDtoResponse {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public static UserInfoDtoResponse createFromEntity(AppUser src) {
+        UserInfoDtoResponse dest = new UserInfoDtoResponse();
+
+        dest.setId(src.getId());
+        dest.setUsername(src.getUsername());
+        dest.setEmail(src.getEmail());
+        dest.setPhone(src.getPhone());
+
+        UserInfo userInfo = src.getUserInfo();
+        dest.setLastName(userInfo.getLastName());
+        dest.setFirstName(userInfo.getFirstName());
+        dest.setFullName(userInfo.getFullName());
+        dest.setDateOfBirth(userInfo.getDateOfBirth());
+        dest.setMale(userInfo.isMale());
+        dest.setImageUrl(userInfo.getImageUrl());
+
+        return dest;
     }
 }

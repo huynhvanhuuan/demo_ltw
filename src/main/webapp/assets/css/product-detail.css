@@ -199,20 +199,20 @@
     padding-top: 5px;
 }
 
-.product-material input[name="material"] {
+.product-material input[name="materialId"] {
     display: none;
 }
 
-.product-material input[name="material"]:checked ~ .option {
+.product-material input[name="materialId"]:checked ~ .option {
     border-color: var(--primary-color);
     background: var(--primary-color);
 }
 
-.product-material input[name="material"]:checked ~ .option .dot {
+.product-material input[name="materialId"]:checked ~ .option .dot {
     background: #fff;
 }
 
-.product-material input[name="material"]:checked ~ .option .dot::before {
+.product-material input[name="materialId"]:checked ~ .option .dot::before {
     opacity: 1;
     transform: scale(1);
 }
@@ -223,7 +223,7 @@
     color: var(--text-black);
 }
 
-.product-material input[name="material"]:checked ~ .option span {
+.product-material input[name="materialId"]:checked ~ .option span {
     color: #fff;
 }
 

@@ -1,35 +1,53 @@
-// xử lý check sản phẩm
 const checkAllTop = document.querySelector('#check-all')
 const checkAllBottom = document.querySelector('#check-all-bottom')
+let listCheck = document.querySelectorAll('.c-checkbox-child');
 
 checkAllTop.onclick = () => {
     if (checkAllTop.checked) {
-        checkAllBottom.setAttribute('checked', 'checked')
-        document.querySelectorAll('.c-checkbox').forEach(checkbox => {
-            checkbox.setAttribute('checked', 'checked')
-        })
+        checkAllBottom.checked = true;
+        for (let i = 0; i < listCheck.length; i++) {
+            listCheck[i].checked = true;
+        }
     } else {
-        checkAllBottom.removeAttribute('checked')
-        document.querySelectorAll('.c-checkbox').forEach(checkbox => {
-            checkbox.removeAttribute('checked')
-        })
+        checkAllBottom.checked = false;
+        for (let i = 0; i < listCheck.length; i++) {
+            listCheck[i].checked = false;
+        }
     }
 }
 
 checkAllBottom.onclick = () => {
     if (checkAllBottom.checked) {
-        checkAllTop.setAttribute('checked', 'checked')
-        document.querySelectorAll('.c-checkbox').forEach(checkbox => {
-            checkbox.setAttribute('checked', 'checked')
-        })
+        checkAllTop.checked = true;
+        for (let i = 0; i < listCheck.length; i++) {
+            listCheck[i].checked = true;
+        }
     } else {
-        checkAllTop.removeAttribute('checked')
-        document.querySelectorAll('.c-checkbox').forEach(checkbox => {
-            checkbox.removeAttribute('checked')
-        })
+        checkAllTop.checked = false;
+        for (let i = 0; i < listCheck.length; i++) {
+            listCheck[i].checked = false;
+        }
     }
 }
 
-// let countProduct = document.querySelector('.total-payment-product')
-// const regex = /[0-9]+/g
-// console.log(countProduct.textContent.match(regex))
+for (let i = 0; i < listCheck.length; i++) {
+    listCheck[i].onclick = () => {
+        if (!listCheck[i].checked) {
+            checkAllTop.checked = false;
+            checkAllBottom.checked = false;
+        }
+
+        if (listCheck[i].checked) {
+            let checkAll = true;
+            for (let i = 0; i < listCheck.length; i++) {
+                if (!listCheck[i].checked) {
+                    checkAll = false;
+                }
+            }
+            if (checkAll) {
+                checkAllTop.checked = true;
+                checkAllBottom.checked = true;
+            }
+        }
+    }
+}

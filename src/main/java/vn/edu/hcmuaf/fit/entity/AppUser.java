@@ -161,13 +161,6 @@ public class AppUser implements Serializable {
         this.cart = cart;
     }
 
-    public void addToCart(CartItem item) {
-        if (cart == null) {
-            cart = new LinkedHashSet<>();
-        }
-        cart.add(item);
-    }
-
     public void addRole(AppRole role) {
         if (appRoles == null) {
             appRoles = new LinkedHashSet<>();

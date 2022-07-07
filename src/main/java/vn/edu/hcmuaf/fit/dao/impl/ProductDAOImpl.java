@@ -23,6 +23,7 @@ public class ProductDAOImpl implements ProductDAO {
         categoryDAO = CategoryDAOImpl.getInstance();
         productDetailDAO = ProductDetailDAOImpl.getInstance();
 
+        ((ProductDetailDAOImpl) productDetailDAO).setProductDAO(this);
         ((ProductDetailDAOImpl) productDetailDAO).setColorDAO(ColorDAOImpl.getInstance());
         ((ProductDetailDAOImpl) productDetailDAO).setMaterialDAO(MaterialDAOImpl.getInstance());
     }
@@ -59,12 +60,13 @@ public class ProductDAOImpl implements ProductDAO {
                 String description = rs.getString("description");
                 Trademark trademark = trademarkDAO.findById(rs.getLong("trademark_id"));
                 Category category = categoryDAO.findById(rs.getLong("category_id"));
+                long shippingFee = rs.getLong("shipping_fee");
                 Date dateCreated = rs.getTimestamp("date_created");
                 Date lastUpdated = rs.getTimestamp("last_updated");
                 boolean active = rs.getBoolean("active");
                 Set<ProductDetail> productDetails = new LinkedHashSet<>(productDetailDAO.findByProductId(id));
 
-                Product product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
+                Product product = new Product(id, name, size, description, trademark, category, shippingFee, dateCreated, lastUpdated, active, productDetails);
                 products.add(product);
             }
         } catch (Exception e) {
@@ -90,12 +92,13 @@ public class ProductDAOImpl implements ProductDAO {
                 String description = rs.getString("description");
                 Trademark trademark = trademarkDAO.findById(rs.getLong("trademark_id"));
                 Category category = categoryDAO.findById(rs.getLong("category_id"));
+                long shippingFee = rs.getLong("shipping_fee");
                 Date dateCreated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("date_created"));
                 Date lastUpdated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("last_updated"));
                 boolean active = rs.getBoolean("active");
                 Set<ProductDetail> productDetails = new LinkedHashSet<>(productDetailDAO.findByProductId(id));
 
-                product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
+                product = new Product(id, name, size, description, trademark, category, shippingFee, dateCreated, lastUpdated, active, productDetails);
             }
         } catch (Exception e) {
             DbManager.connectionPool.releaseConnection(connection);
@@ -152,12 +155,13 @@ public class ProductDAOImpl implements ProductDAO {
                 String description = rs.getString("description");
                 Trademark trademark = trademarkDAO.findById(rs.getLong("trademark_id"));
                 Category category = categoryDAO.findById(rs.getLong("category_id"));
+                long shippingFee = rs.getLong("shipping_fee");
                 Date dateCreated = rs.getDate("date_created");
                 Date lastUpdated = rs.getDate("last_updated");
                 boolean active = rs.getBoolean("active");
                 Set<ProductDetail> productDetails = new LinkedHashSet<>(productDetailDAO.findByProductId(id));
 
-                Product product = new Product(id, name, size, description, trademark, category, dateCreated, lastUpdated, active, productDetails);
+                Product product = new Product(id, name, size, description, trademark, category, shippingFee, dateCreated, lastUpdated, active, productDetails);
                 products.add(product);
             }
         } catch (SQLException e) {

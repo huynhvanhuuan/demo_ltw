@@ -6,6 +6,7 @@ import vn.edu.hcmuaf.fit.dto.product.ProductDto;
 import vn.edu.hcmuaf.fit.service.ProductService;
 import vn.edu.hcmuaf.fit.service.impl.ProductServiceImpl;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,12 @@ import java.util.List;
 @MultipartConfig
 public class ProductController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private final ProductService productService = new ProductServiceImpl();
+    private ProductService productService;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        productService = new ProductServiceImpl();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,8 +37,7 @@ public class ProductController extends HttpServlet {
 
             request.getRequestDispatcher("/view/client/product.jsp").forward(request, response);
         } catch (Exception e) {
-            response.setStatus(404);
-            response.sendRedirect("/errors/404.jsp");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

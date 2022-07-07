@@ -16,8 +16,6 @@ public class CartDAOImpl implements CartDAO {
     private ProductDetailDAO productDetailDAO;
 
     private CartDAOImpl() {
-        this.appUserDAO = AppUserDAOImpl.getInstance();
-        this.productDetailDAO = ProductDetailDAOImpl.getInstance();
     }
 
     public static CartDAOImpl getInstance() {

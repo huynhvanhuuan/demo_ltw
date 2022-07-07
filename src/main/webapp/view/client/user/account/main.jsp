@@ -94,6 +94,9 @@
                         <c:when test="${requestScope.path eq 'purchase'}">
                             <c:import url="../purchase.jsp"/>
                         </c:when>
+                        <c:when test="${requestScope.path eq 'order'}">
+                            <c:import url="../purchase/order.jsp"/>
+                        </c:when>
                     </c:choose>
                 </div>
             </div>

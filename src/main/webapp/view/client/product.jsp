@@ -183,7 +183,7 @@
                             <div class="card-img">
                                 <c:forEach items="${product.products}" var="detail" end="0">
                                     <c:forTokens items="${detail.imageUrl}" delims="," var="image" end="0">
-                                        <img src="${requestScope.contextPath}/image/product/${image}" alt="${product.name}" height="256"/>
+                                        <img src="${requestScope.contextPath}/image/product/${image}" alt="${product.name}" height="278"/>
                                     </c:forTokens>
                                 </c:forEach>
                             </div>
@@ -219,7 +219,6 @@
                                         <ion-icon name="heart-outline"></ion-icon>
                                     </div>
                                 </div>
-                                <%--<a href="#" role="button" class="btn-add-card" onclick="return addToCart(${product.sku});">Thêm vào giỏ hàng</a>--%>
                             </div>
                         </div>
                     </c:forEach>
@@ -262,17 +261,5 @@
         <c:import url="import/signin-signup.jsp"/>
         <c:import url="import/with-header/script.jsp"/>
         <script src="${requestScope.contextPath}/assets/js/product.js"></script>
-        <script>
-            $(function () {
-
-            })
-            /* Toast */
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-            });
-        </script>
     </body>
 </html>

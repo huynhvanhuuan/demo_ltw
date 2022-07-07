@@ -18,28 +18,38 @@ public class SecurityConstant {
     public final static Long EXPIRATION_TIME = 432000000L;
 
     public final static String[] PUBLIC_URLS = {
-            "/product",
-            "/about",
+            // "/view/errors",
             "/home",
-            "/user/verify",
+            "/product",
+            "/contact",
+            "/about",
+            "/faq",
             "/user/register",
             "/user/register/success",
             "/user/resend-verify-email",
+            "/user/verify",
             "/user/login",
+            "/user/forgot-password",
+            "/user/reset-password",
             "/user/logout",
             "/image",
-            "/user/forgot-password",
-            "/user/reset-password"
     };
 
     public final static String[] PUBLIC_GET_URLS = {
             "/api/product",
+            "/api/category",
+            "/api/trademark",
+            "/api/address"
     };
 
     public final static String[] REQUIRE_CUSTOMER_ROLE_URLS = {
-            "/purchase",
             "/cart",
-            "/account",
+            "/api/cart",
+            "/checkout",
+            "/api/checkout",
+            "/wishlist",
+            "/user/account",
+            "/user/purchase",
     };
 
     public final static String[] REQUIRE_ADMIN_ROLE_URLS = {

@@ -1,3 +1,7 @@
+:root {
+    --font-family-awesome: "Font Awesome 5 Brands", sans-serif;
+}
+
 .about-us {
     margin-top: 10rem;
 }
@@ -8,7 +12,7 @@
 }
 
 .about-us .title span {
-    font-family: Sofia Pro, sans-serif;
+    font-family: var(--font-family-awesome);
     font-style: normal;
     font-size: 28px;
     line-height: 40px;
@@ -17,7 +21,7 @@
 }
 
 .about-us p {
-    font-family: Sofia Pro, sans-serif;
+    font-family:  var(--font-family-awesome);
     font-style: normal;
     font-size: 14px;
     line-height: 20px;
@@ -32,7 +36,7 @@
 }
 
 .about-us .content span:first-child {
-    font-family: Sofia Pro, sans-serif;
+    font-family:  var(--font-family-awesome);
     font-style: normal;
     font-size: 16px;
     line-height: 24px;
@@ -63,4 +67,8 @@
     width: 300px;
     height: 400px;
     margin: 65px 0;
+}
+
+.row:last-child {
+    margin: 20px 0;
 }

@@ -10,6 +10,7 @@ public class Product implements Serializable {
     private String description;
     private Trademark trademark;
     private Category category;
+    private Long shippingFee;
     private Date dateCreated;
     private Date lastUpdated;
     private boolean active;
@@ -17,7 +18,7 @@ public class Product implements Serializable {
 
     public Product() {}
 
-    public Product(Long id, String name, String size, String description, Trademark trademark, Category category,
+    public Product(Long id, String name, String size, String description, Trademark trademark, Category category, Long shippingFee,
                    Date dateCreated, Date lastUpdated, boolean active, Set<ProductDetail> products) {
         this.id = id;
         this.name = name;
@@ -25,6 +26,7 @@ public class Product implements Serializable {
         this.description = description;
         this.category = category;
         this.trademark = trademark;
+        this.shippingFee = shippingFee;
         this.dateCreated = dateCreated;
         this.lastUpdated = lastUpdated;
         this.active = active;
@@ -77,6 +79,14 @@ public class Product implements Serializable {
 
     public void setTrademark(Trademark trademark) {
         this.trademark = trademark;
+    }
+
+    public Long getShippingFee() {
+        return shippingFee;
+    }
+
+    public void setShippingFee(Long shippingFee) {
+        this.shippingFee = shippingFee;
     }
 
     public Date getDateCreated() {

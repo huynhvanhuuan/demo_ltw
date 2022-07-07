@@ -7,9 +7,10 @@ import vn.edu.hcmuaf.fit.domain.AppBaseResult;
 import vn.edu.hcmuaf.fit.domain.AppServiceResult;
 import vn.edu.hcmuaf.fit.dto.address.AddressDto;
 import vn.edu.hcmuaf.fit.dto.appuser.UserLoginResponse;
+import vn.edu.hcmuaf.fit.dto.order.OrderDto;
 import vn.edu.hcmuaf.fit.dto.userinfo.UserInfoDtoResponse;
-import vn.edu.hcmuaf.fit.service.AddressService;
-import vn.edu.hcmuaf.fit.service.impl.AddressServiceImpl;
+import vn.edu.hcmuaf.fit.service.*;
+import vn.edu.hcmuaf.fit.service.impl.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,8 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static vn.edu.hcmuaf.fit.constant.FileConstant.TEMP_PROFILE_IMAGE_BASE_URL;
 import static vn.edu.hcmuaf.fit.constant.FileConstant.USER_IMAGE_PATH;
@@ -29,11 +30,15 @@ import static vn.edu.hcmuaf.fit.constant.FileConstant.USER_IMAGE_PATH;
         maxRequestSize = 1024 * 1024 * 100) // 100MB
 public class UserController extends HttpServlet {
     private final Gson GSON = new GsonBuilder().serializeNulls().create();
+    private AppUserService appUserService;
     private AddressService addressService;
+    private OrderService orderService;
 
     @Override
     public void init() throws ServletException {
+        appUserService = new AppUserServiceImpl();
         addressService = new AddressServiceImpl();
+        orderService = new OrderServiceImpl();
     }
 
     @Override
@@ -108,15 +113,17 @@ public class UserController extends HttpServlet {
                         }
                         break;
                     case "purchase":
-                        request.setAttribute("path", "purchase");
-                        getPurchase(request, response);
+                        if (pathParts.length == 4 && pathParts[2].equals("order")) {
+                            request.setAttribute("path", "order");
+                            getOrder(request, response, pathParts[3]);
+                        } else if (pathParts.length == 2) {
+                            request.setAttribute("path", "purchase");
+                            getPurchase(request, response);
+                        } else response.sendRedirect("/user/purchase");
                         break;
                     case "wishlist":
                         getWishlist(request, response);
                         break;
-//                    default:
-//                        response.sendRedirect("/user/purchase");
-//                        break;
                 }
                 break;
             case "POST":
@@ -173,8 +180,6 @@ public class UserController extends HttpServlet {
     }
 
     public void getProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         getPrivateProfile(request, response);
 
         request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
@@ -205,7 +210,6 @@ public class UserController extends HttpServlet {
     }
 
     public void getAddress(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("user_id");
 
@@ -217,22 +221,68 @@ public class UserController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
-
     public void getChangePassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
     }
-
     public void getPurchase(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
+        try {
+            getPrivateProfile(request, response);
+            HttpSession session = request.getSession();
+            Long userId = (Long) session.getAttribute("user_id");
+            String type = request.getParameter("type");
 
-        getPrivateProfile(request, response);
+            AppServiceResult<List<OrderDto>> result = orderService.getOrders(userId);
 
-        request.getRequestDispatcher("/api/user/purchase").include(request, response);
+            if (result.isSuccess()) {
+                List<OrderDto> orders = result.getData();
+                Map<Integer, Integer> statusCount = new HashMap<>();
+                orders.forEach(order -> {
+                    statusCount.merge(order.getStatus(), 1, Integer::sum);
+                });
+                request.setAttribute("statusCount", statusCount);
 
-        request.removeAttribute("purchase");
-        request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
+                if (type != null) {
+                    switch (type) {
+                        case "1":
+                            orders = orders.stream().filter(order -> order.getStatus() == 1).collect(Collectors.toList());
+                            break;
+                        case "2":
+                            orders = orders.stream().filter(order -> order.getStatus() == 2).collect(Collectors.toList());
+                            break;
+                        case "3":
+                            orders = orders.stream().filter(order -> order.getStatus() == 3).collect(Collectors.toList());
+                            break;
+                        case "4":
+                            orders = orders.stream().filter(order -> order.getStatus() == 4).collect(Collectors.toList());
+                            break;
+                        case "5":
+                            orders = orders.stream().filter(order -> order.getStatus() == 5).collect(Collectors.toList());
+                            break;
+                    }
+                }
+                request.setAttribute("orders", orders);
+
+                request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    private void getOrder(HttpServletRequest request, HttpServletResponse response, String orderTrackingNumber) throws IOException {
+        try {
+            AppServiceResult<OrderDto> result = orderService.getOrder(UUID.fromString(orderTrackingNumber));
+            if (result.isSuccess()) {
+                request.setAttribute("order", result.getData());
+                request.getRequestDispatcher("/view/client/user/account/main.jsp").forward(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     public void getWishlist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -242,8 +292,6 @@ public class UserController extends HttpServlet {
     /* POST METHOD */
     private void register(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("/api/user/register").include(request, response);
 
         Type type = new TypeToken<AppBaseResult>() {}.getType();
@@ -255,8 +303,6 @@ public class UserController extends HttpServlet {
 
     private void resendVerifyEmail(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("/api/user/resend-verify-email").include(request, response);
 
         Type type = new TypeToken<AppBaseResult>() {}.getType();
@@ -267,7 +313,6 @@ public class UserController extends HttpServlet {
     }
 
     private void verify(HttpServletRequest request, HttpServletResponse response, UUID token) throws IOException, ServletException {
-        request.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("/api/user/verify/" + token).include(request, response);
 
         Type type = new TypeToken<AppBaseResult>() {}.getType();
@@ -284,30 +329,36 @@ public class UserController extends HttpServlet {
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("/api/user/login").include(request, response);
         Type type = new TypeToken<AppServiceResult<UserLoginResponse>>() {}.getType();
-        AppServiceResult<UserLoginResponse> result = GSON.fromJson((String) request.getAttribute("login"), type);
+        AppServiceResult<UserLoginResponse> resultLogin = GSON.fromJson((String) request.getAttribute("login"), type);
 
-        UserLoginResponse userLoginResponse = result.getData();
-        if (result.isSuccess()) {
+        UserLoginResponse userLoginResponse = resultLogin.getData();
+        if (resultLogin.isSuccess()) {
             response.setHeader("Authorization", "Bearer " + userLoginResponse.getToken());
 
             HttpSession session = request.getSession();
             session.setAttribute("user_id", userLoginResponse.getUserId());
             session.setAttribute("username", userLoginResponse.getUsername());
             session.setAttribute("token", userLoginResponse.getToken());
+
+            AppServiceResult<UserInfoDtoResponse> resultProfile = appUserService.getProfile(userLoginResponse.getUserId());
+            if (resultProfile.isSuccess()) {
+                resultProfile.getData().setImageUrl(
+                        resultProfile.getData().getImageUrl().contains(TEMP_PROFILE_IMAGE_BASE_URL) ?
+                                resultProfile.getData().getImageUrl() : USER_IMAGE_PATH + resultProfile.getData().getImageUrl());
+                session.setAttribute("user", resultProfile.getData());
+            } else {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
         }
 
         request.removeAttribute("login");
-        response.getWriter().println(GSON.toJson(result));
+        response.getWriter().println(GSON.toJson(resultLogin));
     }
 
     public void saveProfile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("/api/user/profile").include(request, response);
 
         Type type = new TypeToken<AppServiceResult<UserInfoDtoResponse>>() {}.getType();
@@ -326,8 +377,6 @@ public class UserController extends HttpServlet {
 
     public void changePassword(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("/api/user/change-password").include(request, response);
 
         Type type = new TypeToken<AppBaseResult>() {}.getType();
@@ -339,8 +388,6 @@ public class UserController extends HttpServlet {
 
     public void uploadImage(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("/api/user/upload-profile-image").include(request, response);
 
         Type type = new TypeToken<AppServiceResult<UserInfoDtoResponse>>() {}.getType();
@@ -359,8 +406,6 @@ public class UserController extends HttpServlet {
 
     public void resetPassword(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         request.getRequestDispatcher("/api/user/reset-password").include(request, response);
 
         Type type = new TypeToken<AppBaseResult>() {}.getType();

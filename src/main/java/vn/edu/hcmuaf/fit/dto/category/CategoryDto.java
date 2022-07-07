@@ -3,7 +3,6 @@ package vn.edu.hcmuaf.fit.dto.category;
 import vn.edu.hcmuaf.fit.entity.Category;
 
 public class CategoryDto {
-
     private long id;
     private String sku;
     private String name;

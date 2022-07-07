@@ -1,11 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<fmt:setLocale value="vi_VN" />
 <!doctype html>
 <html lang="en">
     <head>
         <c:import url="import/with-header/head.jsp"/>
-        <link rel="icon" type="image/x-icon" href="${requestScope.contextPath}/assets/images/favicon.ico"/>
-        <%--    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>--%>
         <link rel="stylesheet" href="${requestScope.contextPath}/assets/css/checkout.css"/>
         <title>Thanh toán | Amanda</title>
     </head>
@@ -15,7 +16,7 @@
         <div class="popup-add-address">
             <div class="box-add-address">
                 <h3 class="popup-title">Địa chỉ mới</h3>
-                <form action="/addresses/add" method="post">
+                <form id="address" method="post">
                     <div class="form-control">
                         <select class="form-user-input" name="province_city"></select>
                         <label>Tỉnh/ Thành Phố</label>
@@ -32,24 +33,15 @@
                         <i class="fas fa-sort-down"></i>
                     </div>
                     <div class="form-control">
-                        <input
-                                type="text"
-                                class="form-user-input"
-                                placeholder="Đường. VD: Đường số 1 (tùy chọn)"
-                                name="street"
-                        />
+                        <input type="text" class="form-user-input"
+                               placeholder="Đường. VD: Đường số 1 (tùy chọn)" name="street"/>
                         <label>Đường</label>
                     </div>
                     <div class="form-control">
-                        <input
-                                type="text"
-                                class="form-user-input"
-                                placeholder="Số nhà, lô, kios (tùy chọn)"
-                                name="number-house_lot"
-                        />
+                        <input type="text" class="form-user-input"
+                               placeholder="Số nhà, lô, kios (tùy chọn)" name="number-house_lot"/>
                         <label>Số nhà</label>
                     </div>
-
                     <div class="form-control form-action-btn">
                         <span class="btn-primary close-add-address">Hủy</span>
                         <button type="submit" class="btn-primary">Lưu</button>
@@ -61,200 +53,129 @@
             <div class="container">
                 <div class="content-title">Thanh Toán</div>
             </div>
-            <div class="content-checkout">
-                <div class="container">
-                    <section class="section-control comfirm-address">
-                        <div class="address-title">
-                            <i class="fas fa-map-marker-alt"></i> Địa Chỉ Nhận Hàng
-                        </div>
-                        <div class="address-user">
-                            <div class="address-user-content">
-                                <span class="text-bold user-name">Nguyen Van A</span>
-                                <span class="text-bold user-phone">(0312345678)</span>
-                                <span class="user-address">
-                                    Khu phố 6, Linh Trung, Thủ Đức, Tp. Hồ Chí Minh
-                                </span>
+            <form action="${requestScope.contextPath}/checkout" method="POST">
+                <div class="content-checkout">
+                    <div class="container">
+                        <section class="section-control comfirm-address">
+                            <div class="address-title">
+                                <i class="fas fa-map-marker-alt"></i>&emsp;Địa Chỉ Nhận Hàng
                             </div>
-                            <span class="text-primary change-address">Thay đổi</span>
-                        </div>
-
-                        <div class="box-change-address">
-                            <div class="address-action">
-                                <button class="btn-primary add-new-address">
-                                    &plus; Thêm địa chỉ mới
-                                </button>
-                                <a
-                                        href="?goto-setting-address"
-                                        class="btn-primary setting-address"
-                                >
-                                    Thiết lập địa chỉ
-                                </a>
+                            <div class="address-user">
+                                <div class="address-user-content">
+                                    <span class="user-name">Họ tên khách hàng: <span class="text-bold" id="fullName">${sessionScope.user.fullName}</span></span>
+                                    <span class="user-phone">Số điện thoại: <span class="text-bold" id="phone">${sessionScope.user.phone}</span></span>
+                                    <span class="user-address">Địa chỉ: <span class="text-bold" id="path">${requestScope.address.path}</span></span>
+                                </div>
+                                <span class="text-primary change-address">Thay đổi</span>
                             </div>
-                            <div class="list-address">
-                                <div class="address-item">
-                                    <input
-                                            type="radio"
-                                            class="user__check-address"
-                                            id="check-address__1"
-                                            name="check-address"
-                                            checked
-                                    />
-                                    <label for="check-address__1">
-                                        <div class="address__user-info">
-                                            <span class="address__user-name">Nguyen Van A</span>
-                                            <span class="address__user-phone">
-                                                (0312345678)
-                                            </span>
+                            <div class="box-change-address">
+                                <div class="address-action">
+                                    <button class="btn-primary add-new-address">&plus; Thêm địa chỉ mới</button>
+                                    <a href="${requestScope.contextPath}/user/account/address"
+                                       class="btn-primary setting-address">Thiết lập địa chỉ</a>
+                                </div>
+                                <div class="list-address">
+                                    <c:forEach var="address" items="${requestScope.addresses}">
+                                        <div class="address-item">
+                                            <input type="radio" class="user__check-address" id="check-address-${address.id}"
+                                                   name="check-address" <c:if test="${address.defaultAddress}">checked</c:if>/>
+                                            <label for="check-address-${address.id}">
+                                                <div class="address__user-info">
+                                                    <span class="address__user-name">${sessionScope.user.fullName}</span>
+                                                    <span class="address__user-phone">${sessionScope.user.phone}</span>
+                                                </div>
+                                                <div class="address__user-address">${address.path}</div>
+                                            </label>
                                         </div>
-                                        <div class="address__user-address">
-                                            Khu phố 6, Linh Trung, Thủ Đức, Tp. Hồ Chí Minh
-                                        </div>
-                                    </label>
+                                    </c:forEach>
                                 </div>
-                                <div class="address-item">
-                                    <input
-                                            type="radio"
-                                            class="user__check-address"
-                                            id="check-address__2"
-                                            name="check-address"
-                                    />
-                                    <label for="check-address__2">
-                                        <div class="address__user-info">
-                                            <span class="address__user-name">Le Thi B</span>
-                                            <span class="address__user-phone">
-                                                (0323456232)
-                                            </span>
-                                        </div>
-                                        <div class="address__user-address">
-                                            Đường D1, Linh Tây, Thủ Đức, Tp. Hồ Chí Minh
-                                        </div>
-                                    </label>
-                                </div>
-                                <div class="address-item">
-                                    <input
-                                            type="radio"
-                                            class="user__check-address"
-                                            id="check-address__3"
-                                            name="check-address"
-                                    />
-                                    <label for="check-address__3">
-                                        <div class="address__user-info">
-                                            <span class="address__user-name">Nguyen Van A</span>
-                                            <span class="address__user-phone">
-                                                (0323459678)
-                                            </span>
-                                        </div>
-                                        <div class="address__user-address">
-                                            1 Đường B KDC Him Lam Phú Đông Bình, Đường 3, An
-                                            Bình, Dĩ An, Bình Dương 75307, Việt Nam
-                                        </div>
-                                    </label>
+                                <div class="action__check-address">
+                                    <button class="btn-primary checked-option-address">Hoàn thành</button>
+                                    <button class="btn-primary back-to-previous-address">Trở lại</button>
                                 </div>
                             </div>
-                            <div class="action__check-address">
-                                <button class="btn-primary checked-option-address">
-                                    Hoàn thành
-                                </button>
-                                <button class="btn-primary back-to-previous-address">
-                                    Trở lại
-                                </button>
+                        </section>
+                        <section class="section-control">
+                            <div class="list-product-title">
+                                <div class="box-name">Sản phẩm</div>
+                                <div class="box-price">Đơn giá</div>
+                                <div class="box-quantity">Số lượng</div>
+                                <div class="box-final-price">Thành tiền</div>
                             </div>
-                        </div>
-                    </section>
-
-                    <section class="section-control">
-                        <div class="list-product-title">
-                            <div class="box-name">Sản phẩm</div>
-                            <div class="box-price">Đơn giá</div>
-                            <div class="box-quantity">Số lượng</div>
-                            <div class="box-final-price">Thành tiền</div>
-                        </div>
-
-                        <div class="list-product-checkout">
-                            <div class="product-checkout">
-                                <img
-                                        src="${requestScope.contextPath}/assets/images/ban-tra-tron-cao-go/ban-sofa-ban-cafe-ban-tra-tron-cao-go.png"
-                                        alt="image product 1"
-                                        class="product-checkout-img"
-                                />
-                                <div class="product-checkout-name">
-                                    <p>Bàn Sofa - Bàn Cafe - Bàn Trà Tròn Cao Gỗ</p>
-                                </div>
-                                <div class="product-checkout-type">Màu: Gỗ tự nhiên</div>
-                                <div class="product-checkout-price">799.000 &#8363;</div>
-                                <div class="product-checkout-quantity">2</div>
-                                <div class="product-checkout-final-price">
-                                    1.598.000 &#8363;
-                                </div>
+                            <div class="list-product-checkout">
+                                <c:set var="finalPrice" value="0"/>
+                                <c:set var="shippingFee" value="0"/>
+                                <c:forEach items="${sessionScope.checkout_item}" var="item">
+                                    <c:if test="${item.product.product.shippingFee gt shippingFee}">
+                                        <c:set var="shippingFee" value="${item.product.product.shippingFee}"/>
+                                    </c:if>
+                                    <div class="product-checkout">
+                                        <img src="/image/product/${fn:split(item.product.imageUrl, ',')[0]}" alt="${item.product.product.name}"
+                                             class="product-checkout-img"/>
+                                        <div class="product-checkout-name">
+                                            <p>${item.product.product.name}</p>
+                                        </div>
+                                        <div class="product-checkout-type">
+                                            <span class="material">Vật liệu: ${item.product.material.name}</span>
+                                            <span class="color">Màu sắc: ${item.product.color.name}</span>
+                                        </div>
+                                        <div class="product-checkout-price">
+                                            <fmt:formatNumber value="${item.product.totalPrice}" type="currency" />
+                                        </div>
+                                        <div class="product-checkout-quantity">${item.quantity}</div>
+                                        <div class="product-checkout-final-price">
+                                            <c:set var="totalPrice" value="${item.product.totalPrice * item.quantity}" />
+                                            <fmt:formatNumber value="${totalPrice}" type="currency" />
+                                            <c:set var="finalPrice" value="${finalPrice + totalPrice}" />
+                                        </div>
+                                    </div>
+                                </c:forEach>
                             </div>
-                            <div class="product-checkout">
-                                <img
-                                        src="${requestScope.contextPath}/assets/images/tu-ke-tivi-go/tu_ke_tu_tivi_go_1.jpg"
-                                        alt="image product 2"
-                                        class="product-checkout-img"
-                                />
-                                <div class="product-checkout-name">
-                                    <p>Tủ kệ Tivi gỗ</p>
-                                </div>
-                                <div class="product-checkout-type">Màu: Gỗ phối trắng</div>
-                                <div class="product-checkout-price">2.490.000 &#8363;</div>
-                                <div class="product-checkout-quantity">1</div>
-                                <div class="product-checkout-final-price">
-                                    2.490.000 &#8363;
-                                </div>
+                        </section>
+                        <section class="section-control total-checkout">
+                            <div class="final-product-price">
+                                <span>Tổng tiền hàng (${fn:length(sessionScope.checkout_item)} sản phẩm):</span>
+                                <span><fmt:formatNumber value="${finalPrice}" type="currency"/></span>
                             </div>
-                            <div class="product-checkout">
-                                <img
-                                        src="${requestScope.contextPath}/assets/images/giuong-ngu-go-vline601/giuong-ngu-go-vline-1.png"
-                                        alt="image product 3"
-                                        class="product-checkout-img"
-                                />
-                                <div class="product-checkout-name">
-                                    <p>Giường Ngủ Gỗ VLINE 601</p>
-                                </div>
-                                <div class="product-checkout-type">Màu: Gỗ tự nhiên</div>
-                                <div class="product-checkout-price">6.790.000 &#8363;</div>
-                                <div class="product-checkout-quantity">1</div>
-                                <div class="product-checkout-final-price">
-                                    6.790.000 &#8363;
-                                </div>
+                            <div class="fee-shipping">
+                                <span>Phí vận chuyển:</span>
+                                <span><fmt:formatNumber value="${shippingFee}" type="currency"/></span>
                             </div>
-                        </div>
-                    </section>
-
-                    <section class="section-control total-checkout">
-                        <div class="final-product-price">
-                            <span>Tổng tiền hàng (4 sản phẩm):</span>
-                            <span>10.878.000 &#8363;</span>
-                        </div>
-                        <div class="fee-shipping">
-                            <span>Phí vận chuyển:</span>
-                            <span>160.000 &#8363;</span>
-                        </div>
-                        <div class="discount-amount">
-                            <span>Voucher giảm giá:</span>
-                            <span>-500.000 &#8363;</span>
-                        </div>
-                        <div class="total-price">
-                            <span>Tổng thanh toán:</span>
-                            <span>10.538.000 &#8363;</span>
-                        </div>
-                    </section>
-
-                    <section class="section-control checkout">
-                        <div class="accept-policy">
-                            Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo
-                            <a href="?policy=1" class="policy">Điều khoản của Amanda</a>
-                        </div>
-                        <form action="?checkout=1" method="post">
+                            <div class="discount-price">
+                                <span>Tổng thanh toán (Đã bao gồm VAT):</span>
+                                <span><fmt:formatNumber value="${finalPrice + shippingFee}" type="currency"/></span>
+                            </div>
+                        </section>
+                        <section class="section-control checkout">
+                            <div class="accept-policy">
+                                Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo
+                                <a href="?policy=1" class="policy">Điều khoản của Amanda</a>
+                            </div>
+                            <input type="hidden" name="address" value="${requestScope.address.path}">
+                            <input type="hidden" name="total_price" value="${finalPrice}">
+                            <input type="hidden" name="shipping_fee" value="${shippingFee}">
                             <button type="submit" class="btn-primary">Đặt hàng</button>
-                        </form>
-                    </section>
+                        </section>
+                    </div>
                 </div>
-            </div>
+            </form>
         </main>
         <c:import url="import/footer.jsp"/>
-        <script src="${requestScope.contextPath}/assets/js/checkout.js"></script>
         <c:import url="import/with-header/script.jsp"/>
+        <script src="${requestScope.contextPath}/assets/js/checkout.js"></script>
+        <script>
+            $('.checked-option-address').click(function () {
+                let addressChecked = $('input[name=check-address]:checked');
+                let fullName = addressChecked.parent().find('.address__user-name').text();
+                let phone = addressChecked.parent().find('.address__user-phone').text();
+                let address = addressChecked.parent().find('.address__user-address').text();
+                $('#fullName').text(fullName);
+                $('#phone').text(phone);
+                $('#path').text(address);
+                $('input[name=address]').val(address);
+
+                $('.comfirm-address').removeClass('show-choosing-address');
+            });
+        </script>
     </body>
 </html>

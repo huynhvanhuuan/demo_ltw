@@ -9,22 +9,23 @@ import vn.edu.hcmuaf.fit.entity.ProductDetail;
 import java.util.*;
 
 public class ProductDto {
-    private long id;
+    private Long id;
     private String name;
     private String size;
     private String description;
     private TrademarkDto trademark;
     private CategoryDto category;
+    private Long shippingFee;
     private Date dateCreated;
     private Date lastUpdated;
     private boolean active;
     private Set<ProductDetailDto> products = new LinkedHashSet<>();
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -66,6 +67,14 @@ public class ProductDto {
 
     public void setCategory(CategoryDto category) {
         this.category = category;
+    }
+
+    public Long getShippingFee() {
+        return shippingFee;
+    }
+
+    public void setShippingFee(Long shippingFee) {
+        this.shippingFee = shippingFee;
     }
 
     public Date getDateCreated() {
@@ -147,6 +156,7 @@ public class ProductDto {
         dest.name = src.getName();
         dest.size = src.getSize();
         dest.description = src.getDescription();
+        dest.shippingFee = src.getShippingFee();
         dest.dateCreated = src.getDateCreated();
         dest.lastUpdated = src.getLastUpdated();
         dest.active = src.isActive();

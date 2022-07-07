@@ -19,8 +19,6 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 	private MaterialDAO materialDAO;
 	
 	private ProductDetailDAOImpl() {
-		colorDAO = ColorDAOImpl.getInstance();
-		materialDAO = MaterialDAOImpl.getInstance();
 	}
 
 	public static ProductDetailDAOImpl getInstance() {
@@ -105,7 +103,26 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 
 	@Override
 	public void save(ProductDetail productDetail) {
+		connection = DbManager.connectionPool.getConnection();
+		try {
+			PreparedStatement statement = connection.prepareStatement(productDetail.getId() == 0 ? QUERY.PRODUCT_DETAIL.CREATE : QUERY.PRODUCT_DETAIL.UPDATE);
+			statement.setString(1, productDetail.getSku());
+			statement.setLong(2, productDetail.getProduct().getId());
+			statement.setLong(3, productDetail.getColor().getId());
+			statement.setLong(4, productDetail.getMaterial().getId());
+			statement.setString(5, productDetail.getImageUrl());
+			statement.setLong(6, productDetail.getUnitPrice());
+			statement.setInt(7, productDetail.getUnitInStock());
+			statement.setInt(8, productDetail.getDiscount());
 
+			if (productDetail.getId() != 0) {
+				statement.setLong(9, productDetail.getId());
+			}
+			statement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		DbManager.connectionPool.releaseConnection(connection);
 	}
 
 	@Override
@@ -154,35 +171,12 @@ public class ProductDetailDAOImpl implements ProductDetailDAO {
 	}
 
 	@Override
-	public ProductDetail findById(Long colorId, Long materialId) {
-		Color color = colorDAO.findById(colorId);
-		Material material = materialDAO.findById(materialId);
-		ProductDetail productDetail = null;
-		connection = DbManager.connectionPool.getConnection();
-		try {
-			PreparedStatement statement = connection.prepareStatement(QUERY.PRODUCT_DETAIL.FIND_BY_COLOR_AND_MATERIAL);
-			statement.setLong(1, colorId);
-			statement.setLong(2, materialId);
-			ResultSet rs = statement.executeQuery();
-			if (rs.next()) {
-				Long id = rs.getLong("id");
-				String sku = rs.getString("sku");
-				Product product = productDAO.findById(rs.getLong("product_id"));
-				String imageUrl = rs.getString("image_url");
-				long unitPrice = rs.getLong("unit_price");
-				int unitInStock = rs.getInt("unit_in_stock");
-				int discount = rs.getInt("discount");
-				Date dateCreated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("date_created"));
-				Date lastUpdated = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(rs.getString("last_updated"));
-				boolean active = rs.getBoolean("active");
-				productDetail = new ProductDetail(id, sku, product, color, material, imageUrl, unitPrice, unitInStock, discount, dateCreated, lastUpdated, active);
-			}
-		} catch (Exception e) {
-			DbManager.connectionPool.releaseConnection(connection);
-			return null;
-		}
-		DbManager.connectionPool.releaseConnection(connection);
-		return productDetail;
+	public ProductDetail findById(Long productId, Long colorId, Long materialId) {
+		Product product = productDAO.findById(productId);
+
+		return product.getProducts().stream().
+				filter(p -> p.getColor().getId().equals(colorId) && p.getMaterial().getId().equals(materialId))
+				.findFirst().orElse(null);
 	}
 
 	@Override

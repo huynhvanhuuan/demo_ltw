@@ -18,6 +18,7 @@ public class ProductDetailDto {
     private Date dateCreated;
     private Date lastUpdated;
     private boolean active;
+    private long totalPrice;
 
     public Long getId() {
         return id;
@@ -131,6 +132,7 @@ public class ProductDetailDto {
         dest.dateCreated = src.getDateCreated();
         dest.lastUpdated = src.getLastUpdated();
         dest.active = src.isActive();
+        dest.totalPrice = src.getTotalPrice();
 
         if (src.getProduct() != null) {
             dest.product = ProductDto.createFromEntity(src.getProduct());

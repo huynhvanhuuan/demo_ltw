@@ -45,10 +45,11 @@ public class ProductDetailAPI extends HttpServlet {
 
     private void getProductDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            Long productId = Long.parseLong(request.getParameter("productId"));
             Long colorId = Long.parseLong(request.getParameter("colorId"));
             Long materialId = Long.parseLong(request.getParameter("materialId"));
 
-            AppServiceResult<ProductDetailDto> result = productDetailService.getProductDetail(colorId, materialId);
+            AppServiceResult<ProductDetailDto> result = productDetailService.getProductDetail(productId, colorId, materialId);
             response.getWriter().println(GSON.toJson(result));
         } catch (Exception e) {
             AppBaseResult result = AppBaseResult.GenarateIsFailed(AppError.Unknown.errorCode(), "Dữ liệu không hợp lệ");

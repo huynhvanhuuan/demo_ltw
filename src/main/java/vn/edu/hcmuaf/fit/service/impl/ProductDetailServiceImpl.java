@@ -56,20 +56,14 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 	}
 
 	@Override
-	public AppServiceResult<ProductDetailDto> getProductDetail(Long colorId, Long materialId) {
-		try {
-			ProductDetail productDetail = productDetailDAO.findById(colorId, materialId);
+	public AppServiceResult<ProductDetailDto> getProductDetail(Long productId, Long colorId, Long materialId) {
+		ProductDetail productDetail = productDetailDAO.findById(productId, colorId, materialId);
 
-			if (productDetail == null)
-				return new AppServiceResult<>(false, AppError.Validation.errorCode(),
-						"Sản phẩm không tồn tại", null);
+		if (productDetail == null)
+			return new AppServiceResult<>(false, AppError.Validation.errorCode(),
+					"Sản phẩm không tồn tại", null);
 
-			return new AppServiceResult<>(true, 0, "Tìm thấy sản phẩm", ProductDetailDto.createFromEntity(productDetail));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new AppServiceResult<>(false, AppError.Unknown.errorCode(),
-					"Không thể tải sản phẩm", null);
-		}
+		return new AppServiceResult<>(true, 0, "Tìm thấy sản phẩm", ProductDetailDto.createFromEntity(productDetail));
 	}
 
 	@Override
@@ -83,8 +77,16 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 	}
 
 	@Override
-	public AppBaseResult deleteProductDetail(Long id) {
-		return null;
+	public AppBaseResult updateQuantity(Long productId, Integer quantity, boolean isIncrease) {
+		ProductDetail productDetail = productDetailDAO.findById(productId);
+		int unitInStock = productDetail.getUnitInStock();
+
+		int newUnitInStock = isIncrease ? unitInStock + quantity : unitInStock - quantity;
+		productDetail.setUnitInStock(newUnitInStock);
+
+		productDetailDAO.save(productDetail);
+
+		return new AppBaseResult(true, 0, "Cập nhật số lượng thành công");
 	}
 
 	@Override

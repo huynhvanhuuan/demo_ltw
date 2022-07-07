@@ -9,12 +9,8 @@ btnChangeAddress.onclick = () => {
 }
 
 // hide box change address
-const btnCheckedAddress = $$.querySelector('.checked-option-address')
 const btnBackToPrev = $$.querySelector('.back-to-previous-address')
 
-btnCheckedAddress.onclick = () => {
-    boxComfirmAddress.classList.remove('show-choosing-address')
-}
 btnBackToPrev.onclick = () => {
     boxComfirmAddress.classList.remove('show-choosing-address')
 }
@@ -127,10 +123,10 @@ loadProvinceCity().then(r => {})
 $('[name="province_city"]').change(function () {
     district.disabled = false
     ward_commune.disabled = true
-    loadDistrict($(this).find(':selected').data('code'))
+    loadDistrict($(this).find(':selected').data('code')).then(r => {})
 })
 
 $('[name="district"]').change(function () {
     ward_commune.disabled = false
-    loadWardCommune($(this).find(':selected').data('code'))
+    loadWardCommune($(this).find(':selected').data('code')).then(r => {})
 })

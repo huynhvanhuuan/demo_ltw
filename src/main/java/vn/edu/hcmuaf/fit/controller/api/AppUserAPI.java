@@ -73,8 +73,6 @@ public class AppUserAPI extends HttpServlet {
 								break;
 						}
 						break;
-					case "purchase":
-						getPurchase(request);
 					default:
 						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 						break;
@@ -173,15 +171,6 @@ public class AppUserAPI extends HttpServlet {
 
 		AppServiceResult<UserInfoDtoResponse> result = appUserService.getProfile(userId);
 		request.setAttribute("profile", GSON.toJson(result));
-	}
-
-	private void getPurchase(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user") == null) {
-			getProfile(request);
-		}
-
-		request.setAttribute("purchase", null);
 	}
 
 	public void saveProfile(HttpServletRequest request) {

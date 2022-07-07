@@ -19,8 +19,8 @@ public class QUERY {
         public static final String FIND_BY_PRODUCT_ID = "select * from product_detail where product_id = ?";
         public static final String FIND_BY_SKU = "select * from product_detail where sku = ?";
         public static final String FIND_BY_COLOR_AND_MATERIAL = "select * from product_detail where color_id = ? and material_id = ?";
-        public static final String CREATE = "insert into product_detail(sku, product_id, image, color_id, material_sku, unit_price, unit_in_stock, discount) values(?,?,?,?,?,?,?,?)";
-        public static final String UPDATE = "update product_detail set sku = ?, product_id = ?, image = ?, color_id = ?, material_sku = ?, unit_price = ?, unit_in_stock = ?, discount = ? where sku = ? and date_created = ?";
+        public static final String CREATE = "insert into product_detail(sku, product_id, color_id, material_id, image_url, unit_price, unit_in_stock, discount) values(?,?,?,?,?,?,?,?)";
+        public static final String UPDATE = "update product_detail set sku = ?, product_id = ?, color_id = ?, material_id = ?, image_url = ?, unit_price = ?, unit_in_stock = ?, discount = ? where id = ?";
         public static final String DELETE = "delete from product_detail where sku = ? and date_created = ?";
     }
 
@@ -161,11 +161,19 @@ public class QUERY {
 
     /* ORDER */
     public static class ORDER {
-        public static final String FIND_BY_USER_ID = "select * from order where user_id = ?";
+        public static final String FIND_ALL = "select * from furniture_selling.order";
+        public static final String FIND_BY_ID = "select * from furniture_selling.order where id = ?";
+        public static final String FIND_BY_USER_ID = "select * from furniture_selling.order where user_id = ?";
+        public static final String FIND_BY_ORDER_TRACKING_NUMBER = "select * from furniture_selling.order where order_tracking_number = ?";
+        public static final String CREATE = "insert into furniture_selling.order(order_tracking_number, user_id, address, total_price, shipping_fee) values(?,?,?,?,?)";
+        public static final String UPDATE_STATUS = "update furniture_selling.order set status = ? where id = ?";
+        public static final String UPDATE_ADDRESS = "update furniture_selling.order set address = ? where id = ?";
+        public static final String DELETE = "delete from furniture_selling.order where id = ?";
     }
 
     /* ORDER DETAIL */
     public static class ORDER_DETAIL {
-        public static final String FIND_BY_ORDER_ID = "select * from order_detail where order_id like ?";
+        public static final String FIND_BY_ORDER_ID = "select * from order_detail where order_id = ?";
+        public static final String CREATE = "insert into order_detail(order_id, product_id, unit_price, quantity) values(?,?,?,?)";
     }
 }

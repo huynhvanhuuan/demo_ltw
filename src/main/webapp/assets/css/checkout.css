@@ -21,7 +21,7 @@
     margin-bottom: 2rem;
     background-color: #fff;
     border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 1rem;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 4px 1rem;
     overflow: hidden;
     position: relative;
 }
@@ -75,8 +75,7 @@
     color: var(--text-black-2);
     flex: 0 0 70%;
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    flex-direction: column;
 }
 
 .address-user .user-name,
@@ -137,7 +136,7 @@
 
 .product-checkout > * {
     color: var(--text-black-2);
-    font-size: 1.5rem;
+    font-size: 1.65rem;
 }
 
 .product-checkout-img {
@@ -160,7 +159,9 @@
 }
 
 .product-checkout-type {
-    width: 15%;
+    display: flex;
+    flex-direction: column;
+    width: 25%;
     padding: 0 1.5rem;
     color: var(--text-grey);
 }
@@ -393,7 +394,7 @@
     width: 50rem;
     background-color: #fff;
     border-radius: 4px;
-    box-shadow: rgba(255, 255, 255, 0.3) 0px 7px 29px 0px;
+    box-shadow: rgba(255, 255, 255, 0.3) 0 7px 29px 0;
     transition: all 0.2s;
     backface-visibility: hidden;
     perspective: 1000px;

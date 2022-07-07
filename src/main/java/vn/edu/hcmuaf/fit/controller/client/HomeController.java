@@ -1,5 +1,7 @@
 package vn.edu.hcmuaf.fit.controller.client;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vn.edu.hcmuaf.fit.service.ProductService;
 import vn.edu.hcmuaf.fit.service.impl.ProductServiceImpl;
 
@@ -10,6 +12,7 @@ import java.io.IOException;
 
 @WebServlet(name = "client-home", value = "/home")
 public class HomeController extends HttpServlet {
+    private static final Logger logger = LogManager.getLogger(HomeController.class);
     private ProductService productService;
 
     @Override

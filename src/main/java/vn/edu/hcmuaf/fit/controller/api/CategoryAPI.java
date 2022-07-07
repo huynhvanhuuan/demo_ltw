@@ -37,7 +37,6 @@ public class CategoryAPI extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
 		String pathInfo = request.getPathInfo();
 		if (pathInfo == null || pathInfo.equals("/")) {
 			AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
@@ -66,9 +65,7 @@ public class CategoryAPI extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		request.setCharacterEncoding("UTF-8");
-		
+
 		String name = request.getParameter("name");
 		String sku = request.getParameter("sku");
 		
@@ -86,8 +83,6 @@ public class CategoryAPI extends HttpServlet {
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		request.setCharacterEncoding("UTF-8");
 		try {
 			long id = Long.parseLong(request.getParameter("id"));
 			String name = request.getParameter("name");

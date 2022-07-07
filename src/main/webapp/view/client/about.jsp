@@ -26,7 +26,7 @@
                             <span>VỀ CHÚNG TÔI</span>
                             <br/>
                             <div class="title d-block m-0">
-                                <span class="fw-bolder">Chỉ Cần Ở Nhà Và Tận Hưởng Thời Gian Mua Sắm Của Bạn</span>
+                                <span>Chỉ Cần Ở Nhà Và Tận Hưởng Thời Gian Mua Sắm Của Bạn</span>
                             </div>
                             <p class="fw-normal">
                                 Amanda là một công ty toàn cầu về nội thất, nơi bạn có thể tìm thấy những vật dụng phù
@@ -42,10 +42,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row d-flex justify-content-center" style="padding-bottom: 20px;">
+                <div class="row d-flex justify-content-center" style="margin: 20px 0;">
                     <div class="col">
                         <div class="d-flex title">
-                            <span class="fw-bolder">Hãy khiến mọi thứ trở nên dễ dàng hơn nữa với Amanda</span>
+                            <span>Hãy khiến mọi thứ trở nên dễ dàng hơn nữa với Amanda</span>
                         </div>
                         <p class="m-auto fw-normal">
                             Chúng tôi tin rằng chúng tôi có thể chăm sóc mái ấm của bạn, góp phần chăm sóc bản thân bạn.

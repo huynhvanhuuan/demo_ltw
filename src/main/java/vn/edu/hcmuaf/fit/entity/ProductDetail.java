@@ -132,7 +132,7 @@ public class ProductDetail implements Serializable {
         this.active = active;
     }
 
-    public Long getDiscountPrice() {
+    public Long getTotalPrice() {
         return unitPrice - (unitPrice * discount / 100);
     }
 }

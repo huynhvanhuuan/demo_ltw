@@ -1,10 +1,7 @@
 package vn.edu.hcmuaf.fit.filter;
 
 import com.google.common.net.HttpHeaders;
-import vn.edu.hcmuaf.fit.constant.RoleConstant;
-import vn.edu.hcmuaf.fit.constant.SecurityConstant;
 import vn.edu.hcmuaf.fit.domain.authority.GrantedAuthority;
-import vn.edu.hcmuaf.fit.help.ServletRequestWrapper;
 import vn.edu.hcmuaf.fit.infrastructure.AppJwtTokenProvider;
 
 import javax.servlet.*;
@@ -30,8 +27,8 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        ServletRequestWrapper req = new ServletRequestWrapper((HttpServletRequest) request);
-        // HttpServletRequest req = (HttpServletRequest) request;
+        // HttpServletRequest req = new ServletRequestWrapper((HttpServletRequest) request);
+        HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
         if (req.getMethod().equalsIgnoreCase(OPTIONS_HTTP_METHOD)) {
@@ -41,6 +38,11 @@ public class AuthenticationFilter implements Filter {
         }
 
         if (req.getSession() == null || req.getSession().getAttribute("token") == null) {
+            if (req.getServletPath().equals("/")) {
+                chain.doFilter(request, response);
+                return;
+            }
+
             for (String url : PUBLIC_URLS) {
                 if (req.getRequestURI().contains(url)) {
                     chain.doFilter(request, response);
@@ -55,10 +57,10 @@ public class AuthenticationFilter implements Filter {
                 }
             }
 
-            if (req.getServletPath().equals("/user") || req.getServletPath().equals("/cart")) {
+            if (contains(REQUIRE_CUSTOMER_ROLE_URLS, req.getRequestURI())) {
                 res.sendRedirect("/home");
                 return;
-            } else if (req.getServletPath().equals("/admin")) {
+            } else if (contains(REQUIRE_ADMIN_ROLE_URLS, req.getRequestURI())) {
                 res.sendRedirect("/admin/login");
                 return;
             }
@@ -70,24 +72,26 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
-        String path = req.getPathInfo();
+        String path = req.getServletPath(); // user, cart, purchase
+        String pathInfo = req.getPathInfo(); // null, account, account/..
+        String uri = req.getRequestURI(); // cart, purchase, user/account/..
         String token = authorizationHeader.substring(TOKEN_PREFIX.length());
         String username = jwtTokenProvider.getSubject(token);
         List<GrantedAuthority> authorities = jwtTokenProvider.getAuthoritiesFromToken(token);
 
         if (jwtTokenProvider.isTokenValid(username, token)) {
             if (containsAuthority(authorities, CUSTOMER)) {
-                if (containsUrl(SecurityConstant.REQUIRE_CUSTOMER_ROLE_URLS, path)) {
+                if (contains(REQUIRE_CUSTOMER_ROLE_URLS, path)) {
                     chain.doFilter(request, response);
                     return;
                 }
             } else if (containsAuthority(authorities, ADMIN)) {
-                if (containsUrl(SecurityConstant.REQUIRE_ADMIN_ROLE_URLS, path)) {
+                if (contains(REQUIRE_ADMIN_ROLE_URLS, path)) {
                     chain.doFilter(request, response);
                     return;
                 }
             } else if (containsAuthority(authorities, CUSTOMER_CARE_STAFF)) {
-                if (containsUrl(SecurityConstant.REQUIRE_ADMIN_ROLE_URLS, path)) {
+                if (contains(REQUIRE_ADMIN_ROLE_URLS, path)) {
                     chain.doFilter(request, response);
                     return;
                 }
@@ -106,11 +110,9 @@ public class AuthenticationFilter implements Filter {
         return false;
     }
 
-    private boolean containsUrl(String[] urls, String path) {
-        for (String url : urls) {
-            if (path.startsWith(url)) {
-                return true;
-            }
+    private boolean contains(String[] paths, String path) {
+        for (String item : paths) {
+            if (path.contains(item)) return true;
         }
         return false;
     }
