@@ -8,16 +8,11 @@ import java.util.List;
 
 public interface CategoryService {
     AppServiceResult<List<CategoryDto>> getCategories();
-
     AppServiceResult<CategoryDto> getCategory(Long id);
-
     AppServiceResult<CategoryDto> getCategoryBySku(String sku);
-
     AppServiceResult<CategoryDto> getCategoryByName(String name);
-
-    AppServiceResult<CategoryDto> createCategory(CategoryCreate category);
-
+    AppBaseResult createCategory(CategoryCreate category);
     AppBaseResult updateCategory(CategoryUpdate category);
-
     AppBaseResult deleteCategory(Long id);
+    AppBaseResult updateStatus(Long id, boolean active);
 }

@@ -31,100 +31,99 @@ public class CategoryAPI extends HttpServlet {
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		super.service(request, response);
+		response.setContentType("application/json");
+		String[] pathParts = request.getPathInfo() != null ? request.getPathInfo().split("/") : new String[0];
+		String method = request.getMethod();
+		switch (method) {
+			case "GET":
+				if ("list".equals(pathParts[1])) getCategories(response);
+					else getCategory(response, pathParts[1]);
+				break;
+			case "POST":
+				createCategory(request, response);
+				break;
+			case "PUT":
+				switch (pathParts[1]) {
+					case "update-category":
+						updateCategory(request, response);
+						break;
+					case "update-status":
+						updateStatus(request, response);
+						break;
+				}
+				break;
+			case "DELETE":
+				deleteCategory(request, response);
+				break;
+		}
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		String pathInfo = request.getPathInfo();
-		if (pathInfo == null || pathInfo.equals("/")) {
-			AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
-			if (result.isSuccess()) {
-				response.setStatus(200);
-				response.getWriter().println(GSON.toJson(result));
-			} else {
-				response.sendError(result.getErrorCode(), result.getMessage());
-			}
-		} else {
-			try {
-				Long id = Long.parseLong(pathInfo.substring(1));
-				AppServiceResult<CategoryDto> result = categoryService.getCategory(id);
-				if (result.isSuccess()) {
-					response.setStatus(200);
-					response.getWriter().println(GSON.toJson(result));
-				} else {
-					response.sendError(result.getErrorCode(), result.getMessage());
-				}
-			} catch (NumberFormatException e) {
-				response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
-			}
+	private void getCategories(HttpServletResponse response) throws IOException {
+		AppServiceResult<List<CategoryDto>> result = categoryService.getCategories();
+		response.getWriter().write(GSON.toJson(result));
+	}
+
+	private void getCategory(HttpServletResponse response, String id) throws IOException {
+		try {
+			AppServiceResult<CategoryDto> result = categoryService.getCategory(Long.parseLong(id));
+			response.getWriter().println(GSON.toJson(result));
+		} catch (NumberFormatException e) {
+			AppServiceResult<CategoryDto> result = new AppServiceResult<>(false, AppError.Unknown.errorCode(), "Mã thể loại không hợp lệ: " + id, null);
+			response.getWriter().write(GSON.toJson(result));
 		}
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-
+	private void createCategory(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String name = request.getParameter("name");
 		String sku = request.getParameter("sku");
 		
 		CategoryCreate newCategory = new CategoryCreate(sku, name);
 		
-		AppServiceResult<CategoryDto> result = categoryService.createCategory(newCategory);
-		if (result.isSuccess()) {
-			response.setStatus(200);
-			response.getWriter().println(GSON.toJson(result));
-		} else {
-			response.sendError(result.getErrorCode(), result.getMessage());
-		}
+		AppBaseResult result = categoryService.createCategory(newCategory);
+		response.getWriter().println(GSON.toJson(result));
 	}
 
-	@Override
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("application/json");
+	private void updateCategory(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			long id = Long.parseLong(request.getParameter("id"));
 			String name = request.getParameter("name");
 			String sku = request.getParameter("sku");
-			boolean active = request.getParameter("active").equals("1");
 //			String json = StringUtil.getStringFromInputStream(request.getInputStream());
 //			Type type = new TypeToken<CategoryUpdate>() {}.getType();
 //			CategoryUpdate updateCategory = GSON.fromJson(json, type);
-			CategoryUpdate updateCategory = new CategoryUpdate(id, sku, name, active);
+			CategoryUpdate updateCategory = new CategoryUpdate(id, sku, name);
 			AppBaseResult result = categoryService.updateCategory(updateCategory);
 
-			if (result.isSuccess()) {
-				response.setStatus(200);
-				response.getWriter().println(GSON.toJson(result));
-			} else {
-				response.sendError(result.getErrorCode(), result.getMessage());
-			}
+			response.getWriter().println(GSON.toJson(result));
 		} catch (Exception e) {
-			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
+			AppServiceResult<CategoryDto> result = new AppServiceResult<>(false, AppError.Unknown.errorCode(), "Không thể cập nhật!", null);
+			response.getWriter().write(GSON.toJson(result));
+		}
+	}
+
+	private void updateStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		try {
+			long id = Long.parseLong(request.getParameter("id"));
+			boolean active = request.getParameter("active").equals("1");
+			AppBaseResult result = categoryService.updateStatus(id, active);
+
+			response.getWriter().println(GSON.toJson(result));
+		} catch (Exception e) {
+			AppServiceResult<CategoryDto> result = new AppServiceResult<>(false, AppError.Unknown.errorCode(), "Không thể cập nhật!", null);
+			response.getWriter().write(GSON.toJson(result));
 		}
 	}
 	
-	@Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("application/json");
-		try {
-			String string = request.getParameter("ids");
-			Type type = new TypeToken<List<Long>>(){}.getType();
-			List<Long> ids = GSON.fromJson(string, type);
-			AppBaseResult result = AppBaseResult.GenarateIsSucceed();
-			for (long id : ids) {
-				result = categoryService.deleteCategory(id);
-				if (result.isSuccess()) {
-					response.setStatus(200);
-				} else {
-					response.sendError(result.getErrorCode(), result.getMessage());
-					return;
-				}
-			}
-			response.getWriter().println(GSON.toJson(result));
-		} catch (NumberFormatException e) {
-			response.sendError(AppError.Unknown.errorCode(), AppError.Unknown.errorMessage());
+	private void deleteCategory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String string = request.getParameter("ids");
+		Type type = new TypeToken<List<Long>>(){}.getType();
+		List<Long> ids = GSON.fromJson(string, type);
+		AppBaseResult result = AppBaseResult.GenarateIsSucceed();
+		for (long id : ids) {
+			result = categoryService.deleteCategory(id);
+
+			if (!result.isSuccess()) break;
 		}
+		response.getWriter().println(GSON.toJson(result));
 	}
 }

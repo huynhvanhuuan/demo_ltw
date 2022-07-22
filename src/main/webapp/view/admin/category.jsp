@@ -122,8 +122,7 @@
 										<span aria-hidden="true">×</span>
 									</button>
 								</div>
-								<form action="${requestScope.contextPath}/api/category"
-								      id="update-status" novalidate="novalidate">
+								<form id="update-status" novalidate="novalidate">
 									<input type="hidden" name="id">
 									<input type="hidden" name="sku">
 									<input type="hidden" name="name">
@@ -183,7 +182,7 @@
 			function getCategoryForUpdate(id) {
 				$.ajax({
 					type: "GET",
-					url: '${requestScope.contextPath}/api/category/' + id,
+					url: '${requestScope.contextPath}/admin/category/' + id,
 					success: function (response) {
 						if (response.success) {
 							let data = response.data;
@@ -204,7 +203,7 @@
 			function getCategoryForUpdateStatus(id) {
 				$.ajax({
 					type: "GET",
-					url: '${requestScope.contextPath}/api/category/' + id,
+					url: '${requestScope.contextPath}/admin/category/' + id,
 					success: function (response) {
 						if (response.success) {
 							let data = response.data;
@@ -218,16 +217,6 @@
 								title: response.message
 							});
 						}
-					}
-				})
-			}
-			
-			function getListSkuHasProduct() {
-				return $.ajax({
-					type: "GET",
-					url: '${requestScope.contextPath}/api/category/p',
-					success: function (data) {
-						console.log(data)
 					}
 				})
 			}
@@ -289,7 +278,7 @@
 		            let formData = new FormData($(this)[0]);
 		            if ($(this).valid()) {
 			            $.ajax({
-				            url: '${requestScope.contextPath}/api/category',
+				            url: '${requestScope.contextPath}/admin/category/update-category',
 				            type: 'PUT',
 				            data: formData,
 				            processData: false,
@@ -325,11 +314,11 @@
 		            if ($(this).valid()) {
 						let formData = new FormData($(this)[0]);
 			            $.ajax({
-				            url: '${requestScope.contextPath}/api/category',
+				            url: '/admin/category/update-status',
 				            type: 'PUT',
-				            processData: false,
-				            contentType: false,
-				            data: formData,
+							data: formData,
+							processData: false,
+							contentType: false,
 				            success: function (response) {
 					            if (response.success) {
 						            Toast.fire({
@@ -368,7 +357,7 @@
 					formData.append('ids', JSON.stringify(ids));
 		            $.ajax({
 			            type: "DELETE",
-			            url: '${requestScope.contextPath}/api/category',
+			            url: '${requestScope.contextPath}/admin/category',
 						data: formData,
 						processData: false,
 						contentType: false,
@@ -487,12 +476,12 @@
 		                table.buttons().container().appendTo($('.col-md-6:eq(0)', table.table().container()));
 	                },
 	                "ajax": {
-		                "url": "${requestScope.contextPath}/api/category",
+		                "url": "${requestScope.contextPath}/api/category/list",
 		                "dataSrc": "data"
 	                },
                     "columnDefs": [
                         {
-                            "targets": [1, 4, 5],
+                            "targets": [1, 2, 4, 5],
                             "className": "text-center",
                         },
 	                    {
@@ -507,6 +496,10 @@
                                 return '<input type="checkbox" class="checkBoxId" value="' + data + '">';
                             }
                         },
+						{
+							"targets": 2,
+							"width": "20%",
+						},
                         {
                             "targets": 4,
 	                        "width": "20%",
